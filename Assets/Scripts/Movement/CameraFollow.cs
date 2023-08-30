@@ -28,7 +28,7 @@ public class CameraFollow : MonoBehaviour
         controls.Disable();
     }
 
-    void Update()
+    public void DoLook()
     {
         // Follow the player
         transform.position = Vector3.Lerp(transform.position, target.position, Time.deltaTime * followSpeed);

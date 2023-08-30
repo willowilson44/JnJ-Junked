@@ -1,48 +1,50 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerMovement : MonoBehaviour
+public struct MoveData
 {
-    public float speed = 10.0f;
-    public float jumpForce = 5.0f;
-    private Rigidbody rb;
-    private InputMaster controls;
-    private Vector2 currentMovement;
+    //in
+    public Vector3 oldPosition;
+    public Vector3 oldVelocity;
 
-    private void Awake()
-    {
-        controls = new InputMaster();
-        controls.Player.Move.performed += ctx => currentMovement = ctx.ReadValue<Vector2>();
-        controls.Player.Move.canceled += ctx => currentMovement = Vector2.zero;
-    }
+    public Vector3 oldForward;
+    public Vector3 oldRight;
+    public Vector3 addVelocities;
 
-    void Start()
-    {
-        rb = GetComponent<Rigidbody>();
-        rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
-    }
+    public float frametime;
+    public float gravity;
 
-    void OnEnable()
-    {
-        controls.Enable();
-    }
+    //public bool initialSnap;
 
-    void OnDisable()
-    {
-        controls.Disable();
-    }
+    //out
+    public Vector3 newPosition;
+    public Vector3 newVelocity;
+    public Vector3 mins;
+    public Vector3 maxs;
 
-    void FixedUpdate()
+    public float viewheight;
+
+    public PMFlags flags;
+
+    public bool jumped;
+    public bool beginCameraLerp;
+}
+
+public static class PlayerMovement
+{
+    //private const float speed = 10.0f;
+    //private const float jumpForce = 5.0f;
+
+
+    public static void DoMove(MoveData movedata, Vector2 currentMovement)
     {
         // Strafe movement
         Vector3 movement = new Vector3(currentMovement.x, 0, currentMovement.y);
-        Vector3 newPosition = rb.position + transform.TransformDirection(movement) * speed * Time.fixedDeltaTime;
-        rb.MovePosition(newPosition);
+        movedata.newPosition = movedata.oldPosition + movement * 10.0f * Time.fixedDeltaTime;
+
 
         // Jumping
-        if (controls.Player.Jump.triggered)
-        {
-            rb.AddForce(new Vector3(0, jumpForce, 0), ForceMode.Impulse);
-        }
+
+        // Ducking
     }
 }
