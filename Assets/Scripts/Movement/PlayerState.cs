@@ -32,38 +32,4 @@ public static class PlayerState
     //public static Vector3 spawnOrigin = Vector3.zero;
     //public static Vector3 spawnAngles = Vector3.right;
 
-
-
-    //public static void RequestTeleport(Vector3 target, Vector3 angles)
-    //{
-    //    if (mode == GameMode.flying || mode == GameMode.spectating)
-    //    {
-    //        return;
-    //    }
-
-    //    teleportDestination = target;
-    //    teleportAngles = angles;
-    //    Console.DebugLog("Requested teleport angle: " + angles.ToString());
-
-    //    teleportEvent?.Invoke();
-    //}
-
-    //public static void ResetPlayerItems()
-    //{
-    //    itemResetEvent?.Invoke();
-    //}
-
-    ///// <summary>
-    ///// On map load.
-    ///// </summary>
-    //public static void ResetPlayerState()
-    //{
-    //    ResetPlayerItems();
-
-    //    teleportDestination = Vector3.zero;
-    //    teleportAngles = Vector3.zero;
-
-    //    currentSpeed = 0;
-    //    pm_gravity = 800;
-    //}
 }

@@ -19,8 +19,6 @@ public class DebugWrapper : MonoBehaviour
         currentSpeed = PlayerState.currentSpeed;
         currentViewHeight = PlayerState.currentViewHeight;
         currentPosition = PlayerState.currentPosition;
-        mins = PlayerState.mins;
-        maxs = PlayerState.maxs;
         pm_gravity = PlayerState.pm_gravity;
         addVelocities = PlayerState.addVelocities;
         moveFlags = PlayerState.moveFlags;
