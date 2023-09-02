@@ -353,7 +353,7 @@ public static class PlayerMovement
         up += new Vector3(0, 1f, 0);
 
         // Using BoxCast instead of custom Trace
-        if (Physics.BoxCast(up, playerCollider.bounds.extents, Vector3.up, out hitInfo, Quaternion.identity, 0, layerMask))
+        if (Physics.BoxCast(up, playerCollider.size / 2, Vector3.up, out hitInfo, Quaternion.identity, 1, layerMask))
         {
             Debug.Log("can't step up");
             return; //can't step up
@@ -370,10 +370,10 @@ public static class PlayerMovement
         //push down the final amount
         down = position;
         down.y -= 1f;
-        if (Physics.BoxCast(position, playerCollider.bounds.extents, Vector3.down, out hitInfo, Quaternion.identity, 0.5f, layerMask))
+        if (Physics.BoxCast(position, playerCollider.bounds.extents, Vector3.down, out hitInfo, Quaternion.identity, 1f, layerMask))
         {
             //Debug.Log("Setting position to Boxcast hit" + hitInfo.point + hitInfo.normal);
-            position = hitInfo.point;
+            position.y = hitInfo.point.y + 1;
             Debug.Log("Position after Boxcast hit:" + position);
         }
 

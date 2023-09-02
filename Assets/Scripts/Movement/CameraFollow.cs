@@ -9,7 +9,8 @@ public class CameraFollow : MonoBehaviour
     public float lookSpeedY = 2f;
     private Vector2 currentLookDelta;
     private InputMaster controls;
-    private float pitch = 0f;
+    private float pitch = 30f;
+    public float yRotation;
 
     private void Awake()
     {
@@ -28,18 +29,19 @@ public class CameraFollow : MonoBehaviour
         controls.Disable();
     }
 
-    public void DoLook()
+    public float DoLook()
     {
         // Follow the player
         transform.position = Vector3.Lerp(transform.position, target.position, Time.deltaTime * followSpeed);
 
         // Camera rotation
-        float yRotation = currentLookDelta.x * lookSpeedX * Time.deltaTime;
+        yRotation = currentLookDelta.x * lookSpeedX * Time.deltaTime;
         float xRotation = currentLookDelta.y * lookSpeedY * Time.deltaTime;
 
         pitch -= xRotation;
         pitch = Mathf.Clamp(pitch, -40f, 85f);
 
         transform.eulerAngles = new Vector3(pitch, transform.eulerAngles.y + yRotation, 0);
+        return yRotation;
     }
 }

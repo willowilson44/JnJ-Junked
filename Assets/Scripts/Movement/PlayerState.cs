@@ -24,7 +24,7 @@ public static class PlayerState
     public static Vector3 currentPosition = Vector3.zero;
     public static Vector3 mins = Vector3.zero;
     public static Vector3 maxs = Vector3.zero;
-    public static float pm_gravity = 800;
+    public static float pm_gravity = 1000;
     public static Vector3 addVelocities = Vector3.zero;
     public static PMFlags moveFlags;
 

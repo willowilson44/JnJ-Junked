@@ -15,10 +15,12 @@ public class PlayerPositionUpdate : MonoBehaviour
 {
     public float speed = 10.0f;
     public float jumpForce = 5.0f;
-    private Rigidbody rb;
+    //private Rigidbody rb;
     private InputMaster controls;
     private Vector2 currentMovement;
     [SerializeField] private CameraFollow Camera;
+    [SerializeField] private Camera camera;
+    private float y;
 
 
     public AudioSource jumpSoundSource;
@@ -57,8 +59,8 @@ public class PlayerPositionUpdate : MonoBehaviour
         Application.targetFrameRate = 100;
         Time.fixedDeltaTime = 0.01f;
 
-        rb = GetComponent<Rigidbody>();
-        rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+        //rb = GetComponent<Rigidbody>();
+        //rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
 
         //set initial positions
         position = transform.position;
@@ -113,11 +115,16 @@ public class PlayerPositionUpdate : MonoBehaviour
             jumped = true;
         }
 
-        rb.MovePosition(PlayerState.currentPosition);
+        transform.position = PlayerState.currentPosition;
+        //rb.MovePosition(PlayerState.currentPosition);
     }
     void Update()
     {
-        Camera.DoLook();
+        y += Camera.DoLook();
+        Debug.Log(y);
+        Debug.Log(Camera.yRotation);
+        Quaternion newRotation = Quaternion.Euler(0, y, 0);
+        transform.rotation = newRotation;
 
         //update player state info
         PlayerState.currentSpeed = new Vector2(velocity.x, velocity.z).magnitude;
@@ -131,7 +138,6 @@ public class PlayerPositionUpdate : MonoBehaviour
             jumpSoundSource.Play();
             jumped = false;
         }
-
 
     }
 }
