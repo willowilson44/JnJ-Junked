@@ -1,16 +1,26 @@
 using UnityEngine;
 
+/*
+ * Author: Josh Wilson
+ * 
+ * Instructions:
+ *  - Attach to player character
+ *  
+ * Description:
+ *  - Exposes several player movement variables to inspector for debugging
+ *  
+ */
+
 public class DebugWrapper : MonoBehaviour
 {
     // Variables to expose in the Unity Editor
     public float currentSpeed;
     public float currentViewHeight;
     public Vector3 currentPosition;
-    public Vector3 mins;
-    public Vector3 maxs;
     public float pm_gravity;
     public Vector3 addVelocities;
-    public PMFlags moveFlags;
+    public int onGround;
+    public int jumpHeld;
 
     // Update is called once per frame
     private void Update()
@@ -21,6 +31,5 @@ public class DebugWrapper : MonoBehaviour
         currentPosition = PlayerState.currentPosition;
         pm_gravity = PlayerState.pm_gravity;
         addVelocities = PlayerState.addVelocities;
-        moveFlags = PlayerState.moveFlags;
     }
 }

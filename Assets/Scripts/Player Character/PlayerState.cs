@@ -2,10 +2,6 @@ using System;
 using UnityEngine;
 using UnityEngine.Events;
 
-public enum GameMode
-{
-    flying, spectating, training, timeattack
-}
 
 public static class PlayerState
 {
@@ -22,8 +18,6 @@ public static class PlayerState
     public static float currentSpeed = 0;
     public static float currentViewHeight = 0;
     public static Vector3 currentPosition = Vector3.zero;
-    public static Vector3 mins = Vector3.zero;
-    public static Vector3 maxs = Vector3.zero;
     public static float pm_gravity = 1000;
     public static Vector3 addVelocities = Vector3.zero;
     public static PMFlags moveFlags;

@@ -1,6 +1,19 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+/*
+ * Author: Josh Wilson
+ * 
+ * Instructions:
+ *  - Attach this script to main camera
+ *  - Create a game object as a child of the player and position it where you want the camera to be
+ *  - Assign that object as "Target" in inspector
+ *  
+ *  Description:
+ *  - Player Camera movement
+ *  
+ */
+
 public class CameraFollow : MonoBehaviour
 {
     public Transform target;

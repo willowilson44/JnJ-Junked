@@ -3039,7 +3039,6 @@ GameObject:
   - component: {fileID: 502032147}
   - component: {fileID: 502032146}
   - component: {fileID: 502032149}
-  - component: {fileID: 502032150}
   - component: {fileID: 502032151}
   m_Layer: 0
   m_Name: Player
@@ -3129,30 +3128,16 @@ MonoBehaviour:
   speed: 10
   jumpForce: 5
   Camera: {fileID: 963194229}
-  camera: {fileID: 0}
   jumpSoundSource: {fileID: 0}
   playerCollider: {fileID: 502032151}
   viewheight: 0
---- !u!114 &502032150
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 502032143}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9cd30d265e9c3aa4eba7776abf327b81, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   currentSpeed: 0
   currentViewHeight: 0
   currentPosition: {x: 0, y: 0, z: 0}
-  mins: {x: 0, y: 0, z: 0}
-  maxs: {x: 0, y: 0, z: 0}
   pm_gravity: 0
   addVelocities: {x: 0, y: 0, z: 0}
-  moveFlags: 0
+  onGround: 0
+  jumpHeld: 0
 --- !u!65 &502032151
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4530,7 +4515,6 @@ GameObject:
   - component: {fileID: 682134253}
   - component: {fileID: 682134252}
   - component: {fileID: 682134257}
-  - component: {fileID: 682134256}
   m_Layer: 0
   m_Name: Player1
   m_TagString: Untagged
@@ -4625,26 +4609,6 @@ Transform:
   - {fileID: 1323218290}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &682134256
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 682134251}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9cd30d265e9c3aa4eba7776abf327b81, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentSpeed: 0
-  currentViewHeight: 0
-  currentPosition: {x: 0, y: 0, z: 0}
-  mins: {x: 0, y: 0, z: 0}
-  maxs: {x: 0, y: 0, z: 0}
-  pm_gravity: 0
-  addVelocities: {x: 0, y: 0, z: 0}
-  moveFlags: 0
 --- !u!114 &682134257
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4660,10 +4624,16 @@ MonoBehaviour:
   speed: 10
   jumpForce: 5
   Camera: {fileID: 963194229}
-  camera: {fileID: 963194227}
   jumpSoundSource: {fileID: 0}
   playerCollider: {fileID: 682134252}
   viewheight: 2
+  currentSpeed: 0
+  currentViewHeight: 0
+  currentPosition: {x: 0, y: 0, z: 0}
+  pm_gravity: 0
+  addVelocities: {x: 0, y: 0, z: 0}
+  onGround: 0
+  jumpHeld: 0
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -39652,8 +39622,8 @@ Transform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 682134255}
   - {fileID: 705507995}
   - {fileID: 963194228}
-  - {fileID: 502032148}
   - {fileID: 1813788949}
-  - {fileID: 682134255}
+  - {fileID: 502032148}

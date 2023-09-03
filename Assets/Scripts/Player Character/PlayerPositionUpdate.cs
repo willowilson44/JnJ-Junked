@@ -1,13 +1,23 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
+/*
+ * Author: Josh Wilson
+ * 
+ * Instructions:
+ *  - Attach to the player gameobject and assign the "Camera" reference to the main camera in inspector
+ * 
+ * Description:
+ *  - This script is the core script needed to attach to the player. It calls movement functions to update 
+ *  the player position and also links to camera, controls and playerstate.
+ *  
+ */
 
 public enum PMFlags
 {
     PMF_DUCKED = 1,
     PMF_JUMP_HELD = 2,
     PMF_ON_GROUND = 4,
-    PMF_TIME_WATERJUMP = 8
+    PMF_ON_RAMP = 8
 }
 
 
@@ -19,7 +29,6 @@ public class PlayerPositionUpdate : MonoBehaviour
     private InputMaster controls;
     private Vector2 currentMovement;
     [SerializeField] private CameraFollow Camera;
-    [SerializeField] private Camera camera;
     private float y;
 
 
@@ -27,7 +36,7 @@ public class PlayerPositionUpdate : MonoBehaviour
     public BoxCollider playerCollider;
 
     //move state
-    public float viewheight;
+    private float viewheight;
     private PMFlags pmflags;
     private Vector3 position = Vector3.zero;
     private Vector3 velocity = Vector3.zero;
@@ -43,6 +52,16 @@ public class PlayerPositionUpdate : MonoBehaviour
 
     private bool jumped;
 
+
+    //Debug Variables;
+    public float currentSpeed;
+    //public float currentViewHeight;
+    public Vector3 currentPosition;
+    public float pm_gravity;
+    public bool onGround;
+    public bool jumpHeld;
+
+
     private void Awake()
     {
         // subscribe lambda functions to the performed event of the actions in "InputMaster"
@@ -57,7 +76,7 @@ public class PlayerPositionUpdate : MonoBehaviour
 
         // Set the target frame rate to 60 fps
         Application.targetFrameRate = 100;
-        Time.fixedDeltaTime = 0.01f;
+        Time.fixedDeltaTime = 0.005f;
 
         //rb = GetComponent<Rigidbody>();
         //rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
@@ -117,6 +136,16 @@ public class PlayerPositionUpdate : MonoBehaviour
 
         transform.position = PlayerState.currentPosition;
         //rb.MovePosition(PlayerState.currentPosition);
+
+        // Fetch debug variables
+        currentSpeed = new Vector2(velocity.x, velocity.z).magnitude;
+        //currentViewHeight = PlayerState.currentViewHeight;
+        currentPosition = position;
+        pm_gravity = PlayerState.pm_gravity;
+        jumpHeld = pmflags.HasFlag(PMFlags.PMF_JUMP_HELD);
+        onGround = pmflags.HasFlag(PMFlags.PMF_ON_GROUND);
+
+
     }
     void Update()
     {
@@ -139,5 +168,6 @@ public class PlayerPositionUpdate : MonoBehaviour
             jumped = false;
         }
 
+        // Fetch debug variables
     }
 }

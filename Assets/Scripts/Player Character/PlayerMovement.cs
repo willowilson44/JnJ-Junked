@@ -1,10 +1,17 @@
-//using System.Diagnostics;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using static Unity.IO.LowLevel.Unsafe.AsyncReadManagerMetrics;
-using static UnityEditor.Experimental.GraphView.GraphView;
-using static UnityEngine.GraphicsBuffer;
-using static UnityEngine.UI.Image;
+
+/*
+ * Author: Josh Wilson
+ * 
+ * Instructions:
+ *  - None
+ * 
+ * Description:
+ *  - This script is a collection of movement functions used by the PlayerPositionUpdate script. These functions are heavily modified but mostly
+ *  based on Maciej Szybiak's quake 2 unity project PlayerMove script, which is itself based on John Carmacks original quake 2 open source code.
+ * 
+ */
+
 
 public struct MoveData
 {
@@ -40,7 +47,7 @@ public static class PlayerMovement
     private const float pm_stopspeed = 100f;
     private const float pm_accelerate = 10f;
     private const float pm_jumpstrength = 370f;
-    private const float pm_scaling_factor = 30f;
+    private const float pm_scaling_factor = 30f;    // Scales down player movement speed. Increase this value to make all player movement slower.
 
     private static float timer = 0;
 
@@ -54,13 +61,19 @@ public static class PlayerMovement
 
     private static void FinishPmove(BoxCollider playerCollider)
     {
-        //if (PM_GoodPosition(position, playerCollider))
-        //{
+        if (PM_GoodPosition(position, playerCollider))
+        {
             movedata.newPosition = position;
             movedata.newVelocity = velocity;
             movedata.flags = pmflags;
             movedata.viewheight = viewheight;
-        //}
+        }
+        else
+        {
+            movedata.newPosition = movedata.oldPosition;
+            //movedata.newVelocity = Vector3.zero;
+        }
+        
     }
 
     public static void DoMove(ref MoveData movedata, Vector2 currentMovement, BoxCollider playerCollider)
@@ -92,6 +105,8 @@ public static class PlayerMovement
         PM_CategorizePosition(playerCollider);
         Debug.Log("After move functions: position: " + position + " velocity:" + velocity);
 
+        PM_GoodPosition(position, playerCollider);
+
         FinishPmove(playerCollider);
         movedata = PlayerMovement.movedata;
         Debug.Log("--------------End----------------");
@@ -105,12 +120,14 @@ public static class PlayerMovement
     {
         int layerMask = 1 << LayerMask.NameToLayer("LevelStructure");
 
-        bool isValid = !Physics.CheckBox(pos, playerCollider.bounds.extents, Quaternion.identity, layerMask);
+        bool isValid = !Physics.CheckBox(pos, playerCollider.bounds.extents/1.5f, Quaternion.identity, layerMask);
         Debug.Log("PM_GoodPosition - isValid: " + isValid);
+
+        return isValid;
 
         // Use Unity's Physics.CheckBox() to check if the position is valid.
         // The extents of the box are assumed to be already set in the player's collider.
-        return !Physics.CheckBox(pos, playerCollider.bounds.extents, Quaternion.identity, layerMask);
+        //return !Physics.CheckBox(pos, playerCollider.bounds.extents, Quaternion.identity, layerMask);
     }
 
     private static void PM_CategorizePosition(BoxCollider playerCollider)
@@ -172,7 +189,7 @@ public static class PlayerMovement
         }
 
         // Check if on the ground using flags instead of a separate bool
-        if (!groundentity)
+        if (!pmflags.HasFlag(PMFlags.PMF_ON_GROUND))        // TODO: was if(!groundEntity), fixed jumping in the air but now cant jump on ramps, add an extra flag for ramps in SSM?
         {
             return;
         }
@@ -204,7 +221,7 @@ public static class PlayerMovement
 
         speed = velocity.magnitude;
 
-        if (speed < 1)
+        if (speed < (1/pm_scaling_factor))   // TODO: Scale this properly?
         {
             velocity.x = 0;
             velocity.z = 0;
@@ -214,7 +231,7 @@ public static class PlayerMovement
         drop = 0;
 
         //apply ground friction
-        if (groundentity)
+        if (groundentity && ((int)PMFlags.PMF_ON_GROUND != 0))
         {
             friction = pm_friction;
             control = speed < pm_stopspeed ? pm_stopspeed : speed;
