@@ -81,8 +81,8 @@ public static class PlayerMovement
         movedata.viewheight = 2;
         PlayerMovement.movedata = movedata;
 
-        Debug.Log("Initial position: " + movedata.oldPosition);
-        Debug.Log("Initial velocity: " + movedata.oldVelocity);
+        //Debug.Log("Initial position: " + movedata.oldPosition);
+        //Debug.Log("Initial velocity: " + movedata.oldVelocity);
 
         position = movedata.oldPosition;
         velocity = movedata.oldVelocity;
@@ -103,13 +103,13 @@ public static class PlayerMovement
         PM_Friction();
         PM_AirMove(playerCollider, currentMovement);
         PM_CategorizePosition(playerCollider);
-        Debug.Log("After move functions: position: " + position + " velocity:" + velocity);
+        //Debug.Log("After move functions: position: " + position + " velocity:" + velocity);
 
         PM_GoodPosition(position, playerCollider);
 
         FinishPmove(playerCollider);
         movedata = PlayerMovement.movedata;
-        Debug.Log("--------------End----------------");
+        //Debug.Log("--------------End----------------");
     }
 
 
@@ -121,7 +121,7 @@ public static class PlayerMovement
         int layerMask = 1 << LayerMask.NameToLayer("LevelStructure");
 
         bool isValid = !Physics.CheckBox(pos, playerCollider.bounds.extents/1.5f, Quaternion.identity, layerMask);
-        Debug.Log("PM_GoodPosition - isValid: " + isValid);
+        //Debug.Log("PM_GoodPosition - isValid: " + isValid);
 
         return isValid;
 
@@ -138,7 +138,7 @@ public static class PlayerMovement
         // Check if player is falling
         if (velocity.y > 180)
         {
-            Debug.Log("velocity.y >180, player is falling");
+            //Debug.Log("velocity.y >180, player is falling");
             groundentity = false;
             pmflags &= ~PMFlags.PMF_ON_GROUND;
         }
@@ -147,7 +147,7 @@ public static class PlayerMovement
             // Raycast downwards to check for ground
             if (Physics.Raycast(position, Vector3.down, out hit, distanceToGround + 0.05f))
             {
-                Debug.Log("Raycast hit something, checking if it's ground");
+                //Debug.Log("Raycast hit something, checking if it's ground");
 
                 if (hit.normal.y < 0.7f)
                 {
@@ -157,7 +157,7 @@ public static class PlayerMovement
                 }
                 else
                 {
-                    Debug.Log("Player is on the ground");
+                    //Debug.Log("Player is on the ground");
                     groundentity = true;
                     if (!pmflags.HasFlag(PMFlags.PMF_ON_GROUND))
                     {
@@ -168,7 +168,7 @@ public static class PlayerMovement
             }
             else
             {
-                Debug.Log("Raycast didn't hit anything, player is in the air");
+                //Debug.Log("Raycast didn't hit anything, player is in the air");
                 groundentity = true;
                 pmflags &= ~PMFlags.PMF_ON_GROUND;
             }
@@ -304,7 +304,7 @@ public static class PlayerMovement
             //walking on ground
             velocity.y = 0;
             PM_Accelerate(wishdir, wishspeed, pm_accelerate);
-            Debug.Log("performing move on ground with velocity:" + velocity);
+            //Debug.Log("performing move on ground with velocity:" + velocity);
 
             //fix for negative gravity here      
             PM_StepSlideMove(playerCollider);
@@ -312,7 +312,7 @@ public static class PlayerMovement
         else
         {
             PM_Accelerate(wishdir, wishspeed, 1);
-            Debug.Log("performing move in air");
+            //Debug.Log("performing move in air");
             //add gravity
             velocity.y -= PlayerState.pm_gravity * frametime;
 
@@ -338,7 +338,7 @@ public static class PlayerMovement
         }
 
         velocity += accelspeed * wishdir;
-        Debug.Log("after acceleration velocity:" + velocity);
+        //Debug.Log("after acceleration velocity:" + velocity);
     }
 
     /// <summary>
@@ -353,12 +353,12 @@ public static class PlayerMovement
         Vector3 up, down;
         int layerMask = 1 << LayerMask.NameToLayer("LevelStructure");
 
-        Debug.Log("StepSlide initial position:" + position);
+        //Debug.Log("StepSlide initial position:" + position);
         start_o = position;
         start_v = velocity;
 
         PM_StepSlideMove_(playerCollider);
-        Debug.Log("Position after PM_StepSlideMove_1: " + position);
+        //Debug.Log("Position after PM_StepSlideMove_1: " + position);
 
 
         down_o = position;
@@ -377,11 +377,11 @@ public static class PlayerMovement
         }
 
         position = up;
-        Debug.Log("Position after step up: " + position);
+        //Debug.Log("Position after step up: " + position);
         velocity = start_v;
 
         PM_StepSlideMove_(playerCollider); 
-        Debug.Log("Position after PM_StepSlideMove_2(should be forward AND up): " + position);
+        //Debug.Log("Position after PM_StepSlideMove_2(should be forward AND up): " + position);
 
 
         //push down the final amount
@@ -402,7 +402,7 @@ public static class PlayerMovement
         if (down_dist > up_dist || hitInfo.normal.y < 0.7f)
         {
             position = down_o;
-            Debug.Log("StepSlide taking down position:" + position);
+            //Debug.Log("StepSlide taking down position:" + position);
             velocity = down_v;
             return;
         }

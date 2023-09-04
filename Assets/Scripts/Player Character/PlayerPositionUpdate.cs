@@ -150,8 +150,8 @@ public class PlayerPositionUpdate : MonoBehaviour
     void Update()
     {
         y += Camera.DoLook();
-        Debug.Log(y);
-        Debug.Log(Camera.yRotation);
+        //Debug.Log(y);
+        //Debug.Log(Camera.yRotation);
         Quaternion newRotation = Quaternion.Euler(0, y, 0);
         transform.rotation = newRotation;
 
