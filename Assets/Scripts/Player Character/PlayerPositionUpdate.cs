@@ -37,9 +37,9 @@ public class PlayerPositionUpdate : MonoBehaviour
 
     //move state
     private float viewheight;
-    private PMFlags pmflags;
-    private Vector3 position = Vector3.zero;
-    private Vector3 velocity = Vector3.zero;
+    public PMFlags pmflags;
+    public Vector3 position = Vector3.zero;
+    public Vector3 velocity = Vector3.zero;
 
     private Vector3 previous_origin = Vector3.zero;
     //private Vector3 previous_camera_position = Vector3.zero;

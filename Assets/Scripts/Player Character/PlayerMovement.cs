@@ -1,4 +1,6 @@
 using UnityEngine;
+using static Unity.IO.LowLevel.Unsafe.AsyncReadManagerMetrics;
+using static UnityEditor.PlayerSettings;
 
 /*
  * Author: Josh Wilson
@@ -41,11 +43,11 @@ public static class PlayerMovement
     //private const float jumpForce = 5.0f;
 
     //constants
-    private const float pm_friction = 6f;
+    private const float pm_friction = 5f;
     private const float pm_maxspeed = 300f;
     private const float pm_speedmult = 1f;
     private const float pm_stopspeed = 100f;
-    private const float pm_accelerate = 10f;
+    private const float pm_accelerate = 6f;
     private const float pm_jumpstrength = 370f;
     private const float pm_scaling_factor = 30f;    // Scales down player movement speed. Increase this value to make all player movement slower.
 
@@ -53,7 +55,7 @@ public static class PlayerMovement
 
     private static float viewheight;
     private static PMFlags pmflags;
-    private static bool groundentity = false;
+    public static bool canJump = false;
     private static float frametime;
     private static MoveData movedata;
     private static Vector3 position;
@@ -78,7 +80,7 @@ public static class PlayerMovement
 
     public static void DoMove(ref MoveData movedata, Vector2 currentMovement, BoxCollider playerCollider)
     {
-        movedata.viewheight = 2;
+        movedata.viewheight = playerCollider.size.y;
         PlayerMovement.movedata = movedata;
 
         //Debug.Log("Initial position: " + movedata.oldPosition);
@@ -120,15 +122,52 @@ public static class PlayerMovement
     {
         int layerMask = 1 << LayerMask.NameToLayer("LevelStructure");
 
-        bool isValid = !Physics.CheckBox(pos, playerCollider.bounds.extents/1.5f, Quaternion.identity, layerMask);
+        // Use Unity's Physics.CheckBox() to check if the position is valid.
+        bool isValid = !Physics.CheckBox(pos, playerCollider.bounds.extents/1.1f, Quaternion.identity, layerMask);
         //Debug.Log("PM_GoodPosition - isValid: " + isValid);
+
+        if(!isValid)
+        {
+            isValid = PM_Snap_Position(position, playerCollider, 0.02f, layerMask);
+        }
 
         return isValid;
 
-        // Use Unity's Physics.CheckBox() to check if the position is valid.
         // The extents of the box are assumed to be already set in the player's collider.
         //return !Physics.CheckBox(pos, playerCollider.bounds.extents, Quaternion.identity, layerMask);
     }
+
+    private static bool PM_Snap_Position(Vector3 originalPos, BoxCollider playerCollider, float searchRadius, int layerMask)
+    {
+        bool isValid = false;
+
+        Vector3[] directions = new Vector3[]
+        {
+        Vector3.back,
+        Vector3.up,
+        Vector3.forward,
+        Vector3.left,
+        Vector3.right
+        };
+
+
+        // Search for a nearby valid position
+        foreach (Vector3 dir in directions)
+        {
+            Vector3 newPos = originalPos + dir * searchRadius;
+            // Use Unity's Physics.CheckBox() to check if the position is valid.
+            isValid = !Physics.CheckBox(newPos, playerCollider.bounds.extents / 1.1f, Quaternion.identity, layerMask);
+            if(isValid)
+            {
+                position = newPos;
+                return true;
+            }
+        }
+
+        // If still not found, return the original position (or whatever fallback you prefer)
+        return false;
+    }
+
 
     private static void PM_CategorizePosition(BoxCollider playerCollider)
     {
@@ -139,37 +178,40 @@ public static class PlayerMovement
         if (velocity.y > 180)
         {
             //Debug.Log("velocity.y >180, player is falling");
-            groundentity = false;
+            canJump = false;
             pmflags &= ~PMFlags.PMF_ON_GROUND;
         }
         else
         {
             // Raycast downwards to check for ground
-            if (Physics.Raycast(position, Vector3.down, out hit, distanceToGround + 0.05f))
+            if (Physics.Raycast(position, Vector3.down, out hit, distanceToGround + 0.4f))
             {
+                canJump = true;
                 //Debug.Log("Raycast hit something, checking if it's ground");
-
-                if (hit.normal.y < 0.7f)
-                {
-                    Debug.Log("Surface is too steep to be ground");
-                    groundentity = false;
-                    pmflags &= ~PMFlags.PMF_ON_GROUND;
-                }
-                else
-                {
-                    //Debug.Log("Player is on the ground");
-                    groundentity = true;
-                    if (!pmflags.HasFlag(PMFlags.PMF_ON_GROUND))
+                if (Physics.Raycast(position, Vector3.down, out hit, distanceToGround + 0.02f))
+                { 
+                    if (hit.normal.y < 0.7f)
                     {
-                        // just hit the ground
-                        pmflags |= PMFlags.PMF_ON_GROUND;
+                        Debug.Log("Surface is too steep to be ground");
+                        canJump = false;
+                        pmflags &= ~PMFlags.PMF_ON_GROUND;
+                    }
+                    else
+                    {
+                        //Debug.Log("Player is on the ground");
+                        canJump = true;
+                        if (!pmflags.HasFlag(PMFlags.PMF_ON_GROUND))
+                        {
+                            // just hit the ground
+                            pmflags |= PMFlags.PMF_ON_GROUND;
+                        }
                     }
                 }
             }
             else
             {
                 //Debug.Log("Raycast didn't hit anything, player is in the air");
-                groundentity = true;
+                canJump = false;
                 pmflags &= ~PMFlags.PMF_ON_GROUND;
             }
         }
@@ -189,7 +231,7 @@ public static class PlayerMovement
         }
 
         // Check if on the ground using flags instead of a separate bool
-        if (!pmflags.HasFlag(PMFlags.PMF_ON_GROUND))        // TODO: was if(!groundEntity), fixed jumping in the air but now cant jump on ramps, add an extra flag for ramps in SSM?
+        if (!canJump)        // TODO: was if(!groundEntity), fixed jumping in the air but now cant jump on ramps, add an extra flag for ramps in SSM?
         {
             return;
         }
@@ -197,7 +239,7 @@ public static class PlayerMovement
         pmflags |= PMFlags.PMF_JUMP_HELD;
 
         // Mark as no longer on the ground
-        groundentity = false;
+        canJump = false;
         pmflags &= ~PMFlags.PMF_ON_GROUND;
 
         velocity.y += pm_jumpstrength;
@@ -215,6 +257,11 @@ public static class PlayerMovement
     /// </summary>
     private static void PM_Friction()
     {
+        //if (!pmflags.HasFlag(PMFlags.PMF_ON_GROUND))
+       // {
+       //     return;
+       // }
+
         float speed, newspeed, control;
         float friction;
         float drop;
@@ -231,7 +278,7 @@ public static class PlayerMovement
         drop = 0;
 
         //apply ground friction
-        if (groundentity && ((int)PMFlags.PMF_ON_GROUND != 0))
+        if (pmflags.HasFlag(PMFlags.PMF_ON_GROUND))
         {
             friction = pm_friction;
             control = speed < pm_stopspeed ? pm_stopspeed : speed;
