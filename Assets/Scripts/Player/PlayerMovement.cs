@@ -39,9 +39,6 @@ public struct MoveData
 
 public static class PlayerMovement
 {
-    //private const float speed = 10.0f;
-    //private const float jumpForce = 5.0f;
-
     //constants
     private const float pm_friction = 5f;
     private const float pm_maxspeed = 300f;
@@ -51,7 +48,7 @@ public static class PlayerMovement
     private const float pm_jumpstrength = 370f;
     private const float pm_scaling_factor = 30f;    // Scales down player movement speed. Increase this value to make all player movement slower.
 
-    private static float timer = 0;
+    //private static float timer = 0;
 
     private static float viewheight;
     private static PMFlags pmflags;
@@ -242,6 +239,7 @@ public static class PlayerMovement
         canJump = false;
         pmflags &= ~PMFlags.PMF_ON_GROUND;
 
+        // Perform jump
         velocity.y += pm_jumpstrength;
         if (velocity.y < pm_jumpstrength)
         {
@@ -438,7 +436,7 @@ public static class PlayerMovement
         {
             //Debug.Log("Setting position to Boxcast hit" + hitInfo.point + hitInfo.normal);
             position.y = hitInfo.point.y + 1;
-            Debug.Log("Position after Boxcast hit:" + position);
+            //Debug.Log("Position after Boxcast hit:" + position);
         }
 
         up = position;
@@ -512,7 +510,7 @@ public static class PlayerMovement
                 // Entity is trapped in another solid
                 if (hitInfo.distance == 0)
                 {
-                    Debug.Log("PM_SSM_ Boxcast ran straight into a solid object");
+                    //Debug.Log("PM_SSM_ Boxcast ran straight into a solid object");
                     velocity.y = 0;
                     return;
                 }
@@ -520,7 +518,7 @@ public static class PlayerMovement
                 // Actually covered some distance
                 if (hitInfo.distance > 0)
                 {
-                    Debug.Log("PM_SSM_ hit a solid object after" + hitInfo.distance);
+                    //Debug.Log("PM_SSM_ hit a solid object after" + hitInfo.distance);
                     position = hitInfo.point;
                     numplanes = 0;
                 }
@@ -577,12 +575,12 @@ public static class PlayerMovement
 
                 if (i != numplanes)
                 {
-                    Debug.Log("Going along this plane");
+                    //Debug.Log("Going along this plane");
                     // Go along this plane
                 }
                 else
                 {
-                    Debug.Log("Going along the crease");
+                    //Debug.Log("Going along the crease");
                     // Go along the crease
                     if (numplanes != 2)
                     {

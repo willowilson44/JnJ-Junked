@@ -27,9 +27,9 @@ public class DebugWrapper : MonoBehaviour
     {
         // Fetch the variables from your PlayerState static class
         currentSpeed = PlayerState.currentSpeed;
-        currentViewHeight = PlayerState.currentViewHeight;
+        //currentViewHeight = PlayerState.currentViewHeight;
         currentPosition = PlayerState.currentPosition;
         pm_gravity = PlayerState.pm_gravity;
-        addVelocities = PlayerState.addVelocities;
+        //addVelocities = PlayerState.addVelocities;
     }
 }

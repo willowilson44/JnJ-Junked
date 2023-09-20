@@ -23,14 +23,10 @@ public enum PMFlags
 
 public class PlayerPositionUpdate : MonoBehaviour
 {
-    public float speed = 10.0f;
-    public float jumpForce = 5.0f;
-    //private Rigidbody rb;
     private InputMaster controls;
     private Vector2 currentMovement;
     [SerializeField] private CameraFollow Camera;
     private float y;
-
 
     public AudioSource jumpSoundSource;
     public BoxCollider playerCollider;
@@ -40,14 +36,6 @@ public class PlayerPositionUpdate : MonoBehaviour
     public PMFlags pmflags;
     public Vector3 position = Vector3.zero;
     public Vector3 velocity = Vector3.zero;
-
-    private Vector3 previous_origin = Vector3.zero;
-    //private Vector3 previous_camera_position = Vector3.zero;
-
-    //for fixed update
-    private PMFlags asyncFlags;
-    private Vector3 lastAsyncOrigin;
-    private Vector3 lastAsyncVelocity;
     private Vector3 lastAsyncAddVelocity = Vector3.zero;
 
     private bool jumped;
@@ -78,12 +66,8 @@ public class PlayerPositionUpdate : MonoBehaviour
         Application.targetFrameRate = 100;
         Time.fixedDeltaTime = 0.005f;
 
-        //rb = GetComponent<Rigidbody>();
-        //rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
-
         //set initial positions
         position = transform.position;
-        lastAsyncOrigin = transform.position;
     }
 
     void OnEnable()
@@ -100,25 +84,22 @@ public class PlayerPositionUpdate : MonoBehaviour
     {
         MoveData movedata = new MoveData
         {
-            oldPosition = lastAsyncOrigin,
-            oldVelocity = lastAsyncVelocity,
+            oldPosition = position,
+            oldVelocity = velocity,
             oldForward = Camera.transform.forward,
             oldRight = Camera.transform.right,
             addVelocities = lastAsyncAddVelocity,
             gravity = PlayerState.pm_gravity,
             frametime = Time.fixedDeltaTime,
-            flags = asyncFlags
+            flags = pmflags
         };
 
         // execute player movement functions
         PlayerMovement.DoMove(ref movedata, currentMovement, playerCollider);
 
-        lastAsyncOrigin = movedata.newPosition;
-        lastAsyncVelocity = movedata.newVelocity;
-        lastAsyncAddVelocity = Vector3.zero;
-        asyncFlags = movedata.flags;
 
-        //overwrite all sync variables with async frame
+        //overwrite all sync variables with DoMove() results
+        lastAsyncAddVelocity = Vector3.zero;
         position = movedata.newPosition;
         velocity = movedata.newVelocity;
         pmflags = movedata.flags;
@@ -126,8 +107,9 @@ public class PlayerPositionUpdate : MonoBehaviour
 
         //update PlayerState
         PlayerState.currentSpeed = new Vector2(velocity.x, velocity.z).magnitude;
-        PlayerState.currentViewHeight = viewheight;
         PlayerState.currentPosition = position;
+        PlayerState.currentVelocity = velocity;
+        //PlayerState.currentViewHeight = viewheight;
 
         if (movedata.jumped)
         {
@@ -135,11 +117,9 @@ public class PlayerPositionUpdate : MonoBehaviour
         }
 
         transform.position = PlayerState.currentPosition;
-        //rb.MovePosition(PlayerState.currentPosition);
 
         // Fetch debug variables
         currentSpeed = new Vector2(velocity.x, velocity.z).magnitude;
-        //currentViewHeight = PlayerState.currentViewHeight;
         currentPosition = position;
         pm_gravity = PlayerState.pm_gravity;
         jumpHeld = pmflags.HasFlag(PMFlags.PMF_JUMP_HELD);
@@ -157,8 +137,8 @@ public class PlayerPositionUpdate : MonoBehaviour
 
         //update player state info
         PlayerState.currentSpeed = new Vector2(velocity.x, velocity.z).magnitude;
-        PlayerState.currentViewHeight = viewheight;
         PlayerState.currentPosition = position;
+        //PlayerState.currentViewHeight = viewheight;
 
         //rb.MoveRotation(Camera.transform.rotation);
 
