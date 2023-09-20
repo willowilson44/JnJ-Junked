@@ -4,33 +4,41 @@ using UnityEngine;
 using UnityEngine.AI;
 using static UnityEngine.GraphicsBuffer;
 
+/*
+ * Author: Josh Wilson
+ * 
+ * Description:
+ *  - This script defines the Guard AI behaviour towards the player.
+ *  
+ */
+
 public class GuardBehaviour : MonoBehaviour
 {
     public GameObject player;
     NavMeshAgent agent;
-    //PlayerPositionUpdate playerPosition;
 
-    public float speed = 8.0f; // Enemy speed
-    public float turningSpeed = 240f; // Enemy turning speed
-    public float acceleration = 15f; // Enemy turning speed
-    public float predictionTime = 2f;
+    // Enemy movement
+    public float speed = 6.0f;          // Enemy speed
+    public float turningSpeed = 240f;   // Enemy turning speed
+    public float acceleration = 15f;    // Enemy acceleration
+    public float predictionTime = 0.7f;   // How far ahead of the player the enemy tries to predict movement
 
-    public bool isListening = false;
-    public bool isAttacking = false;
-    public int detectionRange = 30;
-    public int closeRange = 10;
+    // Detecting the Player
+    public bool isListening = false;    // if true enemy will raycast to try to "see" the player
+    public bool isAttacking = false;    // if true enemy will chase/attack the player
+    public int detectionRange = 30;     // Within this range the enemy will raycast to try to "see" the player
+    public int closeRange = 10;         // Within this range the enemy will immediately find the player even if behind it
+    public int chaseDuration = 5;      // How long (seconds) enemy targets the player before needing to check if it can still see the player
     private float timeLastSighted;
-    private int chaseDuration = 5;
+
 
     // Start is called before the first frame update
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-        //playerPosition = player.GetComponent<PlayerPositionUpdate>();
-
-        agent.speed = speed;
-        agent.angularSpeed = turningSpeed;
-        agent.acceleration = acceleration;
+        agent.speed = speed + (LevelState.currentDifficulty * 2);       //scales AI speed to difficulty
+        agent.angularSpeed = turningSpeed;                              //scale these too??
+        agent.acceleration = acceleration;                              //scale these too??
     }
 
     // Update is called once per frame
@@ -66,15 +74,6 @@ public class GuardBehaviour : MonoBehaviour
                 isListening = false;
             }
         }
-
-
-
-        // Debugging logs
-        // Debug.Log("Player Velocity: " + playerVelocity);
-        // Debug.Log("Player Position: " + playerPosition.position);
-        // Debug.Log("Predicted Future Position: " + futurePosition);
-
-
     }
 
     void pursuePlayer()

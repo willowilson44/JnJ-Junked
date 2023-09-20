@@ -171,14 +171,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
-  speed: 8
+  speed: 6
   turningSpeed: 240
   acceleration: 15
-  predictionTime: 2
+  predictionTime: 0.7
   isListening: 0
   isAttacking: 0
   detectionRange: 30
   closeRange: 10
+  chaseDuration: 5
 --- !u!1 &5165965537750504477
 GameObject:
   m_ObjectHideFlags: 0

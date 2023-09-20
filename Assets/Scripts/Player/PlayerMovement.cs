@@ -46,10 +46,10 @@ public static class PlayerMovement
     private const float pm_stopspeed = 100f;
     private const float pm_accelerate = 6f;
     private const float pm_jumpstrength = 370f;
-    private const float pm_scaling_factor = 30f;    // Scales down player movement speed. Increase this value to make all player movement slower.
 
     //private static float timer = 0;
 
+    public static float pm_scaling_factor = 30f;    // Scales down player movement speed. Increase this value to make all player movement slower.
     private static float viewheight;
     private static PMFlags pmflags;
     public static bool canJump = false;
