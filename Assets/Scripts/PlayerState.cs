@@ -29,22 +29,19 @@ public static class PlayerState
     public static int currentEnergy = 70;
     public static bool isAlive = true;
 
-    //Player Speed modifier
+    //Player Speed Modifiers
     private const int defaultSpeedModifier = 30;
     public static int currentSpeedModifier;
 
-    //Upgrade related
+    //Upgrade Effects
     public static bool canJump = false;
     public static bool canShoot = false;
     public static bool canDoubleJump = false;
+    public static int selectedLegSpeedModifier = 0;     // +5 = noticeably slower, -5 = noticeably faster
 
     //Spawn
     //public static Vector3 spawnOrigin = Vector3.zero;
     //public static Vector3 spawnAngles = Vector3.right;
-
-    //weapon pickup
-    //public delegate void PickupWeapon(WeaponClassname weaponType);
-    //public static PickupWeapon OnWeaponPickup;
     //public static UnityEvent teleportEvent = new UnityEvent();
     //public static Vector3 teleportDestination = Vector3.zero;
     //public static Vector3 teleportAngles = Vector3.zero;
@@ -90,6 +87,7 @@ public static class PlayerState
         }
     }
 
+
     public static void UpdatePower()
     {
         currentMax = startingEnergy + (GameSettings.getBatteryPower() * batteryEnergy);
@@ -97,7 +95,7 @@ public static class PlayerState
 
     public static void UpdateSpeed()
     {
-        currentSpeedModifier = defaultSpeedModifier + (20 - (currentEnergy / 5));
+        currentSpeedModifier = defaultSpeedModifier + selectedLegSpeedModifier + (20 - (currentEnergy / 5));
         PlayerMovement.pm_scaling_factor = currentSpeedModifier;
     }
 

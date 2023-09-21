@@ -53,6 +53,42 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ToggleLegs"",
+                    ""type"": ""Button"",
+                    ""id"": ""b72784af-7822-459a-973c-92d5fc8a5465"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ToggleRightArm"",
+                    ""type"": ""Button"",
+                    ""id"": ""94b44058-db90-4414-a6cf-e0eda4dbd0de"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ToggleBody"",
+                    ""type"": ""Button"",
+                    ""id"": ""dcc80d66-cb24-4f53-aa39-064692717747"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ToggleLeftArm"",
+                    ""type"": ""Button"",
+                    ""id"": ""1a5616d6-2e77-4bc0-a3e2-bd7278dcd036"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -158,11 +194,99 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""ef90a0bf-732c-47db-abf3-e80207333dc3"",
-                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""70046ffa-cf87-460e-a27f-cd5b06308cca"",
+                    ""path"": ""<Keyboard>/leftCtrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleLegs"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e0cd0882-5777-4915-b7de-9733c22ea727"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleRightArm"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2cc30647-ee9e-4afb-8c42-fa386938bef5"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleBody"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2d524142-73e9-4ea9-9afc-4b690cd7e54b"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleBody"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7c2e4fff-6643-4c8c-bbbb-cb93c1d81909"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleLeftArm"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d6fa5833-cf70-4e63-a659-49ea4e646f26"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleLeftArm"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a8506991-5428-42af-b438-8f496a0185d0"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleRightArm"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""18ce514a-7863-4339-bb93-6a7b190bb98b"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleLegs"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -176,6 +300,10 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
+        m_Player_ToggleLegs = m_Player.FindAction("ToggleLegs", throwIfNotFound: true);
+        m_Player_ToggleRightArm = m_Player.FindAction("ToggleRightArm", throwIfNotFound: true);
+        m_Player_ToggleBody = m_Player.FindAction("ToggleBody", throwIfNotFound: true);
+        m_Player_ToggleLeftArm = m_Player.FindAction("ToggleLeftArm", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -240,6 +368,10 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Look;
     private readonly InputAction m_Player_Move;
     private readonly InputAction m_Player_Jump;
+    private readonly InputAction m_Player_ToggleLegs;
+    private readonly InputAction m_Player_ToggleRightArm;
+    private readonly InputAction m_Player_ToggleBody;
+    private readonly InputAction m_Player_ToggleLeftArm;
     public struct PlayerActions
     {
         private @InputMaster m_Wrapper;
@@ -247,6 +379,10 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
         public InputAction @Look => m_Wrapper.m_Player_Look;
         public InputAction @Move => m_Wrapper.m_Player_Move;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
+        public InputAction @ToggleLegs => m_Wrapper.m_Player_ToggleLegs;
+        public InputAction @ToggleRightArm => m_Wrapper.m_Player_ToggleRightArm;
+        public InputAction @ToggleBody => m_Wrapper.m_Player_ToggleBody;
+        public InputAction @ToggleLeftArm => m_Wrapper.m_Player_ToggleLeftArm;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -265,6 +401,18 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
             @Jump.started += instance.OnJump;
             @Jump.performed += instance.OnJump;
             @Jump.canceled += instance.OnJump;
+            @ToggleLegs.started += instance.OnToggleLegs;
+            @ToggleLegs.performed += instance.OnToggleLegs;
+            @ToggleLegs.canceled += instance.OnToggleLegs;
+            @ToggleRightArm.started += instance.OnToggleRightArm;
+            @ToggleRightArm.performed += instance.OnToggleRightArm;
+            @ToggleRightArm.canceled += instance.OnToggleRightArm;
+            @ToggleBody.started += instance.OnToggleBody;
+            @ToggleBody.performed += instance.OnToggleBody;
+            @ToggleBody.canceled += instance.OnToggleBody;
+            @ToggleLeftArm.started += instance.OnToggleLeftArm;
+            @ToggleLeftArm.performed += instance.OnToggleLeftArm;
+            @ToggleLeftArm.canceled += instance.OnToggleLeftArm;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -278,6 +426,18 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
             @Jump.started -= instance.OnJump;
             @Jump.performed -= instance.OnJump;
             @Jump.canceled -= instance.OnJump;
+            @ToggleLegs.started -= instance.OnToggleLegs;
+            @ToggleLegs.performed -= instance.OnToggleLegs;
+            @ToggleLegs.canceled -= instance.OnToggleLegs;
+            @ToggleRightArm.started -= instance.OnToggleRightArm;
+            @ToggleRightArm.performed -= instance.OnToggleRightArm;
+            @ToggleRightArm.canceled -= instance.OnToggleRightArm;
+            @ToggleBody.started -= instance.OnToggleBody;
+            @ToggleBody.performed -= instance.OnToggleBody;
+            @ToggleBody.canceled -= instance.OnToggleBody;
+            @ToggleLeftArm.started -= instance.OnToggleLeftArm;
+            @ToggleLeftArm.performed -= instance.OnToggleLeftArm;
+            @ToggleLeftArm.canceled -= instance.OnToggleLeftArm;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -300,5 +460,9 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
         void OnLook(InputAction.CallbackContext context);
         void OnMove(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
+        void OnToggleLegs(InputAction.CallbackContext context);
+        void OnToggleRightArm(InputAction.CallbackContext context);
+        void OnToggleBody(InputAction.CallbackContext context);
+        void OnToggleLeftArm(InputAction.CallbackContext context);
     }
 }
