@@ -1,0 +1,185 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2547746359645350057
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6308248647630745169}
+  - component: {fileID: 915230128381840428}
+  - component: {fileID: 7916562951035031299}
+  - component: {fileID: 8841343057667780604}
+  - component: {fileID: 7403318518066301748}
+  - component: {fileID: 167595327514218413}
+  - component: {fileID: 6867086364719872834}
+  m_Layer: 0
+  m_Name: Dalek
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6308248647630745169
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2547746359645350057}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 4.84, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &915230128381840428
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2547746359645350057}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf363ba31f8b3574b8da0f8cf59ab30c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BaseColor: {fileID: 2100000, guid: f0ecd1eff7f57274e86bb03f8d4a3718, type: 2}
+  MiddleColor: {fileID: 2100000, guid: 44a05c4a67c36d847ae946f32053753e, type: 2}
+  HeadTubeColor: {fileID: 2100000, guid: fe0c85590c4d6a4438eb55ad0a9d4035, type: 2}
+  BallColor: {fileID: 2100000, guid: 22cc0af89d16e6044a3932ea07dc6792, type: 2}
+  ChromeColor: {fileID: 2100000, guid: 33da7d922380a9e478e76af9e8f392c0, type: 2}
+--- !u!54 &7916562951035031299
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2547746359645350057}
+  serializedVersion: 4
+  m_Mass: 2
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!65 &8841343057667780604
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2547746359645350057}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.5, y: 1.4, z: 1.9}
+  m_Center: {x: 0, y: 0.7, z: 0}
+--- !u!136 &7403318518066301748
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2547746359645350057}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.6
+  m_Height: 2.2
+  m_Direction: 1
+  m_Center: {x: 0, y: 1.922, z: 0.12}
+--- !u!114 &167595327514218413
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2547746359645350057}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13a517cb5de5fb948bf473de12701c28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  damage: 20
+  attackRate: 1.5
+  attackCone: 60
+  knockbackForce: 5
+  hitSounds:
+  - {fileID: 8300000, guid: f2a37dca93d3a754aa517bc56fcb2021, type: 3}
+  - {fileID: 8300000, guid: 1d7478c81d0df8f4a96033b354454b5f, type: 3}
+  - {fileID: 8300000, guid: d00ae2c5b3ac0a6439355e12987233aa, type: 3}
+  - {fileID: 8300000, guid: 7362c01edc11d6347a75bd2eeb5d4c17, type: 3}
+  - {fileID: 8300000, guid: e95dfdffd6200b64bb463eb899cc8535, type: 3}
+  - {fileID: 8300000, guid: d72689495b79be54d85cbfe965c5005f, type: 3}
+  speed: 6
+  turningSpeed: 240
+  acceleration: 15
+  predictionTime: 0.7
+  isListening: 0
+  isChasing: 0
+  isAttacking: 0
+  detectionRange: 30
+  detectBehindRange: 10
+  sightCone: 90
+  attackRange: 2
+  chaseDuration: 5
+--- !u!195 &6867086364719872834
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2547746359645350057}
+  m_Enabled: 1
+  m_AgentTypeID: -1372625422
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4

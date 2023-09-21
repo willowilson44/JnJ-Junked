@@ -17,6 +17,10 @@ public class UpgradeSelector : MonoBehaviour
     private static int[] leftArmPieces;
     private static int leftArmSelected;   // 0 = default arm
 
+    //Model Pieces
+    private static GameObject basicArm;
+    private static GameObject cannonArm;
+
     private void Awake()
     {
         controls = new InputMaster();
@@ -39,11 +43,17 @@ public class UpgradeSelector : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // Cache references to the arm GameObjects
+        basicArm = transform.Find("Model/RobotBasicArmUnScuffedUnTexed").gameObject;
+        cannonArm = transform.Find("Model/BasicCannonArmUnTexed").gameObject;
+
+        // Initialise arrays for available upgrade pieces
         bodyPieces = new int[] { 0 };     // change later to only 0
         legPieces = new int[] { 0, 1 };     // change later to only 0
         rightArmPieces = new int[] { 0, 1 };     // change later to only 0
         leftArmPieces = new int[] { 0 };     // change later to only 0
 
+        // Currently selected pieces
         bodySelected = 0;
         legSelected = 0;
         rightArmSelected = 0;
@@ -68,6 +78,15 @@ public class UpgradeSelector : MonoBehaviour
         legSelected = legPieces[nextIndex];
 
         Debug.Log("Leg piece selected: " + legSelected);
+
+        if(legSelected == 1)
+        {
+            PlayerState.canJump = true;
+        }
+        else
+        {
+            PlayerState.canJump = false;
+        }
     }
 
     public static void toggleBody()
@@ -80,6 +99,15 @@ public class UpgradeSelector : MonoBehaviour
         bodySelected = bodyPieces[nextIndex];
 
         Debug.Log("Body piece selected: " + bodySelected);
+
+        if (bodySelected == 0)
+        {
+            PlayerState.canDoubleJump = false;
+        }
+        else
+        {
+            PlayerState.canDoubleJump = true;
+        }
     }
 
     public static void toggleRightArm()
@@ -92,6 +120,19 @@ public class UpgradeSelector : MonoBehaviour
         rightArmSelected = rightArmPieces[nextIndex];
 
         Debug.Log("Right arm piece selected: " + rightArmSelected);
+
+        if (rightArmSelected == 0)
+        {
+            basicArm.SetActive(true);
+            cannonArm.SetActive(false);
+            PlayerState.canShoot = false;
+        }
+        else
+        {
+            basicArm.SetActive(false);
+            cannonArm.SetActive(true);
+            PlayerState.canShoot = true;
+        }
     }
 
     public static void toggleLeftArm()

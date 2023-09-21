@@ -89,6 +89,15 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Shoot"",
+                    ""type"": ""Button"",
+                    ""id"": ""3116fe6c-a117-4ae7-9a34-e0846089fec6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -204,6 +213,17 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""e5bfeab2-3baf-4260-93ef-d07b7c2af239"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""70046ffa-cf87-460e-a27f-cd5b06308cca"",
                     ""path"": ""<Keyboard>/leftCtrl"",
                     ""interactions"": """",
@@ -289,6 +309,28 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
                     ""action"": ""ToggleLegs"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e36d613b-eb8a-4d38-97cf-f0fa67691606"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Shoot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0e93204f-8c79-41d1-950a-7eb190045197"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Shoot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -304,6 +346,7 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
         m_Player_ToggleRightArm = m_Player.FindAction("ToggleRightArm", throwIfNotFound: true);
         m_Player_ToggleBody = m_Player.FindAction("ToggleBody", throwIfNotFound: true);
         m_Player_ToggleLeftArm = m_Player.FindAction("ToggleLeftArm", throwIfNotFound: true);
+        m_Player_Shoot = m_Player.FindAction("Shoot", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -372,6 +415,7 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_ToggleRightArm;
     private readonly InputAction m_Player_ToggleBody;
     private readonly InputAction m_Player_ToggleLeftArm;
+    private readonly InputAction m_Player_Shoot;
     public struct PlayerActions
     {
         private @InputMaster m_Wrapper;
@@ -383,6 +427,7 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
         public InputAction @ToggleRightArm => m_Wrapper.m_Player_ToggleRightArm;
         public InputAction @ToggleBody => m_Wrapper.m_Player_ToggleBody;
         public InputAction @ToggleLeftArm => m_Wrapper.m_Player_ToggleLeftArm;
+        public InputAction @Shoot => m_Wrapper.m_Player_Shoot;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -413,6 +458,9 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
             @ToggleLeftArm.started += instance.OnToggleLeftArm;
             @ToggleLeftArm.performed += instance.OnToggleLeftArm;
             @ToggleLeftArm.canceled += instance.OnToggleLeftArm;
+            @Shoot.started += instance.OnShoot;
+            @Shoot.performed += instance.OnShoot;
+            @Shoot.canceled += instance.OnShoot;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -438,6 +486,9 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
             @ToggleLeftArm.started -= instance.OnToggleLeftArm;
             @ToggleLeftArm.performed -= instance.OnToggleLeftArm;
             @ToggleLeftArm.canceled -= instance.OnToggleLeftArm;
+            @Shoot.started -= instance.OnShoot;
+            @Shoot.performed -= instance.OnShoot;
+            @Shoot.canceled -= instance.OnShoot;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -464,5 +515,6 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
         void OnToggleRightArm(InputAction.CallbackContext context);
         void OnToggleBody(InputAction.CallbackContext context);
         void OnToggleLeftArm(InputAction.CallbackContext context);
+        void OnShoot(InputAction.CallbackContext context);
     }
 }

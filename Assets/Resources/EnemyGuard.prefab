@@ -15,9 +15,11 @@ GameObject:
   - component: {fileID: 4751148733760659550}
   - component: {fileID: 4120200890925063818}
   - component: {fileID: 8048436108616342826}
-  m_Layer: 0
+  - component: {fileID: 4794827525770376459}
+  - component: {fileID: 7314444835607753653}
+  m_Layer: 8
   m_Name: EnemyGuard
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 2
   m_StaticEditorFlags: 40
@@ -171,15 +173,105 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
-  speed: 6
+  damage: 10
+  attackRate: 1.5
+  attackCone: 60
+  knockbackForce: 5
+  hitSounds:
+  - {fileID: 8300000, guid: f2a37dca93d3a754aa517bc56fcb2021, type: 3}
+  - {fileID: 8300000, guid: 1d7478c81d0df8f4a96033b354454b5f, type: 3}
+  - {fileID: 8300000, guid: d00ae2c5b3ac0a6439355e12987233aa, type: 3}
+  - {fileID: 8300000, guid: 7362c01edc11d6347a75bd2eeb5d4c17, type: 3}
+  - {fileID: 8300000, guid: e95dfdffd6200b64bb463eb899cc8535, type: 3}
+  - {fileID: 8300000, guid: d72689495b79be54d85cbfe965c5005f, type: 3}
+  speed: 8
   turningSpeed: 240
   acceleration: 15
   predictionTime: 0.7
   isListening: 0
+  isChasing: 0
   isAttacking: 0
   detectionRange: 30
-  closeRange: 10
+  detectBehindRange: 10
+  sightCone: 90
+  attackRange: 2
   chaseDuration: 5
+--- !u!114 &4794827525770376459
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2109361029525075065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 882cf8ae9ca381c4f80a84edd8c2d8a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentEnergy: 15
+  startled: 0
+--- !u!108 &7314444835607753653
+Light:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2109361029525075065}
+  m_Enabled: 0
+  serializedVersion: 10
+  m_Type: 2
+  m_Shape: 0
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Intensity: 0.1
+  m_Range: 10
+  m_SpotAngle: 30
+  m_InnerSpotAngle: 21.80208
+  m_CookieSize: 10
+  m_Shadows:
+    m_Type: 0
+    m_Resolution: -1
+    m_CustomResolution: -1
+    m_Strength: 1
+    m_Bias: 0.05
+    m_NormalBias: 0.4
+    m_NearPlane: 0.2
+    m_CullingMatrixOverride:
+      e00: 1
+      e01: 0
+      e02: 0
+      e03: 0
+      e10: 0
+      e11: 1
+      e12: 0
+      e13: 0
+      e20: 0
+      e21: 0
+      e22: 1
+      e23: 0
+      e30: 0
+      e31: 0
+      e32: 0
+      e33: 1
+    m_UseCullingMatrixOverride: 0
+  m_Cookie: {fileID: 0}
+  m_DrawHalo: 0
+  m_Flare: {fileID: 0}
+  m_RenderMode: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RenderingLayerMask: 1
+  m_Lightmapping: 4
+  m_LightShadowCasterMode: 0
+  m_AreaSize: {x: 1, y: 1}
+  m_BounceIntensity: 1
+  m_ColorTemperature: 6570
+  m_UseColorTemperature: 0
+  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_UseBoundingSphereOverride: 0
+  m_UseViewFrustumForShadowCasterCull: 1
+  m_ShadowRadius: 0
+  m_ShadowAngle: 0
 --- !u!1 &5165965537750504477
 GameObject:
   m_ObjectHideFlags: 0
@@ -192,7 +284,7 @@ GameObject:
   - component: {fileID: 931115641120319106}
   - component: {fileID: 5932206718892955974}
   - component: {fileID: 8543837900740909675}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: forward
   m_TagString: Untagged
   m_Icon: {fileID: 0}

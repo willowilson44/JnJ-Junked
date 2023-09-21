@@ -72,7 +72,7 @@ public static class GameSettings
         if (batteriesFound[LevelState.currentDifficulty][batteryNumber] == false)
         {
             batteriesFound[LevelState.currentDifficulty][batteryNumber] = true;
-            PlayerState.UpdatePower();
+            PlayerState.UpdateEnergyMax();
             LevelState.UpgradeCollected();
         }
         PlayerState.AddPower(10);

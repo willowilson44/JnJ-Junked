@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class InstantiateAI : MonoBehaviour
 {
-    public GameObject enemy;
     // Start is called before the first frame update
     void Start()
     {
@@ -30,6 +29,7 @@ public class InstantiateAI : MonoBehaviour
     {
         //Vector3 position = new Vector3(1, 1, 1);
         Quaternion rotation = Quaternion.Euler(0, 0, 0);
+        GameObject enemy = Resources.Load<GameObject>("EnemyGuard");
         GameObject newObj = Instantiate(enemy, position, rotation);
         GuardBehaviour guard = newObj.GetComponent<GuardBehaviour>();
         guard.player = this.gameObject;

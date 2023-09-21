@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 /*
@@ -21,33 +22,40 @@ public enum PMFlags
 }
 
 
-public class PlayerPositionUpdate : MonoBehaviour
+public class PlayerActionUpdate : MonoBehaviour
 {
     private InputMaster controls;
     private Vector2 currentMovement;
-    [SerializeField] private CameraFollow Camera;
+    [SerializeField] private Camera mainCamera;
+    private CameraFollow Camera;
     private float y;
 
     public AudioSource jumpSoundSource;
     public BoxCollider playerCollider;
+    private Light light;
 
-    //move state
+    // Move states
     private float viewheight;
     public PMFlags pmflags;
     public Vector3 position = Vector3.zero;
     public Vector3 velocity = Vector3.zero;
-    private Vector3 lastAsyncAddVelocity = Vector3.zero;
+    public Vector3 lastAsyncAddVelocity = Vector3.zero;
 
+    // Jump and Shoot states
+    public bool jumping; 
+    public bool shooting;
+
+
+    // to play jump sound after jumping
     private bool jumped;
 
 
     //Debug Variables;
     public float currentSpeed;
-    //public float currentViewHeight;
     public Vector3 currentPosition;
     public float pm_gravity;
     public bool onGround;
-    public bool jumpHeld;
+    //public float currentViewHeight;
 
 
     private void Awake()
@@ -56,10 +64,27 @@ public class PlayerPositionUpdate : MonoBehaviour
         controls = new InputMaster();
         controls.Player.Move.performed += ctx => currentMovement = ctx.ReadValue<Vector2>();
         controls.Player.Move.canceled += ctx => currentMovement = Vector2.zero;
+        controls.Player.Jump.performed += _ => {
+            if (PlayerState.canJump)
+            {
+                jumping = true;
+            }
+        };
+        controls.Player.Jump.canceled += _ => jumping = false;
+        controls.Player.Shoot.performed += _ => {
+            if (PlayerState.canShoot)
+            {
+                shooting = true;
+            }
+        };
+        controls.Player.Shoot.canceled += _ => shooting = false;
     }
 
     void Start()
     {
+        Camera = mainCamera.GetComponent<CameraFollow>();
+        light = GetComponent<Light>();
+        light.enabled = false;
         QualitySettings.vSyncCount = 0;
 
         // Set the target frame rate to 60 fps
@@ -91,12 +116,17 @@ public class PlayerPositionUpdate : MonoBehaviour
             addVelocities = lastAsyncAddVelocity,
             gravity = PlayerState.pm_gravity,
             frametime = Time.fixedDeltaTime,
-            flags = pmflags
+            flags = pmflags,
+            jumping = this.jumping
         };
 
         // execute player movement functions
         PlayerMovement.DoMove(ref movedata, currentMovement, playerCollider);
 
+        if (shooting)
+        {
+            PlayerShooting.DoShoot(this.gameObject, mainCamera);
+        }
 
         //overwrite all sync variables with DoMove() results
         lastAsyncAddVelocity = Vector3.zero;
@@ -122,11 +152,19 @@ public class PlayerPositionUpdate : MonoBehaviour
         currentSpeed = new Vector2(velocity.x, velocity.z).magnitude;
         currentPosition = position;
         pm_gravity = PlayerState.pm_gravity;
-        jumpHeld = pmflags.HasFlag(PMFlags.PMF_JUMP_HELD);
+        //jumpHeld = pmflags.HasFlag(PMFlags.PMF_JUMP_HELD);
         onGround = pmflags.HasFlag(PMFlags.PMF_ON_GROUND);
 
 
     }
+
+    public IEnumerator DamageLight()
+    {
+        light.enabled = true;
+        yield return new WaitForSeconds(0.2f); // wait for the next frame
+        light.enabled = false;
+    }
+
     void Update()
     {
         y += Camera.DoLook();
@@ -139,8 +177,6 @@ public class PlayerPositionUpdate : MonoBehaviour
         PlayerState.currentSpeed = new Vector2(velocity.x, velocity.z).magnitude;
         PlayerState.currentPosition = position;
         //PlayerState.currentViewHeight = viewheight;
-
-        //rb.MoveRotation(Camera.transform.rotation);
 
         if (jumped)
         {

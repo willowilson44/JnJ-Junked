@@ -9,7 +9,7 @@ using static UnityEditor.PlayerSettings;
  *  - None
  * 
  * Description:
- *  - This script is a collection of movement functions used by the PlayerPositionUpdate script. These functions are heavily modified but mostly
+ *  - This script is a collection of movement functions used by the PlayerActionUpdate script. These functions are heavily modified but mostly
  *  based on Maciej Szybiak's quake 2 unity project PlayerMove script, which is itself based on John Carmacks original quake 2 open source code.
  * 
  */
@@ -25,6 +25,8 @@ public struct MoveData
     public Vector3 addVelocities;
     public float frametime;
     public float gravity;
+    public bool jumping;
+
 
     //public bool initialSnap;
 
@@ -98,7 +100,7 @@ public static class PlayerMovement
         PM_CategorizePosition(playerCollider);
         //PM_CheckSpecialMovement();
 
-        PM_CheckJump();
+        PM_CheckJump(movedata.jumping);
         PM_Friction();
         PM_AirMove(playerCollider, currentMovement);
         PM_CategorizePosition(playerCollider);
@@ -189,7 +191,7 @@ public static class PlayerMovement
                 { 
                     if (hit.normal.y < 0.7f)
                     {
-                        Debug.Log("Surface is too steep to be ground");
+                        //Debug.Log("Surface is too steep to be ground");
                         canJump = false;
                         pmflags &= ~PMFlags.PMF_ON_GROUND;
                     }
@@ -213,9 +215,9 @@ public static class PlayerMovement
             }
         }
     }
-    private static void PM_CheckJump()
+    private static void PM_CheckJump(bool jumpHeld)
     {
-        if (!Input.GetKeyDown(KeyCode.Space))  // TODO: Replace with proper input condition
+        if (!jumpHeld)  // TODO: Replace with proper input condition
         {
             pmflags &= ~PMFlags.PMF_JUMP_HELD;
             return;
@@ -417,7 +419,7 @@ public static class PlayerMovement
         // Using BoxCast instead of custom Trace
         if (Physics.BoxCast(up, playerCollider.size / 2, Vector3.up, out hitInfo, Quaternion.identity, 1, layerMask))
         {
-            Debug.Log("can't step up");
+            //Debug.Log("can't step up");
             return; //can't step up
         }
 
