@@ -17,6 +17,7 @@ public class EnemyHealth : MonoBehaviour
     // Enemy Health
     public int currentEnergy = 15;
     public bool startled = false;      //enable AI awareness of player when hit
+    public string orbReferenceName = "EnergyOrb";
     private Light agentLight;
 
 
@@ -28,7 +29,7 @@ public class EnemyHealth : MonoBehaviour
         agentLight.enabled = false;
     }
 
-    public void Damage(int damage, GameObject player)
+    public void Damage(int damage)
     {
         StartCoroutine(Startle());
         StartCoroutine(DamageLight());
@@ -39,7 +40,7 @@ public class EnemyHealth : MonoBehaviour
         }
         else
         {
-            Death(player);
+            Death();
         }
     }
 
@@ -48,16 +49,13 @@ public class EnemyHealth : MonoBehaviour
         currentEnergy += collected;
     }
 
-    void Death(GameObject player)
+    void Death()
     {
         // Play a death sound? 
         // Instantiate a dead spider object?
 
         // Instantiate energy orb
-        GameObject energyOrb = Resources.Load<GameObject>("EnergyOrb");
-        GameObject orbInstance = Object.Instantiate(energyOrb, transform.position, transform.rotation);
-        EnergyOrb orb = orbInstance.GetComponent<EnergyOrb>();
-        orb.player = player;
+        Instantiate(Resources.Load<GameObject>(orbReferenceName), transform.position, transform.rotation);
 
         Destroy(this.gameObject);
     }

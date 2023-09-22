@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 4794827525770376459}
   - component: {fileID: 7314444835607753653}
   m_Layer: 8
-  m_Name: EnemyGuard
+  m_Name: Scrapper
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 2

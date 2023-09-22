@@ -1,21 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 /*
  * Author: Josh Wilson
  * 
  * Description:
- *  - A script for bullet behaviour, ricochet, colliding with enemies, knockback and damage
+ *  - A script for bullet behaviour, ricochet, colliding with the player or other enemies, and damaging them
  *  
  */
 
-public class Bullet1 : MonoBehaviour
+public class DalekBullet : MonoBehaviour
 {
     private int collisionCount = 0;
-    public int maxCollisions = 2;
-    public float knockbackForce = 5f;
-    public int damageAmount = 10; // Change this value to whatever amount of damage you want the bullet to deal
+    private int maxCollisions = 2;
+    private float knockbackForce = 5f;
+    private int damageAmount = 20; // Change this value to whatever amount of damage you want the bullet to deal
     private bool destroying;
     private Rigidbody rb;
     public AudioClip ricochetSound;
@@ -23,10 +24,15 @@ public class Bullet1 : MonoBehaviour
     private AudioSource audioSource;
     private Light bulletLight;
     private Vector3 knockbackDirection; // Use bullet's velocity for knockback direction
-    //public GameObject player;
+    private float yScale = 0.05f;
+    private float yMultiplier = 1.05f;
+    private bool growing = true;
+    Transform bulletMeshTransform;
 
     private void Start()
     {
+        bulletMeshTransform = gameObject.transform.GetChild(0);
+
         rb = GetComponent<Rigidbody>();
         audioSource = GetComponent<AudioSource>();
         if (audioSource == null)
@@ -36,9 +42,36 @@ public class Bullet1 : MonoBehaviour
         }
 
         bulletLight = GetComponent<Light>();
-
         knockbackDirection = rb.velocity.normalized;
+        bulletMeshTransform.localScale = new Vector3(0.5f,yScale,0.5f);
+        //transform.rotation = Quaternion.Euler(new Vector3(90, 0, 0));
     }
+
+    private void Update()
+    {
+        if (growing)
+        {
+            if (yScale > 1)
+            {
+                growing = false;
+            } else
+            {
+                yScale *= yMultiplier;
+            }
+        }
+        else
+        {
+            if (yScale < 0.05f)
+            {
+                growing = true;
+            } else
+            {
+                yScale /= yMultiplier;
+            }
+        }
+        bulletMeshTransform.localScale = new Vector3(0.5f, yScale, 0.5f);
+    }
+
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -65,11 +98,20 @@ public class Bullet1 : MonoBehaviour
                 enemyRb.AddForce(knockbackDirection * knockbackForce, ForceMode.Impulse);
             }
 
-            bulletLight.intensity *= 3;
+            bulletLight.intensity *= 5;
             audioSource.PlayOneShot(collisionSound);
             StartCoroutine(DelayedDestroy());  // Destroy bullet upon hitting an enemy
             return;
         } 
+        else if (collision.gameObject.CompareTag("Player")) 
+        {
+            PlayerState.Damage(damageAmount);
+
+            bulletLight.intensity *= 5;
+            audioSource.PlayOneShot(collisionSound);
+            StartCoroutine(DelayedDestroy());  // Destroy bullet upon hitting an enemy
+            return;
+        }
         else
         {
             audioSource.PlayOneShot(ricochetSound);
@@ -77,7 +119,7 @@ public class Bullet1 : MonoBehaviour
 
         if (collisionCount >= maxCollisions)
         {
-            bulletLight.intensity *= 3;
+            bulletLight.intensity *= 5;
             StartCoroutine(DelayedDestroy());
         }
     }
@@ -101,7 +143,7 @@ public class Bullet1 : MonoBehaviour
     private IEnumerator DelayedDestroy()
     {
         destroying = true;
-        yield return new WaitForSeconds(0.2f);  // Wait for the duration of the collision sound
+        yield return new WaitForSeconds(0.1f);  // Wait for the duration of the collision sound
         Destroy(this.gameObject);
     }
 }

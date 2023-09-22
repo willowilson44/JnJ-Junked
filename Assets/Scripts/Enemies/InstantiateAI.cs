@@ -1,37 +1,50 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class InstantiateAI : MonoBehaviour
 {
-    // Start is called before the first frame update
+    string currentEnemy;
+    int currentEnemyIndex = 0;
+
     void Start()
     {
-        
+        currentEnemy = ReferenceManager.instance.enemies[0];
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(1))
         {
             var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
             if (Physics.Raycast(ray, out RaycastHit info))
             {
-                Debug.Log("Hit at world position " + info.point + " on object " + info.collider.gameObject.name);
                 InstantiateEnemy(info.point);
             }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            // Increment the index and wrap it around if it reaches the end of the array
+            currentEnemyIndex = (currentEnemyIndex + 1) % ReferenceManager.instance.enemies.Length;
+            currentEnemy = ReferenceManager.instance.enemies[currentEnemyIndex];
+
+            TMP_Text enemyText = GameObject.Find("GUI/Canvas/Enemy to Add").GetComponent<TMP_Text>();
+            enemyText.text = "Enemy: " + currentEnemy;
         }
     }
 
     void InstantiateEnemy(Vector3 position)
     {
-        //Vector3 position = new Vector3(1, 1, 1);
-        Quaternion rotation = Quaternion.Euler(0, 0, 0);
-        GameObject enemy = Resources.Load<GameObject>("EnemyGuard");
-        GameObject newObj = Instantiate(enemy, position, rotation);
-        GuardBehaviour guard = newObj.GetComponent<GuardBehaviour>();
-        guard.player = this.gameObject;
+        GameObject player = ReferenceManager.instance.player;
+
+        Vector3 directionToPlayer = player.transform.position - position;
+        directionToPlayer.y = 0;  // This ensures that the enemy does not tilt upwards/downwards and only rotates around the y-axis
+
+        Quaternion rotation = Quaternion.LookRotation(directionToPlayer);
+        Instantiate(Resources.Load<GameObject>(currentEnemy), position, rotation);
     }
 }

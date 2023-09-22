@@ -30,7 +30,9 @@ public class PlayerActionUpdate : MonoBehaviour
     private CameraFollow Camera;
     private float y;
 
-    public AudioSource jumpSoundSource;
+    private AudioSource audioSource;
+    public AudioClip[] shootSound = new AudioClip[2];
+    public AudioClip jumpSound;
     public BoxCollider playerCollider;
     private Light light;
 
@@ -82,6 +84,12 @@ public class PlayerActionUpdate : MonoBehaviour
 
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            // If not, add an AudioSource component to the GameObject
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
         Camera = mainCamera.GetComponent<CameraFollow>();
         light = GetComponent<Light>();
         light.enabled = false;
@@ -125,7 +133,7 @@ public class PlayerActionUpdate : MonoBehaviour
 
         if (shooting)
         {
-            PlayerShooting.DoShoot(this.gameObject, mainCamera);
+            PlayerShooting.DoShoot(this.gameObject, mainCamera, this);
         }
 
         //overwrite all sync variables with DoMove() results
@@ -158,6 +166,11 @@ public class PlayerActionUpdate : MonoBehaviour
 
     }
 
+    public void PlayShootSound()
+    {
+        audioSource.PlayOneShot(shootSound[UnityEngine.Random.Range(0, shootSound.Length)]);
+    }
+
     public IEnumerator DamageLight()
     {
         light.enabled = true;
@@ -180,7 +193,7 @@ public class PlayerActionUpdate : MonoBehaviour
 
         if (jumped)
         {
-            jumpSoundSource.Play();
+            audioSource.PlayOneShot(jumpSound);
             jumped = false;
         }
 

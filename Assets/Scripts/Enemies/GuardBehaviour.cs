@@ -8,7 +8,7 @@ using static UnityEngine.GraphicsBuffer;
  * Author: Josh Wilson
  * 
  * Description:
- *  - This script defines the Guard AI behaviour towards the player.
+ *  - This script defines the Scrapper AI behaviour towards the player, including awareness of the player, chasing, and attacking the player with a melee attack.
  *  
  */
 
@@ -50,7 +50,7 @@ public class GuardBehaviour : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        agent = GetComponent<NavMeshAgent>();
+        player = ReferenceManager.instance.player;
         enemyHealthComponent = GetComponent<EnemyHealth>();
         rb = GetComponent<Rigidbody>();
         audioSource = GetComponent<AudioSource>();
@@ -60,6 +60,7 @@ public class GuardBehaviour : MonoBehaviour
             audioSource = gameObject.AddComponent<AudioSource>();
         }
 
+        agent = GetComponent<NavMeshAgent>();
         agent.speed = speed + (LevelState.currentDifficulty * 2);       //scales AI speed to difficulty
         agent.angularSpeed = turningSpeed;                              //scale these too??
         agent.acceleration = acceleration;                              //scale these too??

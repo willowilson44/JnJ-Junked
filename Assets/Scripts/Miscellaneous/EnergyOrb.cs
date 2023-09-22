@@ -15,6 +15,7 @@ public class EnergyOrb : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        player = ReferenceManager.instance.player;
         audioSource = GetComponent<AudioSource>();
         if (audioSource == null)
         {

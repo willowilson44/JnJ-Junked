@@ -24,13 +24,15 @@ public static class PlayerShooting
     private static float fireRate = 0.7f; // Fire rate in seconds
 
 
-    public static void DoShoot(GameObject playerObject, Camera camera)
+    public static void DoShoot(GameObject playerObject, Camera camera, PlayerActionUpdate playerScript)
     {
         // Check if enough time has passed since the last shot
         if (Time.time - lastFiredTime < fireRate)
         {
             return;
         }
+
+        playerScript.PlayShootSound();
 
         // Record the current time
         lastFiredTime = Time.time;
@@ -46,7 +48,7 @@ public static class PlayerShooting
         GameObject bulletInstance = Object.Instantiate(bulletPrefab, gunPoint, gunTransform.rotation * Quaternion.Euler(0, 0, 90));
         Rigidbody rb = bulletInstance.GetComponent<Rigidbody>(); 
         Bullet1 bulletScript = bulletInstance.GetComponent<Bullet1>();
-        bulletScript.player = playerObject;
+        //bulletScript.player = playerObject;     //could be used for tallying kills
 
         Vector3 direction = (target - gunPoint).normalized;
         rb.velocity = direction * bulletSpeed;
