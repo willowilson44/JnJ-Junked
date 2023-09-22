@@ -580,7 +580,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotationSpeed: 20
   pickupSound: {fileID: 8300000, guid: 1e41598778cd681459855281cdce85df, type: 3}
-  upgradeNumber: 1
+  upgradeNumber: 0
   audioSource: {fileID: 7891078258838892532}
 --- !u!65 &5756373285658264069
 BoxCollider:
@@ -601,8 +601,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 15, y: 3, z: 3}
+  m_Center: {x: -6, y: 0, z: -1}
 --- !u!54 &2899177664770420906
 Rigidbody:
   m_ObjectHideFlags: 0

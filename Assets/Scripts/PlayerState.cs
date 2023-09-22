@@ -50,31 +50,9 @@ public static class PlayerState
     // Constructor - set initial state
     static PlayerState()
     {
-        UpdateUpgrades();
         //UpdatePower();
         currentEnergy = currentMax;
         UpdateSpeed();
-    }
-
-    public static void UpdateUpgrades()
-    {
-        // Jump Upgrade
-        if (GameSettings.upgradesFound[LevelState.currentDifficulty][0] == false)
-        {
-            // Enable Jump Upgrade
-        }
-
-        // Gun Upgrade
-        if (GameSettings.upgradesFound[LevelState.currentDifficulty][1] == false)
-        {
-
-        }
-
-        // Double Jump Upgrade
-        if (GameSettings.upgradesFound[LevelState.currentDifficulty][2] == false)
-        {
-
-        }
     }
 
 
@@ -134,7 +112,6 @@ public static class PlayerState
         currentVelocity = Vector3.zero;
         currentSpeed = 0;
         isAlive = true;
-        UpdateUpgrades();
         UpdateEnergyMax();
         currentEnergy = currentMax;
         PlayerMovement.pm_scaling_factor = defaultSpeedModifier;

@@ -32,9 +32,9 @@ public static class GameSettings
 
     /* 
      * current upgrade list:
-     * upgradesFound[difficulty][0] = Jump Upgrade
-     * upgradesFound[difficulty][1] = Gun Upgrade
-     * upgradesFound[difficulty][2] = Double Jump Upgrade
+     * upgradesFound[difficulty][0] = Jump Upgrade (legs)
+     * upgradesFound[difficulty][1] = Gun Upgrade (right arm)
+     * upgradesFound[difficulty][2] = Double Jump Upgrade (legs)
     */
 
 
@@ -88,7 +88,6 @@ public static class GameSettings
         if (upgradesFound[LevelState.currentDifficulty][upgradeNumber] == false)
         {
             upgradesFound[LevelState.currentDifficulty][upgradeNumber] = true;
-            PlayerState.UpdateUpgrades();
             LevelState.UpgradeCollected();
         }
     }

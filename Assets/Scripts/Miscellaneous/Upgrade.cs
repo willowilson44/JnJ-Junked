@@ -58,7 +58,9 @@ public class Upgrade : MonoBehaviour
 
         // Perform the upgrade and other related tasks.
         GameSettings.UpgradeCollected(upgradeNumber);
-        PlayerState.UpdateUpgrades();
+
+        UpgradeSelector playerUpSelector = player.GetComponent<UpgradeSelector>();
+        playerUpSelector.UpdateSlotLists();
 
         // After performing the upgrade tasks, deactivate or destroy the upgrade GameObject.
         gameObject.SetActive(false);
