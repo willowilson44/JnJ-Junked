@@ -2,58 +2,49 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using static UnityEngine.GraphicsBuffer;
 
 /*
  * Author: Josh Wilson
  * 
  * Description:
- *  - This script defines the Dalek AI behaviour towards the player, including awareness of the player, chasing, and shooting at the player by instantiating bullets.
+ *  - This script defines the Scrapper AI behaviour towards the player, including awareness of the player, chasing, and attacking the player with a melee attack.
  *  
  */
 
-public class DalekBehaviour : MonoBehaviour
+public class ScrapperBehaviour : MonoBehaviour
 {
     public GameObject player;
     NavMeshAgent agent;
 
     // Enemy Attack
-    public int damage = 20;
-    private float attackRate = 2f;
-    private float attackCone = 60f;           // Degrees width of attack cone from forward (90 = directly to the side)
-    private int attackRange = 2;             // Within this range the enemy will initiate an attack
+    public int damage = 10;          
+    public float attackRate = 1.5f;
+    public float attackCone = 60f;           // Degrees width of attack cone from forward (90 = directly to the side)
     private float lastAttackTime = 0f;
+    public float knockbackForce = 5f;
     private Rigidbody rb;
-    public AudioClip shootSound;
-    public AudioClip[] alertSounds = new AudioClip[6];
+    //public AudioClip swingSound;
+    public AudioClip[] hitSounds = new AudioClip[6];
     private AudioSource audioSource;
 
     // Enemy Movement
-    public float speed = 4.0f;          // Enemy speed
-    public float turningSpeed = 120f;   // Enemy turning speed
-    public float acceleration = 10f;    // Enemy acceleration
-    private float predictionTime = 0.4f;   // How far ahead of the player the enemy tries to predict movement
+    public float speed = 6.0f;          // Enemy speed
+    public float turningSpeed = 240f;   // Enemy turning speed
+    public float acceleration = 15f;    // Enemy acceleration
+    public float predictionTime = 0.7f;   // How far ahead of the player the enemy tries to predict movement
 
     // Detecting the Player
-    private bool isListening = false;        // if true enemy will raycast to try to "see" the player
-    private bool isChasing = false;          // if true enemy will chase/attack the player
-    private bool isAttacking = false;        // if true enemy will chase/attack the player
-    private bool canAlert = true;
-    public int detectionRange = 35;         // Within this range the enemy will raycast to try to "see" the player
-    private int detectBehindRange = 10;      // Within this range the enemy will immediately find the player even if behind it
+    public bool isListening = false;        // if true enemy will raycast to try to "see" the player
+    public bool isChasing = false;          // if true enemy will chase/attack the player
+    public bool isAttacking = false;        // if true enemy will chase/attack the player
+    public int detectionRange = 30;         // Within this range the enemy will raycast to try to "see" the player
+    public int detectBehindRange = 10;      // Within this range the enemy will immediately find the player even if behind it
     public float sightCone = 90f;           // Degrees width of sight cone from forward (90 = directly to the side)
-    private int chaseDuration = 5;           // How long (seconds) enemy targets the player before needing to check if it can still see the player
+    public int attackRange = 2;             // Within this range the enemy will initiate an attack
+    public int chaseDuration = 5;           // How long (seconds) enemy targets the player before needing to check if it can still see the player
     private float timeLastSighted;
     EnemyHealth enemyHealthComponent;
-
-    // Shooting at the player
-    private static Vector3 target;
-    private static Vector3 futureTarget;
-    private static Vector3 gunPoint;
-    private float bulletSpeed = 24f; // Speed of the bullet
-    private float lastFiredTime = 0f; // Time the player last fired
-    private float fireRate = 2f; // Fire rate in seconds
-    private int shootRange = 25;             // Within this range the enemy will initiate an attack
-    private float shootCone = 20f;           // Degrees width of attack cone from forward (90 = directly to the side)
 
 
     // Start is called before the first frame update
@@ -126,17 +117,6 @@ public class DalekBehaviour : MonoBehaviour
         {
             StartCoroutine(AttackPlayer());
         }
-
-        // Check if enough time has passed since the last shot
-        if (Time.time - lastFiredTime > fireRate && distanceToPlayer < shootRange)
-        {
-            TryShoot();
-        }
-
-        if (canAlert)
-        {
-            StartCoroutine(AlertNoise());
-        }
     }
     private IEnumerator AttackPlayer()
     {
@@ -156,9 +136,9 @@ public class DalekBehaviour : MonoBehaviour
         if (distanceToPlayer <= attackRange && angle <= attackCone)
         {
             //Debug.Log("Hit Player");
-            audioSource.PlayOneShot(alertSounds[UnityEngine.Random.Range(0, alertSounds.Length)]);
+            audioSource.PlayOneShot(hitSounds[UnityEngine.Random.Range(0, hitSounds.Length)]);
             PlayerState.Damage(damage + (5 * LevelState.currentDifficulty));
-
+            
             PlayerActionUpdate playerActionUpdate = player.GetComponent<PlayerActionUpdate>();
 
             //// Apply a knockback force to the player
@@ -194,7 +174,7 @@ public class DalekBehaviour : MonoBehaviour
             {
                 if (hit.collider.gameObject == player)
                 {
-                    isChasing = true;
+                    isChasing = true; 
                     timeLastSighted = Time.time;   // Record the time when the player was last sighted
                     PursuePlayer();                // Perform immediate attack
                 }
@@ -208,62 +188,5 @@ public class DalekBehaviour : MonoBehaviour
         {
             isChasing = false;
         }
-    }
-
-    public void TryShoot()
-    {
-        Vector3 directionToPlayer = (player.transform.position - transform.position).normalized;    // Calculate the direction to the player
-        float angle = Vector3.Angle(transform.forward, directionToPlayer);
-
-        if (angle <= shootCone)
-        {
-            // Record the current time
-            lastFiredTime = Time.time;
-
-            Transform gunTransform = gameObject.transform.Find("Base/Middle/RightProdderRotationJoint");
-            gunPoint = gunTransform.position + gunTransform.forward * -2f; // + gunTransform.forward * -0.8f
-
-            // Instantiate bullet prefab at gunpoint location and shoot it at Target Location
-            // Assumes a prefab with a Rigidbody component
-            GameObject bulletPrefab = Resources.Load<GameObject>("DalekBullet");
-            GameObject bulletInstance = Object.Instantiate(bulletPrefab, gunPoint, Quaternion.LookRotation(directionToPlayer) * Quaternion.Euler(90, 0, 0));
-            //GameObject bulletInstance = Object.Instantiate(bulletPrefab, gunPoint, gunTransform.rotation * Quaternion.Euler(90, 0, 0));
-            Rigidbody rb = bulletInstance.GetComponent<Rigidbody>();
-            Bullet1 bulletScript = bulletInstance.GetComponent<Bullet1>();
-            //bulletScript.player = playerObject;     //could be used for tallying kills
-
-            target = player.transform.position;
-            Vector3 playerVelocity = PlayerState.currentVelocity;
-            futureTarget = PlayerState.currentPosition + (playerVelocity / 40) * (predictionTime * (0.1f * UnityEngine.Random.Range(3, 11)));
-
-            // Decide randomly whether to aim at current position or future position
-            int choice = UnityEngine.Random.Range(0, 2); // Generates 0 or 1
-
-            Vector3 finalTarget;
-            if (choice == 0)
-            {
-                finalTarget = target;
-            }
-            else
-            {
-                finalTarget = futureTarget;
-            }
-
-            Vector3 direction = (finalTarget - gunPoint).normalized;
-            rb.velocity = direction * bulletSpeed;
-
-
-            audioSource.PlayOneShot(shootSound);
-        }
-    }
-
-    private IEnumerator AlertNoise()
-    {
-        audioSource.PlayOneShot(alertSounds[UnityEngine.Random.Range(0, alertSounds.Length)]);
-        canAlert = false;
-        int waitInt = UnityEngine.Random.Range(7, 13);
-        yield return new WaitForSeconds(waitInt);
-
-        canAlert = true;
     }
 }

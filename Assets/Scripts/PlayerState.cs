@@ -25,8 +25,6 @@ public static class PlayerState
     //public static float currentViewHeight = 0;
 
     //Player Health
-    public const int startingEnergy = 70;
-    public const int batteryEnergy = 10;
     public static int currentMax = 70;
     public static int currentEnergy = 70;
     public static bool isAlive = true;
@@ -82,7 +80,7 @@ public static class PlayerState
 
     public static void UpdateEnergyMax()
     {
-        currentMax = startingEnergy + (GameSettings.getBatteryPower() * batteryEnergy);
+        currentMax = GameSettings.getBatteryPower();
     }
 
     public static void UpdateSpeed()

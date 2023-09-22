@@ -2,49 +2,42 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using static UnityEngine.GraphicsBuffer;
-
-/*
- * Author: Josh Wilson
- * 
- * Description:
- *  - This script defines the Scrapper AI behaviour towards the player, including awareness of the player, chasing, and attacking the player with a melee attack.
- *  
- */
 
 public class GuardBehaviour : MonoBehaviour
 {
     public GameObject player;
     NavMeshAgent agent;
-
-    // Enemy Attack
-    public int damage = 10;          
-    public float attackRate = 1.5f;
-    public float attackCone = 60f;           // Degrees width of attack cone from forward (90 = directly to the side)
-    private float lastAttackTime = 0f;
-    public float knockbackForce = 5f;
-    private Rigidbody rb;
-    //public AudioClip swingSound;
-    public AudioClip[] hitSounds = new AudioClip[6];
     private AudioSource audioSource;
 
     // Enemy Movement
-    public float speed = 6.0f;          // Enemy speed
-    public float turningSpeed = 240f;   // Enemy turning speed
-    public float acceleration = 15f;    // Enemy acceleration
-    public float predictionTime = 0.7f;   // How far ahead of the player the enemy tries to predict movement
+    public float speed = 4.0f;          // Enemy speed
+    public float turningSpeed = 80f;   // Enemy turning speed
+    public float acceleration = 5f;    // Enemy acceleration
+    private float predictionTime = 1f;   // How far ahead of the player the enemy tries to predict movement
 
     // Detecting the Player
-    public bool isListening = false;        // if true enemy will raycast to try to "see" the player
-    public bool isChasing = false;          // if true enemy will chase/attack the player
-    public bool isAttacking = false;        // if true enemy will chase/attack the player
+    private bool isListening = false;        // if true enemy will raycast to try to "see" the player
+    private bool isChasing = false;          // if true enemy will chase/attack the player
+    private bool isAttacking = false;        // if true enemy will chase/attack the player
+    private bool canAlert = true;
     public int detectionRange = 30;         // Within this range the enemy will raycast to try to "see" the player
-    public int detectBehindRange = 10;      // Within this range the enemy will immediately find the player even if behind it
+    private int detectBehindRange = 10;      // Within this range the enemy will immediately find the player even if behind it
     public float sightCone = 90f;           // Degrees width of sight cone from forward (90 = directly to the side)
-    public int attackRange = 2;             // Within this range the enemy will initiate an attack
-    public int chaseDuration = 5;           // How long (seconds) enemy targets the player before needing to check if it can still see the player
+    private int chaseDuration = 5;           // How long (seconds) enemy targets the player before needing to check if it can still see the player
     private float timeLastSighted;
     EnemyHealth enemyHealthComponent;
+    public AudioClip[] alertSounds = new AudioClip[6];
+
+    // Shooting at the player
+    private static Vector3 target;
+    private static Vector3 futureTarget;
+    private static Vector3 gunPoint;
+    private float bulletSpeed = 22f; // Speed of the bullet
+    private float lastFiredTime = 0f; // Time the player last fired
+    private float fireRate = 0.5f; // Fire rate in seconds
+    private int shootRange = 30;             // Within this range the enemy will initiate an attack
+    private float shootCone = 20f;           // Degrees width of attack cone from forward (90 = directly to the side)
+    public AudioClip shootSound;
 
 
     // Start is called before the first frame update
@@ -52,7 +45,6 @@ public class GuardBehaviour : MonoBehaviour
     {
         player = ReferenceManager.instance.player;
         enemyHealthComponent = GetComponent<EnemyHealth>();
-        rb = GetComponent<Rigidbody>();
         audioSource = GetComponent<AudioSource>();
         if (audioSource == null)
         {
@@ -113,50 +105,17 @@ public class GuardBehaviour : MonoBehaviour
         Vector3 futurePosition = PlayerState.currentPosition + (playerVelocity / 40) * predictionTime;
         agent.SetDestination(futurePosition);
         float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
-        if (distanceToPlayer <= attackRange && (Time.time - lastAttackTime > attackRate))           //Can enemy can attack now?
+
+        // Check if enough time has passed since the last shot
+        if (Time.time - lastFiredTime > fireRate && distanceToPlayer < shootRange)
         {
-            StartCoroutine(AttackPlayer());
-        }
-    }
-    private IEnumerator AttackPlayer()
-    {
-        //Debug.Log("Attacking player");
-        lastAttackTime = Time.time;
-        // Do Attack Animation here
-        //audioSource.PlayOneShot(swingSound);
-
-        agent.SetDestination(PlayerState.currentPosition);
-        yield return new WaitForSeconds(0.2f);      // Lunging time during attack (keeps moving)
-
-        agent.isStopped = true;
-        float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);   // Calculate the distance to the player
-        Vector3 directionToPlayer = (player.transform.position - transform.position).normalized;    // Calculate the direction to the player
-        float angle = Vector3.Angle(transform.forward, directionToPlayer);                          // Calculate the angle between the AI's forward vector and the direction to the player
-
-        if (distanceToPlayer <= attackRange && angle <= attackCone)
-        {
-            //Debug.Log("Hit Player");
-            audioSource.PlayOneShot(hitSounds[UnityEngine.Random.Range(0, hitSounds.Length)]);
-            PlayerState.Damage(damage + (5 * LevelState.currentDifficulty));
-            
-            PlayerActionUpdate playerActionUpdate = player.GetComponent<PlayerActionUpdate>();
-
-            //// Apply a knockback force to the player
-            //Vector3 knockbackDirection = rb.velocity.normalized;
-            //if (playerActionUpdate != null)
-            //{
-            //    playerActionUpdate.ApplyKnockback(knockbackDirection, 10000);
-            //    //enemyRb.AddForce(knockbackDirection * knockbackForce, ForceMode.Impulse);
-            //}
-
-            // Light Effect for player damage
-
-            StartCoroutine(playerActionUpdate.DamageLight());
+            TryShoot();
         }
 
-        // Wait to end 
-        yield return new WaitForSeconds(1f);      // Stationary time after attacking
-        agent.isStopped = false;
+        if (canAlert)
+        {
+            StartCoroutine(AlertNoise());
+        }
     }
 
     void PerformRaycast()
@@ -174,7 +133,7 @@ public class GuardBehaviour : MonoBehaviour
             {
                 if (hit.collider.gameObject == player)
                 {
-                    isChasing = true; 
+                    isChasing = true;
                     timeLastSighted = Time.time;   // Record the time when the player was last sighted
                     PursuePlayer();                // Perform immediate attack
                 }
@@ -188,5 +147,62 @@ public class GuardBehaviour : MonoBehaviour
         {
             isChasing = false;
         }
+    }
+
+    public void TryShoot()
+    {
+        Vector3 directionToPlayer = (player.transform.position - transform.position).normalized;    // Calculate the direction to the player
+        float angle = Vector3.Angle(transform.forward, directionToPlayer);
+
+        if (angle <= shootCone)
+        {
+            // Record the current time
+            lastFiredTime = Time.time;
+
+            Transform gunTransform = gameObject.transform.Find("GuardUntexed/Armature/Body/Body_end");
+            gunPoint = gunTransform.position + gunTransform.forward * -1f; // + gunTransform.forward * -0.8f
+
+            // Instantiate bullet prefab at gunpoint location and shoot it at Target Location
+            // Assumes a prefab with a Rigidbody component
+            GameObject bulletPrefab = Resources.Load<GameObject>("GuardBullet");
+            GameObject bulletInstance = Object.Instantiate(bulletPrefab, gunPoint, Quaternion.LookRotation(directionToPlayer) * Quaternion.Euler(90, 0, 0));
+            //GameObject bulletInstance = Object.Instantiate(bulletPrefab, gunPoint, gunTransform.rotation * Quaternion.Euler(90, 0, 0));
+            Rigidbody rb = bulletInstance.GetComponent<Rigidbody>();
+            Bullet1 bulletScript = bulletInstance.GetComponent<Bullet1>();
+            //bulletScript.player = playerObject;     //could be used for tallying kills
+
+            target = player.transform.position;
+            Vector3 playerVelocity = PlayerState.currentVelocity;
+            futureTarget = PlayerState.currentPosition + (playerVelocity / 40) * (predictionTime * (0.1f * UnityEngine.Random.Range(3, 11)));
+
+            // Decide randomly whether to aim at current position or future position
+            int choice = UnityEngine.Random.Range(0, 2); // Generates 0 or 1
+
+            Vector3 finalTarget;
+            if (choice == 0)
+            {
+                finalTarget = target;
+            }
+            else
+            {
+                finalTarget = futureTarget;
+            }
+
+            Vector3 direction = (finalTarget - gunPoint).normalized;
+            rb.velocity = direction * bulletSpeed;
+
+
+            audioSource.PlayOneShot(shootSound);
+        }
+    }
+
+    private IEnumerator AlertNoise()
+    {
+        audioSource.PlayOneShot(alertSounds[UnityEngine.Random.Range(0, alertSounds.Length)]);
+        canAlert = false;
+        int waitInt = UnityEngine.Random.Range(7, 13);
+        yield return new WaitForSeconds(waitInt);
+
+        canAlert = true;
     }
 }

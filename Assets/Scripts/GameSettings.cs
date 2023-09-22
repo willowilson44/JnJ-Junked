@@ -10,6 +10,8 @@ using UnityEngine;
  *  - This script stores player progress for each level and difficulty, and upgrades collected in each difficulty level.
  *  - Progress is saved so that the player can resume the next time they play without losing upgrades/level progress.
  *  
+ *  - Usage:
+ *  - When adding new upgrade must update numUpgrades, the upgrade list, and the UpdateUpgrades function in PlayerState
  */
 
 public static class GameSettings
@@ -18,7 +20,10 @@ public static class GameSettings
     private const int numLevels = 3;
     private const int numDifficulties = 3;
     private const int numUpgrades = 3;
-    private const int numBatteries = 3;
+    private const int numBatteries = 4;
+    public const int batteryEnergy = 10;    // The energy gained from each battery
+    public const int startingEnergy = 70;
+
 
     // saved settings
     public static bool[][] levelsCompleted;     // indexed by: [level] [difficulty]
@@ -26,7 +31,7 @@ public static class GameSettings
     public static bool[][] upgradesFound;       // indexed by: [difficulty] [numUpgrades]
 
     /* 
-     * upgrade list:
+     * current upgrade list:
      * upgradesFound[difficulty][0] = Jump Upgrade
      * upgradesFound[difficulty][1] = Gun Upgrade
      * upgradesFound[difficulty][2] = Double Jump Upgrade
@@ -64,7 +69,7 @@ public static class GameSettings
                 count++;
             }
         }
-        return count;
+        return startingEnergy + (count * batteryEnergy);
     }
 
     public static void BatteryCollected(int batteryNumber)
@@ -82,7 +87,7 @@ public static class GameSettings
     {
         if (upgradesFound[LevelState.currentDifficulty][upgradeNumber] == false)
         {
-            batteriesFound[LevelState.currentDifficulty][upgradeNumber] = true;
+            upgradesFound[LevelState.currentDifficulty][upgradeNumber] = true;
             PlayerState.UpdateUpgrades();
             LevelState.UpgradeCollected();
         }

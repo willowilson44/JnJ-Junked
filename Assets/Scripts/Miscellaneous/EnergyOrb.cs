@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnergyOrb : MonoBehaviour
 {
-    public GameObject player;
+    private GameObject player;
     public int detectionRange = 15;         // Within this range the orb will chase the player
     public int healthAmount = 4;         // Within this range the orb will chase the player
     public float moveSpeed = 2.0f;
@@ -46,10 +46,8 @@ public class EnergyOrb : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("trigger entered");
         if(other.tag == "Player")
         {
-            Debug.Log("player detected as trigger");
             PlayerState.AddPower(healthAmount);
             audioSource.PlayOneShot(clip);
             Destroy(this.gameObject);

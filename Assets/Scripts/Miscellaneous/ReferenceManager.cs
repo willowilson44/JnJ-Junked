@@ -10,6 +10,7 @@ public class ReferenceManager : MonoBehaviour
     public string[] enemies =
     {
         "Scrapper",
+        "Guard",
         "Dalek"
     };
 

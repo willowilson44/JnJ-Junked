@@ -43,8 +43,6 @@ public class DebugWrapper : MonoBehaviour
         currentSpeed = PlayerState.currentSpeed;
         currentPosition = PlayerState.currentPosition;
         pm_gravity = PlayerState.pm_gravity;
-        startingEnergy = PlayerState.startingEnergy;
-        batteryEnergy = PlayerState.batteryEnergy;
         currentMax = PlayerState.currentMax;
         currentEnergy = PlayerState.currentEnergy;
         isAlive = PlayerState.isAlive;
