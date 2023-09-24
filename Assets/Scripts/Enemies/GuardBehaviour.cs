@@ -34,7 +34,7 @@ public class GuardBehaviour : MonoBehaviour
     private static Vector3 gunPoint;
     private float bulletSpeed = 22f; // Speed of the bullet
     private float lastFiredTime = 0f; // Time the player last fired
-    private float fireRate = 0.5f; // Fire rate in seconds
+    private float fireRate = 0.3f; // Fire rate in seconds
     private int shootRange = 30;             // Within this range the enemy will initiate an attack
     private float shootCone = 20f;           // Degrees width of attack cone from forward (90 = directly to the side)
     public AudioClip shootSound;

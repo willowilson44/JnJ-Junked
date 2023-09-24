@@ -83,7 +83,6 @@ GameObject:
   - component: {fileID: 3392524511591596068}
   - component: {fileID: 3188196567961773500}
   - component: {fileID: 701799451008189394}
-  - component: {fileID: 6932045968233736424}
   - component: {fileID: 2592447907377178290}
   m_Layer: 6
   m_Name: Player1
@@ -194,9 +193,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainCamera: {fileID: 0}
   shootSound:
-  - {fileID: 8300000, guid: 527c01367e21de240aebdb52e1f9faae, type: 3}
-  - {fileID: 8300000, guid: 06b8cec42ec749c4b8af0487bd8dba7b, type: 3}
-  jumpSound: {fileID: 0}
+  - {fileID: 8300000, guid: 3f73fcb3d8c595441a1d99f4ea2e77e2, type: 3}
+  - {fileID: 8300000, guid: 6b8d83f7665477a4dba7dca8288632d7, type: 3}
+  jumpSound: {fileID: 8300000, guid: 52d79865218ef7d42b75a2b419c3ad5c, type: 3}
   playerCollider: {fileID: 3018552241113242925}
   pmflags: 0
   position: {x: 0, y: 0, z: 0}
@@ -232,30 +231,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fa2a9782e83c074691d5bcb9434eff5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &6932045968233736424
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8556372065526054066}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9cd30d265e9c3aa4eba7776abf327b81, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentSpeed: 0
-  currentPosition: {x: 0, y: 0, z: 0}
-  pm_gravity: 0
-  startingEnergy: 0
-  batteryEnergy: 0
-  currentMax: 0
-  currentEnergy: 0
-  isAlive: 0
-  currentSpeedModifier: 0
-  canJump: 0
-  canShoot: 0
-  canDoubleJump: 0
+  rightArmPieces: 
 --- !u!108 &2592447907377178290
 Light:
   m_ObjectHideFlags: 0

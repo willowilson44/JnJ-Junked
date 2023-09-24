@@ -56,7 +56,7 @@ public class EnemyHealth : MonoBehaviour
 
         // Instantiate energy orb
         Instantiate(Resources.Load<GameObject>(orbReferenceName), transform.position, transform.rotation);
-
+        LevelState.kills++;
         Destroy(this.gameObject);
     }
 

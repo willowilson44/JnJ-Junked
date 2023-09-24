@@ -84,6 +84,8 @@ public class PlayerActionUpdate : MonoBehaviour
 
     void Start()
     {
+        transform.position = ReferenceManager.instance.spawnPoint.transform.position;
+        transform.rotation = ReferenceManager.instance.spawnPoint.transform.rotation;
         audioSource = GetComponent<AudioSource>();
         if (audioSource == null)
         {
@@ -101,6 +103,8 @@ public class PlayerActionUpdate : MonoBehaviour
 
         //set initial positions
         position = transform.position;
+        PlayerState.UpdateEnergyMax();
+        PlayerState.UpdateEnergy(PlayerState.currentMax);
     }
 
     void OnEnable()
@@ -198,5 +202,15 @@ public class PlayerActionUpdate : MonoBehaviour
         }
 
         // Fetch debug variables
+    }
+
+    public void Death()
+    {
+        transform.position = ReferenceManager.instance.spawnPoint.transform.position;
+        transform.rotation = ReferenceManager.instance.spawnPoint.transform.rotation;
+        position = transform.position;
+
+        PlayerState.UpdateEnergyMax();
+        PlayerState.UpdateEnergy(PlayerState.currentMax);
     }
 }

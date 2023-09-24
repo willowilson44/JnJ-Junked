@@ -1,3 +1,5 @@
+using System.Linq;
+using System.Text;
 using UnityEngine;
 
 /*
@@ -36,6 +38,12 @@ public class DebugWrapper : MonoBehaviour
     public bool canShoot;
     public bool canDoubleJump;
 
+    [TextArea]
+    public string levelsCompletedStr;
+    public string batStr;
+    public string upStr;
+
+
     // Update is called once per frame
     private void Update()
     {
@@ -50,5 +58,18 @@ public class DebugWrapper : MonoBehaviour
         canJump = PlayerState.canJump;
         canShoot = PlayerState.canShoot;
         canDoubleJump = PlayerState.canDoubleJump;
-}
+        levelsCompletedStr = ArrayToString(GameSettings.levelsCompleted);
+        batStr = ArrayToString(GameSettings.batteriesFound);
+        upStr = ArrayToString(GameSettings.upgradesFound);
+    }
+
+    private string ArrayToString(bool[][] array)
+    {
+        var str = new StringBuilder();
+        foreach (var row in array)
+        {
+            str.AppendLine(string.Join(", ", row.Select(b => b.ToString()).ToArray()));
+        }
+        return str.ToString();
+    }
 }

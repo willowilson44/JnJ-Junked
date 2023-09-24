@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
+using System.IO;
 
 /*
  * Author: Josh Wilson
@@ -17,12 +18,13 @@ using UnityEngine;
 public static class GameSettings
 {
     // game constants
-    private const int numLevels = 3;
-    private const int numDifficulties = 3;
+    public const int numLevels = 3;
+    public static readonly string[] levelNames = { "JunkTest1", "JunkTest1", "JunkTest1" };
+    public const int numDifficulties = 3;
     private const int numUpgrades = 3;
     private const int numBatteries = 4;
     public const int batteryEnergy = 10;    // The energy gained from each battery
-    public const int startingEnergy = 70;
+    public const int startingEnergy = 70; 
 
 
     // saved settings
@@ -58,12 +60,15 @@ public static class GameSettings
         {
             batteriesFound[i] = new bool[numBatteries];
         }
+
+        LoadGameState();
     }
 
     public static int getBatteryPower()
     {
         int count = 0;
-        foreach (bool battery in batteriesFound[LevelState.currentDifficulty]) {
+        foreach (bool battery in batteriesFound[LevelState.currentDifficulty])
+        {
             if (battery == true)
             {
                 count++;
@@ -89,6 +94,64 @@ public static class GameSettings
         {
             upgradesFound[LevelState.currentDifficulty][upgradeNumber] = true;
             LevelState.UpgradeCollected();
+        }
+    }
+
+    // Save game state to PlayerPrefs
+    public static void SaveGameState()
+    {
+        for (int i = 0; i < numLevels; i++)
+        {
+            for (int j = 0; j < numDifficulties; j++)
+            {
+                string levelKey = $"level_{i}_{j}";
+                PlayerPrefs.SetInt(levelKey, levelsCompleted[i][j] ? 1 : 0);
+            }
+        }
+
+        for (int i = 0; i < numDifficulties; i++)
+        {
+            for (int j = 0; j < numBatteries; j++)
+            {
+                string batteryKey = $"battery_{i}_{j}";
+                PlayerPrefs.SetInt(batteryKey, batteriesFound[i][j] ? 1 : 0);
+            }
+
+            for (int k = 0; k < numUpgrades; k++)
+            {
+                string upgradeKey = $"upgrade_{i}_{k}";
+                PlayerPrefs.SetInt(upgradeKey, upgradesFound[i][k] ? 1 : 0);
+            }
+        }
+
+        PlayerPrefs.Save();
+    }
+
+    // Load game state from PlayerPrefs
+    public static void LoadGameState()
+    {
+        for (int i = 0; i < numLevels; i++)
+        {
+            for (int j = 0; j < numDifficulties; j++)
+            {
+                string levelKey = $"level_{i}_{j}";
+                levelsCompleted[i][j] = PlayerPrefs.GetInt(levelKey, 0) == 1;
+            }
+        }
+
+        for (int i = 0; i < numDifficulties; i++)
+        {
+            for (int j = 0; j < numBatteries; j++)
+            {
+                string batteryKey = $"battery_{i}_{j}";
+                batteriesFound[i][j] = PlayerPrefs.GetInt(batteryKey, 0) == 1;
+            }
+
+            for (int k = 0; k < numUpgrades; k++)
+            {
+                string upgradeKey = $"upgrade_{i}_{k}";
+                upgradesFound[i][k] = PlayerPrefs.GetInt(upgradeKey, 0) == 1;
+            }
         }
     }
 }

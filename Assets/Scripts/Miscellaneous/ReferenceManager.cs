@@ -7,6 +7,7 @@ public class ReferenceManager : MonoBehaviour
     public static ReferenceManager instance;
 
     public GameObject player;
+    public GameObject spawnPoint;
     public string[] enemies =
     {
         "Scrapper",

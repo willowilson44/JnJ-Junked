@@ -70,6 +70,7 @@ public class UpgradeSelector : MonoBehaviour
         rightArmSelected = 0;
         leftArmSelected = 0;
 
+        UpdateSlotLists();
     }
 
     // Update is called once per frame

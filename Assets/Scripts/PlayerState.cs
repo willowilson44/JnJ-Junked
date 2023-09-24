@@ -1,5 +1,6 @@
 using System;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -95,6 +96,9 @@ public static class PlayerState
             UpdateEnergy(0);
             isAlive = false;
             LevelState.PlayerDeath();
+            PlayerActionUpdate playerUpdate = ReferenceManager.instance.player.GetComponent<PlayerActionUpdate>();
+            playerUpdate.Death();
+            currentEnergy = currentMax;
         }
     }
 

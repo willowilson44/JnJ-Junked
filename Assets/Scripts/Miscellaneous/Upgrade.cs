@@ -36,7 +36,7 @@ public class Upgrade : MonoBehaviour
     void Update()
     {
         // Rotate the upgrade around its Y-axis.
-        transform.Rotate(Vector3.up * rotationSpeed * Time.deltaTime);
+        transform.parent.Rotate(Vector3.up * rotationSpeed * Time.deltaTime);
     }
 
     private void OnTriggerEnter(Collider other)
