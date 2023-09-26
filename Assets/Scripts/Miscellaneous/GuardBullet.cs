@@ -15,6 +15,7 @@ public class GuardBullet : MonoBehaviour
     private AudioSource audioSource;
     private Light bulletLight;
     private Vector3 knockbackDirection; // Use bullet's velocity for knockback direction
+    private float initialVelocity; // Use bullet's velocity for knockback direction
 
     private void Start()
     {
@@ -29,6 +30,7 @@ public class GuardBullet : MonoBehaviour
 
         bulletLight = GetComponent<Light>();
         knockbackDirection = rb.velocity.normalized;
+        initialVelocity = rb.velocity.magnitude;
     }
 
     private void Update()
@@ -36,7 +38,13 @@ public class GuardBullet : MonoBehaviour
         if (rb.velocity != Vector3.zero) // Ensure that the velocity is not zero to avoid LookRotation with a zero vector.
         {
             Quaternion rotation = Quaternion.LookRotation(rb.velocity.normalized);
-            transform.rotation = Quaternion.Euler(90, rotation.eulerAngles.y, rotation.eulerAngles.z); // adjust the X rotation
+            transform.rotation = Quaternion.Euler(rotation.eulerAngles.x + 90, rotation.eulerAngles.y, rotation.eulerAngles.z); // adjust the X rotation
+        }
+
+        // Destroy if the bullet slows down
+        if (rb.velocity.magnitude < initialVelocity / 2)
+        {
+            StartCoroutine(DelayedDestroy());
         }
     }
 

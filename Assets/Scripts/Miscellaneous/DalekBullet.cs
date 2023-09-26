@@ -24,6 +24,7 @@ public class DalekBullet : MonoBehaviour
     private AudioSource audioSource;
     private Light bulletLight;
     private Vector3 knockbackDirection; // Use bullet's velocity for knockback direction
+    private float initialVelocity; // Use bullet's velocity for knockback direction
     private float yScale = 0.05f;
     private float yMultiplier = 1.05f;
     private bool growing = true;
@@ -43,12 +44,14 @@ public class DalekBullet : MonoBehaviour
 
         bulletLight = GetComponent<Light>();
         knockbackDirection = rb.velocity.normalized;
+        initialVelocity = rb.velocity.magnitude;
         bulletMeshTransform.localScale = new Vector3(0.5f,yScale,0.5f);
         //transform.rotation = Quaternion.Euler(new Vector3(90, 0, 0));
     }
 
     private void Update()
     {
+        // bullet grows as it travels
         if (growing)
         {
             if (yScale > 1)
@@ -70,6 +73,19 @@ public class DalekBullet : MonoBehaviour
             }
         }
         bulletMeshTransform.localScale = new Vector3(0.5f, yScale, 0.5f);
+
+        // orient towards direction of travel
+        if (rb.velocity != Vector3.zero) // Ensure that the velocity is not zero to avoid LookRotation with a zero vector.
+        {
+            Quaternion rotation = Quaternion.LookRotation(rb.velocity.normalized);
+            transform.rotation = Quaternion.Euler(rotation.eulerAngles.x + 90, rotation.eulerAngles.y, rotation.eulerAngles.z); // adjust the X rotation
+
+            // Destroy if the bullet slows down
+            if (rb.velocity.magnitude < initialVelocity/2)
+            {
+                StartCoroutine(DelayedDestroy());
+            }
+        }
     }
 
 
@@ -143,7 +159,15 @@ public class DalekBullet : MonoBehaviour
     private IEnumerator DelayedDestroy()
     {
         destroying = true;
-        yield return new WaitForSeconds(0.1f);  // Wait for the duration of the collision sound
+
+        // Freeze the Rigidbody's motion
+        if (rb != null) rb.isKinematic = true;
+
+        // Disable the MeshRenderer
+        MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
+        if (meshRenderer != null) meshRenderer.enabled = false;
+
+        yield return new WaitForSeconds(0.15f);  // Wait for the duration of the collision sound
         Destroy(this.gameObject);
     }
 }

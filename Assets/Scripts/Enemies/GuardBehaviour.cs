@@ -61,12 +61,14 @@ public class GuardBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Check if enemy is startled via detection of bullet in it's enemy health script
         if (enemyHealthComponent.startled)
         {
             isChasing = true;
             timeLastSighted = Time.time;   // Record the time when the player was last sighted
         }
 
+        // Check if player can be found
         if (isChasing && Time.time - timeLastSighted < chaseDuration)
         {
             PursuePlayer();
@@ -166,10 +168,11 @@ public class GuardBehaviour : MonoBehaviour
             // Assumes a prefab with a Rigidbody component
             GameObject bulletPrefab = Resources.Load<GameObject>("GuardBullet");
             GameObject bulletInstance = Object.Instantiate(bulletPrefab, gunPoint, Quaternion.LookRotation(directionToPlayer) * Quaternion.Euler(90, 0, 0));
-            //GameObject bulletInstance = Object.Instantiate(bulletPrefab, gunPoint, gunTransform.rotation * Quaternion.Euler(90, 0, 0));
             Rigidbody rb = bulletInstance.GetComponent<Rigidbody>();
-            Bullet1 bulletScript = bulletInstance.GetComponent<Bullet1>();
-            //bulletScript.player = playerObject;     //could be used for tallying kills
+
+            //Could be used for tallying kills
+            //Bullet1 bulletScript = bulletInstance.GetComponent<Bullet1>();
+            //bulletScript.player = playerObject;     
 
             target = player.transform.position;
             Vector3 playerVelocity = PlayerState.currentVelocity;

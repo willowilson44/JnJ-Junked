@@ -23,6 +23,7 @@ public class Bullet1 : MonoBehaviour
     private AudioSource audioSource;
     private Light bulletLight;
     private Vector3 knockbackDirection; // Use bullet's velocity for knockback direction
+    private float initialVelocity; // Use bullet's velocity for knockback direction
     //public GameObject player;
 
     private void Start()
@@ -38,6 +39,22 @@ public class Bullet1 : MonoBehaviour
         bulletLight = GetComponent<Light>();
 
         knockbackDirection = rb.velocity.normalized;
+        initialVelocity = rb.velocity.magnitude;
+    }
+
+    private void Update()
+    {
+        if (rb.velocity != Vector3.zero) // Ensure that the velocity is not zero to avoid LookRotation with a zero vector.
+        {
+            Quaternion rotation = Quaternion.LookRotation(rb.velocity.normalized);
+            transform.rotation = Quaternion.Euler(rotation.eulerAngles.x + 90, rotation.eulerAngles.y, rotation.eulerAngles.z); // adjust the X rotation
+        }
+
+        // Destroy if the bullet slows down
+        if (rb.velocity.magnitude < initialVelocity / 2)
+        {
+            StartCoroutine(DelayedDestroy());
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -101,7 +118,15 @@ public class Bullet1 : MonoBehaviour
     private IEnumerator DelayedDestroy()
     {
         destroying = true;
-        yield return new WaitForSeconds(0.2f);  // Wait for the duration of the collision sound
+
+        // Freeze the Rigidbody's motion
+        if (rb != null) rb.isKinematic = true;
+
+        // Disable the MeshRenderer
+        MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
+        if (meshRenderer != null) meshRenderer.enabled = false;
+
+        yield return new WaitForSeconds(0.15f);  // Wait for the duration of the collision sound
         Destroy(this.gameObject);
     }
 }

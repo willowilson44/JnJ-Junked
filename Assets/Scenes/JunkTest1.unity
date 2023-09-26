@@ -6053,6 +6053,9 @@ MonoBehaviour:
   canJump: 0
   canShoot: 0
   canDoubleJump: 0
+  levelsCompletedStr: 
+  batStr: 
+  upStr: 
 --- !u!4 &766486928
 Transform:
   m_ObjectHideFlags: 0
