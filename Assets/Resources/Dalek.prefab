@@ -141,12 +141,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   damage: 10
-  attackRate: 1.5
-  attackCone: 60
-  attackRange: 2
-  knockbackForce: 5
-  dyingSound: {fileID: 8300000, guid: a71043b53f18f3b4cb741b6384cdd520, type: 3}
-  hitSounds:
+  shootSound: {fileID: 8300000, guid: 79f0aa664b3061c49bb592cb0bf86a4b, type: 3}
+  alertSounds:
   - {fileID: 8300000, guid: 9ac26de9f8b73a54ba98faf363390913, type: 3}
   - {fileID: 8300000, guid: 3df76f6601a71a941abdbc92e592872e, type: 3}
   - {fileID: 8300000, guid: 260795a6146afde4aac88164069105ca, type: 3}
@@ -156,16 +152,8 @@ MonoBehaviour:
   speed: 4
   turningSpeed: 120
   acceleration: 10
-  predictionTime: 0.7
-  isListening: 0
-  isChasing: 0
-  isAttacking: 0
-  detectionRange: 30
-  detectBehindRange: 10
+  detectionRange: 45
   sightCone: 90
-  chaseDuration: 5
-  shootRange: 20
-  shootCone: 20
 --- !u!195 &6867086364719872834
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -202,6 +190,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentEnergy: 30
   startled: 0
+  orbReferenceName: EnergyOrb
 --- !u!108 &3854213795512556884
 Light:
   m_ObjectHideFlags: 0

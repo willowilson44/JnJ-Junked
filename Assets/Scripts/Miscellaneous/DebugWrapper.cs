@@ -23,6 +23,8 @@ public class DebugWrapper : MonoBehaviour
     //public Vector3 addVelocities;
     //public int onGround;
     //public int jumpHeld;
+    public int difficulty;
+    public int levelNumber;
 
     //Health related
     public int startingEnergy;
@@ -61,6 +63,8 @@ public class DebugWrapper : MonoBehaviour
         levelsCompletedStr = ArrayToString(GameSettings.levelsCompleted);
         batStr = ArrayToString(GameSettings.batteriesFound);
         upStr = ArrayToString(GameSettings.upgradesFound);
+        levelNumber = LevelState.currentLevel;
+        difficulty = LevelState.currentDifficulty;
     }
 
     private string ArrayToString(bool[][] array)

@@ -20,7 +20,7 @@ public class GuardBehaviour : MonoBehaviour
     private bool isChasing = false;          // if true enemy will chase/attack the player
     private bool isAttacking = false;        // if true enemy will chase/attack the player
     private bool canAlert = true;
-    public int detectionRange = 30;         // Within this range the enemy will raycast to try to "see" the player
+    public int detectionRange = 60;         // Within this range the enemy will raycast to try to "see" the player
     private int detectBehindRange = 10;      // Within this range the enemy will immediately find the player even if behind it
     public float sightCone = 90f;           // Degrees width of sight cone from forward (90 = directly to the side)
     private int chaseDuration = 5;           // How long (seconds) enemy targets the player before needing to check if it can still see the player
@@ -35,8 +35,9 @@ public class GuardBehaviour : MonoBehaviour
     private float bulletSpeed = 22f; // Speed of the bullet
     private float lastFiredTime = 0f; // Time the player last fired
     private float fireRate = 0.3f; // Fire rate in seconds
-    private int shootRange = 30;             // Within this range the enemy will initiate an attack
-    private float shootCone = 20f;           // Degrees width of attack cone from forward (90 = directly to the side)
+    private int shootRange = 50;             // Within this range the enemy will initiate an attack
+    private float shootCone = 30f;           // Degrees width of attack cone from forward (90 = directly to the side)
+    private float shootPredictionTime = 1.5f;   // How far ahead of the player the enemy tries to predict movement
     public AudioClip shootSound;
 
 
@@ -104,7 +105,7 @@ public class GuardBehaviour : MonoBehaviour
     void PursuePlayer()
     {
         Vector3 playerVelocity = PlayerState.currentVelocity;
-        Vector3 futurePosition = PlayerState.currentPosition + (playerVelocity / 40) * predictionTime;
+        Vector3 futurePosition = PlayerState.currentPosition + (playerVelocity / 40) * (predictionTime/2);
         agent.SetDestination(futurePosition);
         float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
 
@@ -176,10 +177,10 @@ public class GuardBehaviour : MonoBehaviour
 
             target = player.transform.position;
             Vector3 playerVelocity = PlayerState.currentVelocity;
-            futureTarget = PlayerState.currentPosition + (playerVelocity / 40) * (predictionTime * (0.1f * UnityEngine.Random.Range(3, 11)));
+            futureTarget = PlayerState.currentPosition + (playerVelocity / 40) * (shootPredictionTime * (0.1f * UnityEngine.Random.Range(3, 11)));
 
             // Decide randomly whether to aim at current position or future position
-            int choice = UnityEngine.Random.Range(0, 2); // Generates 0 or 1
+            int choice = UnityEngine.Random.Range(0, 3); // Generates 0,1 or 2
 
             Vector3 finalTarget;
             if (choice == 0)

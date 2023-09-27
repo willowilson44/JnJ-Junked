@@ -54,7 +54,7 @@ public class DalekBullet : MonoBehaviour
         // bullet grows as it travels
         if (growing)
         {
-            if (yScale > 1)
+            if (yScale > 5)
             {
                 growing = false;
             } else

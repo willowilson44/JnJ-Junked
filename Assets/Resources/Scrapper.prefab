@@ -176,7 +176,6 @@ MonoBehaviour:
   damage: 10
   attackRate: 1.5
   attackCone: 60
-  knockbackForce: 5
   hitSounds:
   - {fileID: 8300000, guid: f2a37dca93d3a754aa517bc56fcb2021, type: 3}
   - {fileID: 8300000, guid: 1d7478c81d0df8f4a96033b354454b5f, type: 3}
@@ -187,15 +186,8 @@ MonoBehaviour:
   speed: 8
   turningSpeed: 240
   acceleration: 15
-  predictionTime: 0.7
-  isListening: 0
-  isChasing: 0
-  isAttacking: 0
-  detectionRange: 30
-  detectBehindRange: 10
+  detectionRange: 45
   sightCone: 90
-  attackRange: 2
-  chaseDuration: 5
 --- !u!114 &4794827525770376459
 MonoBehaviour:
   m_ObjectHideFlags: 0

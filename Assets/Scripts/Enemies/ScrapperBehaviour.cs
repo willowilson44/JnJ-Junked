@@ -22,7 +22,7 @@ public class ScrapperBehaviour : MonoBehaviour
     public float attackRate = 1.5f;
     public float attackCone = 60f;           // Degrees width of attack cone from forward (90 = directly to the side)
     private float lastAttackTime = 0f;
-    public float knockbackForce = 5f;
+    private float knockbackForce = 5f;
     private Rigidbody rb;
     //public AudioClip swingSound;
     public AudioClip[] hitSounds = new AudioClip[6];
@@ -32,17 +32,17 @@ public class ScrapperBehaviour : MonoBehaviour
     public float speed = 6.0f;          // Enemy speed
     public float turningSpeed = 240f;   // Enemy turning speed
     public float acceleration = 15f;    // Enemy acceleration
-    public float predictionTime = 0.7f;   // How far ahead of the player the enemy tries to predict movement
+    private float predictionTime = 0.7f;   // How far ahead of the player the enemy tries to predict movement
 
     // Detecting the Player
-    public bool isListening = false;        // if true enemy will raycast to try to "see" the player
-    public bool isChasing = false;          // if true enemy will chase/attack the player
-    public bool isAttacking = false;        // if true enemy will chase/attack the player
-    public int detectionRange = 30;         // Within this range the enemy will raycast to try to "see" the player
-    public int detectBehindRange = 10;      // Within this range the enemy will immediately find the player even if behind it
+    private bool isListening = false;        // if true enemy will raycast to try to "see" the player
+    private bool isChasing = false;          // if true enemy will chase/attack the player
+    private bool isAttacking = false;        // if true enemy will chase/attack the player
+    public int detectionRange = 45;         // Within this range the enemy will raycast to try to "see" the player
+    private int detectBehindRange = 10;      // Within this range the enemy will immediately find the player even if behind it
     public float sightCone = 90f;           // Degrees width of sight cone from forward (90 = directly to the side)
-    public int attackRange = 2;             // Within this range the enemy will initiate an attack
-    public int chaseDuration = 5;           // How long (seconds) enemy targets the player before needing to check if it can still see the player
+    private int attackRange = 2;             // Within this range the enemy will initiate an attack
+    private int chaseDuration = 5;           // How long (seconds) enemy targets the player before needing to check if it can still see the player
     private float timeLastSighted;
     EnemyHealth enemyHealthComponent;
 
@@ -110,7 +110,7 @@ public class ScrapperBehaviour : MonoBehaviour
     void PursuePlayer()
     {
         Vector3 playerVelocity = PlayerState.currentVelocity;
-        Vector3 futurePosition = PlayerState.currentPosition + (playerVelocity / 40) * predictionTime;
+        Vector3 futurePosition = PlayerState.currentPosition + (playerVelocity / 40) * (predictionTime/2);
         agent.SetDestination(futurePosition);
         float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
         if (distanceToPlayer <= attackRange && (Time.time - lastAttackTime > attackRate))           //Can enemy can attack now?

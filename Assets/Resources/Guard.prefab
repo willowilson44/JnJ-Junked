@@ -129,7 +129,7 @@ MonoBehaviour:
   speed: 4
   turningSpeed: 80
   acceleration: 5
-  detectionRange: 30
+  detectionRange: 60
   sightCone: 90
   alertSounds:
   - {fileID: 8300000, guid: 07dcfb78da4a8984ba3970a6fd13fbc8, type: 3}

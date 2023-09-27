@@ -49,11 +49,12 @@ public class DalekBehaviour : MonoBehaviour
     private static Vector3 target;
     private static Vector3 futureTarget;
     private static Vector3 gunPoint;
-    private float bulletSpeed = 24f; // Speed of the bullet
+    private float bulletSpeed = 26f; // Speed of the bullet
     private float lastFiredTime = 0f; // Time the player last fired
     private float fireRate = 2f; // Fire rate in seconds
-    private int shootRange = 25;             // Within this range the enemy will initiate an attack
-    private float shootCone = 20f;           // Degrees width of attack cone from forward (90 = directly to the side)
+    private int shootRange = 35;             // Within this range the enemy will initiate an attack
+    private float shootCone = 25f;           // Degrees width of attack cone from forward (90 = directly to the side)
+    private float shootPredictionTime = 0.6f;   // How far ahead of the player the enemy tries to predict movement
 
 
     // Start is called before the first frame update
@@ -234,10 +235,10 @@ public class DalekBehaviour : MonoBehaviour
 
             target = player.transform.position;
             Vector3 playerVelocity = PlayerState.currentVelocity;
-            futureTarget = PlayerState.currentPosition + (playerVelocity / 40) * (predictionTime * (0.1f * UnityEngine.Random.Range(3, 11)));
+            futureTarget = PlayerState.currentPosition + (playerVelocity / 40) * (shootPredictionTime * (0.1f * UnityEngine.Random.Range(3, 11)));
 
             // Decide randomly whether to aim at current position or future position
-            int choice = UnityEngine.Random.Range(0, 2); // Generates 0 or 1
+            int choice = UnityEngine.Random.Range(0, 3); // Generates 0 or 1
 
             Vector3 finalTarget;
             if (choice == 0)
