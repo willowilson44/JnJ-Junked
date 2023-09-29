@@ -89,7 +89,7 @@ public class ScrapperBehaviour : MonoBehaviour
                 isListening = true;
 
                 // Check if the player is VERY close behind
-                if (distanceToPlayer <= detectBehindRange)
+                if (distanceToPlayer <= detectBehindRange && LevelState.devMode == false)
                 {
                     isChasing = true;
                     timeLastSighted = Time.time;   // Record the time when the player was last sighted
@@ -172,7 +172,7 @@ public class ScrapperBehaviour : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(transform.position, directionToPlayer, out hit, detectionRange))
             {
-                if (hit.collider.gameObject == player)
+                if (hit.collider.gameObject == player && LevelState.devMode == false)
                 {
                     isChasing = true; 
                     timeLastSighted = Time.time;   // Record the time when the player was last sighted

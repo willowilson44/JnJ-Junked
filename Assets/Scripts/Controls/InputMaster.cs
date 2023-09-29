@@ -98,6 +98,33 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ToggleDevMode"",
+                    ""type"": ""Button"",
+                    ""id"": ""8c8eff0e-c459-4b24-ad79-82f099030016"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""InstantiateEnemy"",
+                    ""type"": ""Button"",
+                    ""id"": ""553ad1fc-0ad9-4d7b-a7e4-f8861f44f8d3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ToggleEnemy"",
+                    ""type"": ""Button"",
+                    ""id"": ""355b279a-c29e-4ee3-867c-a6b4207d3ebd"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -331,6 +358,72 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
                     ""action"": ""Shoot"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""34321535-eab7-4515-ab58-db8cd786f6a7"",
+                    ""path"": ""<Keyboard>/backquote"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleDevMode"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7541342c-d53f-415c-b5a4-540d6a13acc9"",
+                    ""path"": ""<Gamepad>/select"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleDevMode"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f238057b-42ca-4bcc-a663-ea307b13ca19"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""InstantiateEnemy"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""71ff88e0-d496-4734-abcf-60f5ba9b7238"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""InstantiateEnemy"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5d74d4fd-d87e-40f8-b48d-6393860c06fc"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleEnemy"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""49470dad-9670-46ae-8b4f-0f8b82a5fee2"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleEnemy"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -347,6 +440,9 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
         m_Player_ToggleBody = m_Player.FindAction("ToggleBody", throwIfNotFound: true);
         m_Player_ToggleLeftArm = m_Player.FindAction("ToggleLeftArm", throwIfNotFound: true);
         m_Player_Shoot = m_Player.FindAction("Shoot", throwIfNotFound: true);
+        m_Player_ToggleDevMode = m_Player.FindAction("ToggleDevMode", throwIfNotFound: true);
+        m_Player_InstantiateEnemy = m_Player.FindAction("InstantiateEnemy", throwIfNotFound: true);
+        m_Player_ToggleEnemy = m_Player.FindAction("ToggleEnemy", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -416,6 +512,9 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_ToggleBody;
     private readonly InputAction m_Player_ToggleLeftArm;
     private readonly InputAction m_Player_Shoot;
+    private readonly InputAction m_Player_ToggleDevMode;
+    private readonly InputAction m_Player_InstantiateEnemy;
+    private readonly InputAction m_Player_ToggleEnemy;
     public struct PlayerActions
     {
         private @InputMaster m_Wrapper;
@@ -428,6 +527,9 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
         public InputAction @ToggleBody => m_Wrapper.m_Player_ToggleBody;
         public InputAction @ToggleLeftArm => m_Wrapper.m_Player_ToggleLeftArm;
         public InputAction @Shoot => m_Wrapper.m_Player_Shoot;
+        public InputAction @ToggleDevMode => m_Wrapper.m_Player_ToggleDevMode;
+        public InputAction @InstantiateEnemy => m_Wrapper.m_Player_InstantiateEnemy;
+        public InputAction @ToggleEnemy => m_Wrapper.m_Player_ToggleEnemy;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -461,6 +563,15 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
             @Shoot.started += instance.OnShoot;
             @Shoot.performed += instance.OnShoot;
             @Shoot.canceled += instance.OnShoot;
+            @ToggleDevMode.started += instance.OnToggleDevMode;
+            @ToggleDevMode.performed += instance.OnToggleDevMode;
+            @ToggleDevMode.canceled += instance.OnToggleDevMode;
+            @InstantiateEnemy.started += instance.OnInstantiateEnemy;
+            @InstantiateEnemy.performed += instance.OnInstantiateEnemy;
+            @InstantiateEnemy.canceled += instance.OnInstantiateEnemy;
+            @ToggleEnemy.started += instance.OnToggleEnemy;
+            @ToggleEnemy.performed += instance.OnToggleEnemy;
+            @ToggleEnemy.canceled += instance.OnToggleEnemy;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -489,6 +600,15 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
             @Shoot.started -= instance.OnShoot;
             @Shoot.performed -= instance.OnShoot;
             @Shoot.canceled -= instance.OnShoot;
+            @ToggleDevMode.started -= instance.OnToggleDevMode;
+            @ToggleDevMode.performed -= instance.OnToggleDevMode;
+            @ToggleDevMode.canceled -= instance.OnToggleDevMode;
+            @InstantiateEnemy.started -= instance.OnInstantiateEnemy;
+            @InstantiateEnemy.performed -= instance.OnInstantiateEnemy;
+            @InstantiateEnemy.canceled -= instance.OnInstantiateEnemy;
+            @ToggleEnemy.started -= instance.OnToggleEnemy;
+            @ToggleEnemy.performed -= instance.OnToggleEnemy;
+            @ToggleEnemy.canceled -= instance.OnToggleEnemy;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -516,5 +636,8 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
         void OnToggleBody(InputAction.CallbackContext context);
         void OnToggleLeftArm(InputAction.CallbackContext context);
         void OnShoot(InputAction.CallbackContext context);
+        void OnToggleDevMode(InputAction.CallbackContext context);
+        void OnInstantiateEnemy(InputAction.CallbackContext context);
+        void OnToggleEnemy(InputAction.CallbackContext context);
     }
 }

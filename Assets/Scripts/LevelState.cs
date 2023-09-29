@@ -18,6 +18,7 @@ public static class LevelState
     public static int kills = 0;
     public static int deaths = 0;
     public static int newUpgrades = 0;
+    public static bool devMode = false;
 
 
     public static void ResetGameState()
