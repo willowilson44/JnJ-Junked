@@ -190,7 +190,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentEnergy: 30
   startled: 0
-  orbReferenceName: EnergyOrb
+  orbReferenceName: EnergyOrbDalek
 --- !u!108 &3854213795512556884
 Light:
   m_ObjectHideFlags: 0
