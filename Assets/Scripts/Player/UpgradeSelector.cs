@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class UpgradeSelector : MonoBehaviour
@@ -27,6 +28,13 @@ public class UpgradeSelector : MonoBehaviour
     private static GameObject basicArm;
     private static GameObject cannonArm;
 
+    //UI Button Text updates
+
+    TMP_Text topText;
+    TMP_Text leftText;
+    TMP_Text rightText;
+    TMP_Text bottomText;
+
     private void Awake()
     {
         controls = new InputMaster();
@@ -49,6 +57,13 @@ public class UpgradeSelector : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
+        topText = GameObject.Find("GUI/Canvas/Upgrades/Top/Text").GetComponent<TMP_Text>();
+        leftText = GameObject.Find("GUI/Canvas/Upgrades/Left/Text").GetComponent<TMP_Text>();
+        rightText = GameObject.Find("GUI/Canvas/Upgrades/Right/Text").GetComponent<TMP_Text>();
+        bottomText = GameObject.Find("GUI/Canvas/Upgrades/Bottom/Text").GetComponent<TMP_Text>();
+
+
         // Cache references to the arm GameObjects
         basicArm = transform.Find("Model/RobotBasicArmUnScuffedUnTexed").gameObject;
         cannonArm = transform.Find("Model/BasicCannonArmUnTexed").gameObject;
@@ -122,10 +137,12 @@ public class UpgradeSelector : MonoBehaviour
         if(legSelected == 1)
         {
             PlayerState.canJump = true;
+            bottomText.text = "Jump";
         }
         else
         {
             PlayerState.canJump = false;
+            bottomText.text = "-";
         }
     }
 
@@ -167,12 +184,14 @@ public class UpgradeSelector : MonoBehaviour
             basicArm.SetActive(true);
             cannonArm.SetActive(false);
             PlayerState.canShoot = false;
+            rightText.text = "-";
         }
         else
         {
             basicArm.SetActive(false);
             cannonArm.SetActive(true);
             PlayerState.canShoot = true;
+            rightText.text = "Blaster";
         }
     }
 

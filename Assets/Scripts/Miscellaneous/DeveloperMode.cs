@@ -9,6 +9,8 @@ public class DeveloperMode : MonoBehaviour
     private InputMaster controls;
     string currentEnemy;
     int currentEnemyIndex = 0;
+    TMP_Text devText;
+    TMP_Text enemyText;
 
     void Awake()
     {
@@ -30,6 +32,8 @@ public class DeveloperMode : MonoBehaviour
     private void Start()
     {
         currentEnemy = ReferenceManager.instance.enemies[0];
+        enemyText = GameObject.Find("GUI/Canvas/Enemy to Add").GetComponent<TMP_Text>();
+        devText = GameObject.Find("GUI/Canvas/Dev Mode").GetComponent<TMP_Text>();
 
     }
     private void OnEnable()
@@ -73,12 +77,14 @@ public class DeveloperMode : MonoBehaviour
 
     private void ToggleEnemy()
     {
-        // Increment the index and wrap it around if it reaches the end of the array
-        currentEnemyIndex = (currentEnemyIndex + 1) % ReferenceManager.instance.enemies.Length;
-        currentEnemy = ReferenceManager.instance.enemies[currentEnemyIndex];
+        if (LevelState.devMode == true)
+        {
+            // Increment the index and wrap it around if it reaches the end of the array
+            currentEnemyIndex = (currentEnemyIndex + 1) % ReferenceManager.instance.enemies.Length;
+            currentEnemy = ReferenceManager.instance.enemies[currentEnemyIndex];
 
-        TMP_Text enemyText = GameObject.Find("GUI/Canvas/Enemy to Add").GetComponent<TMP_Text>();
-        enemyText.text = "Enemy: " + currentEnemy;
+            enemyText.text = "Place Enemy: " + currentEnemy;
+        }
 
     }
 
@@ -96,15 +102,21 @@ public class DeveloperMode : MonoBehaviour
 
     private void ToggleDevMode()
     {
+        devText.text = "Place Enemy: " + currentEnemy;
         if (LevelState.devMode == true)
         {
             LevelState.devMode = false;
             Debug.Log("Dev Mode Disabled");
+            devText.text = "";
+            enemyText.text = "";
         }
         else
         {
             LevelState.devMode = true;
             Debug.Log("Dev Mode Enabled");
+            devText.text = "Developer Mode Enabled";
+            currentEnemy = ReferenceManager.instance.enemies[currentEnemyIndex];
+            enemyText.text = "Place Enemy: " + currentEnemy;
         }
 
         PlayerState.UpdateEnergy(PlayerState.currentMax);

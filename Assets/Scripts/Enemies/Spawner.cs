@@ -32,15 +32,16 @@ public class Spawner : MonoBehaviour
         switch (enemyType)
         {
             case EnemyType.Scrapper:
-                startHeight = -1.5f;
-                endHeight = -0.2f;
+                raiseTime *= 0.5f;
+                startHeight = -0.3f;
+                endHeight = 0.5f;
                 positionOffsetX = positionOffsetX * 0.6f;
                 positionOffsetZ = positionOffsetZ * 0.6f;
                 break;
 
             case EnemyType.Guard:
                 startHeight = -3f;
-                endHeight = 1f;
+                endHeight = 1.6f;
                 break;
 
             case EnemyType.Dalek:

@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
 
 public class ReferenceManager : MonoBehaviour
 {
@@ -8,6 +10,9 @@ public class ReferenceManager : MonoBehaviour
 
     public GameObject player;
     public GameObject spawnPoint;
+    public Image currentEnergyImage;
+    public Image maxEnergyImage;
+
     public string[] enemies =
     {
         "Scrapper",

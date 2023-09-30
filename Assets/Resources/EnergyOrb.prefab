@@ -225,6 +225,7 @@ GameObject:
   - component: {fileID: 3885171970184489320}
   - component: {fileID: 8062157034132649569}
   - component: {fileID: 2077881917051013507}
+  - component: {fileID: 349882402715580761}
   m_Layer: 0
   m_Name: EnergyOrb
   m_TagString: Untagged
@@ -331,7 +332,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba82bdd2b6745b949b053dc02864d1ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
   detectionRange: 15
   healthAmount: 4
   moveSpeed: 2
@@ -398,3 +398,30 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!54 &349882402715580761
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7641993745263552831}
+  serializedVersion: 4
+  m_Mass: 0.1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0

@@ -23,8 +23,8 @@ public class EnergyOrb : MonoBehaviour
             audioSource = gameObject.AddComponent<AudioSource>();
         }
 
-        Rigidbody rb = gameObject.AddComponent<Rigidbody>();
-        rb.isKinematic = true;
+        //Rigidbody rb = gameObject.GetComponent<Rigidbody>();
+        //rb.isKinematic = true;
     }
 
     // Update is called once per frame
@@ -46,7 +46,7 @@ public class EnergyOrb : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "Player")
+        if(other.tag == "Player" && (PlayerState.currentMax != PlayerState.currentEnergy))
         {
             PlayerState.AddPower(healthAmount);
             audioSource.PlayOneShot(clip);

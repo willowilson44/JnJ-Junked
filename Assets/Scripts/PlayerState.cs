@@ -3,6 +3,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 /*
  * Author: Josh Wilson
@@ -30,6 +31,9 @@ public static class PlayerState
     public static int currentEnergy = 70;
     public static bool isAlive = true;
     private static TMP_Text energyText; // Reference to the TextMeshPro component
+    private static Image maxEnergyImage;
+    private static Image currentEnergyImage;
+
 
     //Player Speed Modifiers
     private const int defaultSpeedModifier = 30;
@@ -54,12 +58,22 @@ public static class PlayerState
         //UpdatePower();
         currentEnergy = currentMax;
         UpdateSpeed();
+
+
+        maxEnergyImage = ReferenceManager.instance.maxEnergyImage;
+        maxEnergyImage.fillAmount = (float)currentMax / 120;
+
+        currentEnergyImage = ReferenceManager.instance.currentEnergyImage;
+        currentEnergyImage.fillAmount = (float)currentEnergy / 120;
     }
 
 
     public static void UpdateEnergyMax()
     {
         currentMax = GameSettings.getBatteryPower();
+
+        maxEnergyImage = ReferenceManager.instance.maxEnergyImage;
+        maxEnergyImage.fillAmount = (float)currentMax / 120;
     }
 
     public static void UpdateSpeed()
@@ -107,6 +121,10 @@ public static class PlayerState
         currentEnergy = newEnergy;
         energyText = GameObject.Find("GUI/Canvas/Energy Level").GetComponent<TMP_Text>();
         energyText.text = "Energy: "+ currentEnergy + " / " + currentMax;
+
+        currentEnergyImage = ReferenceManager.instance.currentEnergyImage;
+        currentEnergyImage.fillAmount = (float)currentEnergy / 120;
+
     }
 
     public static void ResetState()

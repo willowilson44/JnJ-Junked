@@ -38,15 +38,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7819579308627006493, guid: 6ea9ecc7fb0d34e43b266c7ea78d85f8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 30.94525
+      value: -4.6811967
       objectReference: {fileID: 0}
     - target: {fileID: 7819579308627006493, guid: 6ea9ecc7fb0d34e43b266c7ea78d85f8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.9044632
+      value: 0.12
       objectReference: {fileID: 0}
     - target: {fileID: 7819579308627006493, guid: 6ea9ecc7fb0d34e43b266c7ea78d85f8, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -6.2857323
+      value: 44.14177
       objectReference: {fileID: 0}
     - target: {fileID: 7819579308627006493, guid: 6ea9ecc7fb0d34e43b266c7ea78d85f8, type: 3}
       propertyPath: m_LocalRotation.w
@@ -83,5 +83,40 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7641993745263552831, guid: 6ea9ecc7fb0d34e43b266c7ea78d85f8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1876678432167934008}
   m_SourcePrefab: {fileID: 100100000, guid: 6ea9ecc7fb0d34e43b266c7ea78d85f8, type: 3}
+--- !u!1 &2666498766073904829 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7641993745263552831, guid: 6ea9ecc7fb0d34e43b266c7ea78d85f8, type: 3}
+  m_PrefabInstance: {fileID: 5696101705954547586}
+  m_PrefabAsset: {fileID: 0}
+--- !u!54 &1876678432167934008
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2666498766073904829}
+  serializedVersion: 4
+  m_Mass: 0.1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
