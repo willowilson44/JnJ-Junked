@@ -212,6 +212,7 @@ public class PlayerActionUpdate : MonoBehaviour
 
         PlayerState.UpdateEnergyMax();
         PlayerState.UpdateEnergy(PlayerState.currentMax);
+        PlayerState.UpdateSpeed();
     }
 
 }
