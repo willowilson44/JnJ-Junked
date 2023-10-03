@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -67,20 +68,28 @@ public class PlayerActionUpdate : MonoBehaviour
         controls = new InputMaster();
         controls.Player.Move.performed += ctx => currentMovement = ctx.ReadValue<Vector2>();
         controls.Player.Move.canceled += ctx => currentMovement = Vector2.zero;
-        controls.Player.Jump.performed += _ => {
+        controls.Player.Jump.performed += _ =>
+        {
             if (PlayerState.canJump)
             {
                 jumping = true;
             }
         };
         controls.Player.Jump.canceled += _ => jumping = false;
-        controls.Player.Shoot.performed += _ => {
+        controls.Player.Shoot.performed += _ =>
+        {
             if (PlayerState.canShoot)
             {
                 shooting = true;
             }
         };
         controls.Player.Shoot.canceled += _ => shooting = false;
+
+        controls.Player.Pause.performed += _ =>
+        {
+            QuitLevel();
+        };
+
     }
 
     void Start()
@@ -239,5 +248,10 @@ public class PlayerActionUpdate : MonoBehaviour
 
         Debug.Log("Loading Level: " + LevelState.currentLevel + ", Scene Name is: " + sceneName);
         SceneManager.LoadScene(sceneName);
+    }
+
+    void QuitLevel()
+    {
+        SceneManager.LoadScene("Main Menu");
     }
 }

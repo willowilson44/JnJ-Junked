@@ -18,7 +18,7 @@ public class ScrapperBehaviour : MonoBehaviour
     NavMeshAgent agent;
 
     // Enemy Attack
-    public int damage = 10;          
+    public int damage = 5;          
     public float attackRate = 1.5f;
     public float attackCone = 60f;           // Degrees width of attack cone from forward (90 = directly to the side)
     private float lastAttackTime = 0f;
@@ -64,6 +64,9 @@ public class ScrapperBehaviour : MonoBehaviour
         agent.speed = speed + (LevelState.currentDifficulty * 2);       //scales AI speed to difficulty
         agent.angularSpeed = turningSpeed;                              //scale these too??
         agent.acceleration = acceleration;                              //scale these too??
+
+
+        damage = damage * (LevelState.currentDifficulty + 1);
     }
 
     // Update is called once per frame

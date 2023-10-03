@@ -65,5 +65,7 @@ public class Upgrade : MonoBehaviour
         // After performing the upgrade tasks, deactivate or destroy the upgrade GameObject.
         gameObject.SetActive(false);
         // Destroy(gameObject);
+
+        // Also Set the upgrade instantly to active
     }
 }

@@ -333,7 +333,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   detectionRange: 15
-  healthAmount: 4
+  healthAmount: 5
   moveSpeed: 2
   clip: {fileID: 8300000, guid: 59e5f7ab75dfaa7479b20659ecb1510c, type: 3}
 --- !u!108 &2077881917051013507

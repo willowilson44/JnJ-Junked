@@ -107,12 +107,14 @@ public class UpgradeSelector : MonoBehaviour
         {
             // Add an element of value 1 to legPieces array
             legPieces.Add(1);
+            toggleLeg();
         }
 
         if (GameSettings.upgradesFound[LevelState.currentDifficulty][1] && !rightArmPieces.Contains(1))
         {
             // Add an element of value 1 to rightArmPieces array
             rightArmPieces.Add(1);
+            toggleRightArm();
         }
 
         //REMEMBER TO ADD THE "&& !contains" part!!!

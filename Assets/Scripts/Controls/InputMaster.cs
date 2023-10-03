@@ -125,6 +125,15 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""d1927c65-8801-436c-a7a3-46d46d9cc435"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -424,6 +433,28 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
                     ""action"": ""ToggleEnemy"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e1c30535-c6c4-4a6c-a05f-ffac2ccd0767"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b8a334f1-1c72-4034-8cb6-6e338b012f6b"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -443,6 +474,7 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
         m_Player_ToggleDevMode = m_Player.FindAction("ToggleDevMode", throwIfNotFound: true);
         m_Player_InstantiateEnemy = m_Player.FindAction("InstantiateEnemy", throwIfNotFound: true);
         m_Player_ToggleEnemy = m_Player.FindAction("ToggleEnemy", throwIfNotFound: true);
+        m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -515,6 +547,7 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_ToggleDevMode;
     private readonly InputAction m_Player_InstantiateEnemy;
     private readonly InputAction m_Player_ToggleEnemy;
+    private readonly InputAction m_Player_Pause;
     public struct PlayerActions
     {
         private @InputMaster m_Wrapper;
@@ -530,6 +563,7 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
         public InputAction @ToggleDevMode => m_Wrapper.m_Player_ToggleDevMode;
         public InputAction @InstantiateEnemy => m_Wrapper.m_Player_InstantiateEnemy;
         public InputAction @ToggleEnemy => m_Wrapper.m_Player_ToggleEnemy;
+        public InputAction @Pause => m_Wrapper.m_Player_Pause;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -572,6 +606,9 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
             @ToggleEnemy.started += instance.OnToggleEnemy;
             @ToggleEnemy.performed += instance.OnToggleEnemy;
             @ToggleEnemy.canceled += instance.OnToggleEnemy;
+            @Pause.started += instance.OnPause;
+            @Pause.performed += instance.OnPause;
+            @Pause.canceled += instance.OnPause;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -609,6 +646,9 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
             @ToggleEnemy.started -= instance.OnToggleEnemy;
             @ToggleEnemy.performed -= instance.OnToggleEnemy;
             @ToggleEnemy.canceled -= instance.OnToggleEnemy;
+            @Pause.started -= instance.OnPause;
+            @Pause.performed -= instance.OnPause;
+            @Pause.canceled -= instance.OnPause;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -639,5 +679,6 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
         void OnToggleDevMode(InputAction.CallbackContext context);
         void OnInstantiateEnemy(InputAction.CallbackContext context);
         void OnToggleEnemy(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
     }
 }

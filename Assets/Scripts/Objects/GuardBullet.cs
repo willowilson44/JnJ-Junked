@@ -7,7 +7,7 @@ public class GuardBullet : MonoBehaviour
     private int collisionCount = 0;
     private int maxCollisions = 2;
     private float knockbackForce = 5f;
-    private int damageAmount = 5; // Change this value to whatever amount of damage you want the bullet to deal
+    public int damageAmount = 3; // Change this value to whatever amount of damage you want the bullet to deal
     private bool destroying;
     private Rigidbody rb;
     public AudioClip ricochetSound;
@@ -31,6 +31,8 @@ public class GuardBullet : MonoBehaviour
         bulletLight = GetComponent<Light>();
         knockbackDirection = rb.velocity.normalized;
         initialVelocity = rb.velocity.magnitude;
+
+        damageAmount = damageAmount * (LevelState.currentDifficulty + 1);
     }
 
     private void Update()

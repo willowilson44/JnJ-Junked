@@ -16,7 +16,7 @@ public class DalekBullet : MonoBehaviour
     private int collisionCount = 0;
     private int maxCollisions = 2;
     private float knockbackForce = 5f;
-    private int damageAmount = 20; // Change this value to whatever amount of damage you want the bullet to deal
+    public int damageAmount = 15; // Change this value to whatever amount of damage you want the bullet to deal
     private bool destroying;
     private Rigidbody rb;
     public AudioClip ricochetSound;
@@ -47,7 +47,9 @@ public class DalekBullet : MonoBehaviour
         initialVelocity = rb.velocity.magnitude;
         bulletMeshTransform.localScale = new Vector3(0.5f,yScale,0.5f);
         //transform.rotation = Quaternion.Euler(new Vector3(90, 0, 0));
-    }
+
+        damageAmount = damageAmount * (LevelState.currentDifficulty+1);
+}
 
     private void Update()
     {
