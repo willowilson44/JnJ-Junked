@@ -1,6 +1,5 @@
 using UnityEngine;
 using static Unity.IO.LowLevel.Unsafe.AsyncReadManagerMetrics;
-using static UnityEditor.PlayerSettings;
 
 /*
  * Author: Josh Wilson
