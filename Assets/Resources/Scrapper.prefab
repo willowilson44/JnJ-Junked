@@ -177,8 +177,8 @@ MonoBehaviour:
   speed: 8
   turningSpeed: 240
   acceleration: 15
-  detectionRange: 45
-  sightCone: 90
+  detectionRange: 35
+  sightCone: 80
 --- !u!114 &4794827525770376459
 MonoBehaviour:
   m_ObjectHideFlags: 0

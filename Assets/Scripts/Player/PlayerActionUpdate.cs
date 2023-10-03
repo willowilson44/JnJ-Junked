@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /*
  * Author: Josh Wilson
@@ -213,6 +214,30 @@ public class PlayerActionUpdate : MonoBehaviour
         PlayerState.UpdateEnergyMax();
         PlayerState.UpdateEnergy(PlayerState.currentMax);
         PlayerState.UpdateSpeed();
+        ReloadLevel();
     }
 
+    void ReloadLevel()
+    {
+        string sceneName = "";
+        switch (LevelState.currentLevel)
+        {
+            case 0:
+                sceneName = GameSettings.levelNames[0]; // replace with your scene name for level 0
+                break;
+            case 1:
+                sceneName = GameSettings.levelNames[1]; // replace with your scene name for level 1
+                break;
+            case 2:
+                sceneName = GameSettings.levelNames[2]; // replace with your scene name for level 2
+                break;
+            // Add more cases as needed for additional levels.
+            default:
+                Debug.LogError("Invalid level selected!");
+                return; // exit the method without loading a scene.
+        }
+
+        Debug.Log("Loading Level: " + LevelState.currentLevel + ", Scene Name is: " + sceneName);
+        SceneManager.LoadScene(sceneName);
+    }
 }
