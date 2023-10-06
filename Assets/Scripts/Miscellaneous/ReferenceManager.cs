@@ -9,6 +9,7 @@ public class ReferenceManager : MonoBehaviour
     public static ReferenceManager instance;
 
     public GameObject player;
+    public CameraFollow mainCamera;
     public GameObject spawnPoint;
     public Image currentEnergyImage;
     public Image maxEnergyImage;

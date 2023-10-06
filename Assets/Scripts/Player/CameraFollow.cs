@@ -22,6 +22,10 @@ public class CameraFollow : MonoBehaviour
     public float lookSpeedY = 8f;
     public float gamepadSensitivityX = 80f;
     public float gamepadSensitivityY = 30f;
+    private const float lookSpeedXDefault = 8f;
+    private const float lookSpeedYDefault = 8f;
+    private const float gamepadSensitivityXDefault = 80f;
+    private const float gamepadSensitivityYDefault = 30f;
     private string controlDevice;
     private Vector2 currentLookDelta;
     private InputMaster controls;
@@ -48,6 +52,50 @@ public class CameraFollow : MonoBehaviour
         controls.Disable();
     }
 
+    public void updateMouseLook(float newMultiplier)
+    {
+        lookSpeedX = lookSpeedXDefault * newMultiplier;
+        lookSpeedY = lookSpeedYDefault * newMultiplier;
+    }
+
+    public void invertMouseLook(bool inverted)
+    {
+        if (inverted)
+        {
+            lookSpeedY *= -1;
+
+        } else
+        {
+            if(lookSpeedY < 0)
+            {
+                lookSpeedY *= -1;
+            }
+        }
+    }
+
+    public void updateGamepadLook(float newMultiplier)
+    {
+        gamepadSensitivityX = gamepadSensitivityXDefault * newMultiplier;
+        gamepadSensitivityY = gamepadSensitivityYDefault * newMultiplier;
+
+    }
+
+    public void invertGamepadLook(bool inverted)
+    {
+        if (inverted)
+        {
+            gamepadSensitivityY *= -1;
+
+        }
+        else
+        {
+            if (gamepadSensitivityY < 0)
+            {
+                gamepadSensitivityY *= -1;
+            }
+        }
+    }
+
     public float DoLook()
     {
         // Follow the player
@@ -70,7 +118,7 @@ public class CameraFollow : MonoBehaviour
         }
 
         pitch -= xRotation;
-        pitch = Mathf.Clamp(pitch, -40f, 85f);
+        pitch = Mathf.Clamp(pitch, -70f, 32f);     //previously (pitch, -40f, 85f)
 
         transform.eulerAngles = new Vector3(pitch, transform.eulerAngles.y + yRotation, 0);
         return yRotation;

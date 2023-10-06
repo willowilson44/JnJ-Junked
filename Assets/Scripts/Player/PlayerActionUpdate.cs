@@ -84,12 +84,6 @@ public class PlayerActionUpdate : MonoBehaviour
             }
         };
         controls.Player.Shoot.canceled += _ => shooting = false;
-
-        controls.Player.Pause.performed += _ =>
-        {
-            QuitLevel();
-        };
-
     }
 
     void Start()
@@ -250,8 +244,5 @@ public class PlayerActionUpdate : MonoBehaviour
         SceneManager.LoadScene(sceneName);
     }
 
-    void QuitLevel()
-    {
-        SceneManager.LoadScene("Main Menu");
-    }
+
 }
