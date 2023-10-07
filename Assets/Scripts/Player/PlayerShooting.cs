@@ -51,6 +51,14 @@ public static class PlayerShooting
         //bulletScript.player = playerObject;     //could be used for tallying kills
 
         Vector3 direction = (target - gunPoint).normalized;
+
+        // Introduce inaccuracy
+        float inaccuracy = 0.02f; // adjust this value as needed
+        direction.x += Random.Range(-inaccuracy, inaccuracy);
+        direction.y += Random.Range(-inaccuracy, inaccuracy);
+        direction.z += Random.Range(-inaccuracy, inaccuracy);
+        direction.Normalize(); // re-normalize the direction after introducing the inaccuracy
+
         rb.velocity = direction * bulletSpeed;
     }
 

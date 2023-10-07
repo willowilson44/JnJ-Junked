@@ -155,7 +155,6 @@ MonoBehaviour:
   damageAmount: 10
   ricochetSound: {fileID: 8300000, guid: 09f697d650ee2c041af805707fb22905, type: 3}
   collisionSound: {fileID: 8300000, guid: 6f7acd323a1bf67478789091edc809b3, type: 3}
-  player: {fileID: 0}
 --- !u!108 &9020705729796995511
 Light:
   m_ObjectHideFlags: 0
@@ -237,5 +236,5 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 10
+  m_Radius: 15
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}

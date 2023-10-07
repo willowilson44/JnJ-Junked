@@ -34,9 +34,9 @@ public class DalekBehaviour : MonoBehaviour
     private float predictionTime = 0.4f;   // How far ahead of the player the enemy tries to predict movement
 
     // Detecting the Player
-    private bool isListening = false;        // if true enemy will raycast to try to "see" the player
+    //private bool isListening = false;        // if true enemy will raycast to try to "see" the player
     private bool isChasing = false;          // if true enemy will chase/attack the player
-    private bool isAttacking = false;        // if true enemy will chase/attack the player
+    //private bool isAttacking = false;        // if true enemy will chase/attack the player
     private bool canAlert = true;
     public int detectionRange = 35;         // Within this range the enemy will raycast to try to "see" the player
     private int detectBehindRange = 10;      // Within this range the enemy will immediately find the player even if behind it
@@ -71,7 +71,7 @@ public class DalekBehaviour : MonoBehaviour
         }
 
         agent = GetComponent<NavMeshAgent>();
-        agent.speed = speed + (LevelState.currentDifficulty * 2);       //scales AI speed to difficulty
+        agent.speed = speed + (LevelState.currentDifficulty);       //scales AI speed to difficulty
         agent.angularSpeed = turningSpeed;                              //scale these too??
         agent.acceleration = acceleration;                              //scale these too??
     }
@@ -96,7 +96,7 @@ public class DalekBehaviour : MonoBehaviour
             // Check if the player is within detection range
             if (distanceToPlayer <= detectionRange)
             {
-                isListening = true;
+                //isListening = true;
 
                 // Check if the player is VERY close behind
                 if (distanceToPlayer <= detectBehindRange && LevelState.devMode == false)
@@ -112,7 +112,7 @@ public class DalekBehaviour : MonoBehaviour
             }
             else
             {
-                isListening = false;
+                //isListening = false;
             }
         }
     }
@@ -262,7 +262,7 @@ public class DalekBehaviour : MonoBehaviour
     {
         audioSource.PlayOneShot(alertSounds[UnityEngine.Random.Range(0, alertSounds.Length)]);
         canAlert = false;
-        int waitInt = UnityEngine.Random.Range(7, 13);
+        int waitInt = UnityEngine.Random.Range(10, 20);
         yield return new WaitForSeconds(waitInt);
 
         canAlert = true;

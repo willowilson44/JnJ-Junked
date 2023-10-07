@@ -56,6 +56,9 @@ public class Upgrade : MonoBehaviour
             audioSource.PlayOneShot(pickupSound);
         }
 
+        Notifications notificationSystem = FindObjectOfType<Notifications>();
+        notificationSystem.DisplayNotification("You've found the " + GameSettings.upGradeNames[upgradeNumber] + " Upgrade!! Equipping now...", 4.0f); // This message will last for 3 seconds
+
         // Perform the upgrade and other related tasks.
         GameSettings.UpgradeCollected(upgradeNumber);
 

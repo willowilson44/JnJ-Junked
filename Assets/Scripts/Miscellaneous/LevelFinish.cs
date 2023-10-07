@@ -30,10 +30,12 @@ public class LevelFinish : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            
+            Cursor.lockState = CursorLockMode.None; // Frees the cursor
+            Cursor.visible = true; // Shows the cursor
 
             Debug.Log("End Level panel activated");
             endLevelPanel.SetActive(true);
+            
 
             if (LevelState.currentLevel + 1 >= GameSettings.numLevels)
             {

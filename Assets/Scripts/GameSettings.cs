@@ -20,11 +20,12 @@ public static class GameSettings
     // game constants
     public const int numLevels = 3;
     public static readonly string[] levelNames = { "Level1", "JunkTest1", "JunkTest1" };
+    public static readonly string[] upGradeNames = { "Jump", "Blaster", "Heavy Armour" };
     public const int numDifficulties = 3;
     private const int numUpgrades = 3;
     private const int numBatteries = 4;
     public const int batteryEnergy = 10;    // The energy gained from each battery
-    public const int startingEnergy = 70; 
+    public const int startingEnergy = 70;
 
 
     // saved settings
@@ -124,6 +125,7 @@ public static class GameSettings
             }
         }
 
+
         PlayerPrefs.Save();
     }
 
@@ -153,5 +155,6 @@ public static class GameSettings
                 upgradesFound[i][k] = PlayerPrefs.GetInt(upgradeKey, 0) == 1;
             }
         }
+
     }
 }

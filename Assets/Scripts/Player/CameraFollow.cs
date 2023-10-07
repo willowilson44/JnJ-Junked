@@ -34,6 +34,7 @@ public class CameraFollow : MonoBehaviour
 
     private void Awake()
     {
+        controlDevice = "Mouse";
         controls = new InputMaster();
         controls.Player.Look.performed += ctx => {
             currentLookDelta = ctx.ReadValue<Vector2>();
@@ -121,6 +122,8 @@ public class CameraFollow : MonoBehaviour
         pitch = Mathf.Clamp(pitch, -70f, 32f);     //previously (pitch, -40f, 85f)
 
         transform.eulerAngles = new Vector3(pitch, transform.eulerAngles.y + yRotation, 0);
+
         return yRotation;
     }
+
 }

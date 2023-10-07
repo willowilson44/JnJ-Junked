@@ -12,19 +12,30 @@ public class Spawner : MonoBehaviour
     private GameObject spawner;
     private GameObject player;
     private GameObject[] spawnedEnemies;
+    private int spawnedCount;
     private float startHeight;
     private float endHeight;
     private float positionOffsetX = 1.2f;
     private float positionOffsetZ = -1.7f;
     private float raiseTime = 2f;
-    public int spawnsAtOnce = 3;
-    public int spawnWait = 15;
-    public int activationRange = 80;
+    private bool isActive = true;
+    public int spawnsAtOnce = 2;
+    public int spawnWait = 12;
+    public int spawnTotal = 3;
+    public int activationRange = 120;
     float lastSpawnTime = 0;
+
+    private Renderer trapdoorRenderer;
+    private Renderer chevronRenderer;
+    Material trapdoorMaterial;
+    Material chevronMaterial;
+    Color initialColor;
+    Color transparentColor;
 
     // Start is called before the first frame update
     void Start()
     {
+        
         spawner = this.gameObject;
         spawnedEnemies = new GameObject[spawnsAtOnce]; // Initialize the spawnedEnemies array
         player = ReferenceManager.instance.player;
@@ -57,6 +68,16 @@ public class Spawner : MonoBehaviour
         }
 
         lastSpawnTime = Time.time;
+
+        // Obtain reference to the Trapdoor's material
+        trapdoorRenderer = spawner.transform.Find("Trapdoor").GetComponent<Renderer>();
+        trapdoorMaterial = trapdoorRenderer.material;
+        initialColor = trapdoorMaterial.color;
+        transparentColor = new Color(initialColor.r, initialColor.g, initialColor.b, 0f);        // Prepare the transparent color (keeping the same RGB but with 0 alpha)
+
+        spawnWait = spawnWait*(1-(LevelState.currentDifficulty/5));
+        spawnTotal = spawnTotal+(LevelState.currentDifficulty*2);
+
     }
 
     // Update is called once per frame
@@ -71,31 +92,58 @@ public class Spawner : MonoBehaviour
             return; 
         }
 
-
-        // If enough time has passed since the last spawn
-        if (Time.time >= lastSpawnTime + spawnWait)
-        {
-            // Check each index in spawnedEnemies
-            for (int i = 0; i < spawnedEnemies.Length; i++)
+            // If enough time has passed since the last spawn
+            if (Time.time >= lastSpawnTime + spawnWait)
             {
-                // If an index is null (empty), spawn a new enemy there
-                if (spawnedEnemies[i] == null)
+                // Check each index in spawnedEnemies
+                for (int i = 0; i < spawnedEnemies.Length; i++)
                 {
-                    spawnedEnemies[i] = SpawnEnemy();
-                    lastSpawnTime = Time.time; // Update the last spawn time
+                    // If an index is null (empty), spawn a new enemy there
+                    if (spawnedEnemies[i] == null)
+                    {
+                        spawnedCount++;
+                        spawnedEnemies[i] = SpawnEnemy();
+                        lastSpawnTime = Time.time; // Update the last spawn time
+
+
+                    if (spawnedCount >= spawnTotal)
+                    {
+                        DeactivateSpawner();
+                    }
+
                     break; // Exit the loop since we've spawned an enemy this frame
+                    }
                 }
             }
+
+        
+
+        
+    }
+
+
+
+    private void DeactivateSpawner()
+    {
+        Transform coverChild = transform.Find("Cover");
+        if (coverChild != null)
+        {
+            coverChild.gameObject.SetActive(true);
         }
+        else
+        {
+            Debug.LogWarning("Cover child not found in spawner.");
+        }
+
+
+        this.enabled = false;
     }
 
     private GameObject SpawnEnemy()
     {
         GameObject newEnemy;
-        Vector3 startPos = spawner.transform.position;
-        startPos.x += positionOffsetX;
-        startPos.y += startHeight;
-        startPos.z += positionOffsetZ;
+        Vector3 offset = new Vector3(positionOffsetX, startHeight, positionOffsetZ); // Create the offset as a vector
+        Vector3 startPos = spawner.transform.position + spawner.transform.TransformDirection(offset); // Apply the offset based on the spawner's orientation
 
         newEnemy = Instantiate(Resources.Load<GameObject>(enemyType.ToString()), startPos, spawner.transform.rotation);
 
@@ -104,16 +152,9 @@ public class Spawner : MonoBehaviour
         return newEnemy;
     }
 
+
     IEnumerator RaiseEnemy(GameObject newEnemy, Vector3 startPos)
     {
-        // Obtain reference to the Trapdoor's material
-        Renderer trapdoorRenderer = spawner.transform.Find("Trapdoor").GetComponent<Renderer>();
-        Material trapdoorMaterial = trapdoorRenderer.material;
-        Color initialColor = trapdoorMaterial.color;
-
-        // Prepare the transparent color (keeping the same RGB but with 0 alpha)
-        Color transparentColor = new Color(initialColor.r, initialColor.g, initialColor.b, 0f);
-
         // Get the NavMeshAgent and Rigidbody components
         var navMeshAgent = newEnemy.GetComponent<NavMeshAgent>();
         var rigidbody = newEnemy.GetComponent<Rigidbody>();
@@ -126,10 +167,8 @@ public class Spawner : MonoBehaviour
         float startTime = Time.time; // Save the start time
 
         // Calculate the start and end positions relative to the spawner's position
-        Vector3 endPos = spawner.transform.position;
-        endPos.x += positionOffsetX;
-        endPos.y += endHeight;
-        endPos.z += positionOffsetZ;
+        Vector3 offsetEndPos = new Vector3(positionOffsetX, endHeight, positionOffsetZ); // Create the offset as a vector
+        Vector3 endPos = spawner.transform.position + spawner.transform.TransformDirection(offsetEndPos); // Apply the offset based on the spawner's orientation
 
         while (Time.time < startTime + raiseTime)
         {

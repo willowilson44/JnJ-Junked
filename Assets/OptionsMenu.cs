@@ -9,6 +9,7 @@ public class OptionsMenu : MonoBehaviour
     private InputMaster controls;
     public GameObject mainMenuUI;
     public GameObject optionsMenuUI;
+    public GameObject introSkipMenuUI;
     public Button options;
     public Button back;
     public Slider volume;
@@ -16,7 +17,7 @@ public class OptionsMenu : MonoBehaviour
     public Toggle mouseInvertY;
     public Slider gamepadSensitivity;
     public Toggle gamepadInvertY;
-    private bool inOptions = false;
+    //private bool inOptions = false;
 
     [Header("Settings")]
     public float defaultMouseSensitivity = 1.0f;
@@ -49,16 +50,18 @@ public class OptionsMenu : MonoBehaviour
 
     public void Options()
     {
-        inOptions = true;
+        //inOptions = true;
         mainMenuUI.SetActive(false);
+        introSkipMenuUI.SetActive(false);
         optionsMenuUI.SetActive(true);
     }
 
     public void Back()
     {
-        inOptions = false;
+        //inOptions = false;
         SaveSettings();
         optionsMenuUI.SetActive(false);
+        introSkipMenuUI.SetActive(true);
         mainMenuUI.SetActive(true);
     }
 

@@ -332,9 +332,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba82bdd2b6745b949b053dc02864d1ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detectionRange: 15
+  detectionRange: 20
   healthAmount: 5
-  moveSpeed: 2
+  moveSpeed: 4
   clip: {fileID: 8300000, guid: 59e5f7ab75dfaa7479b20659ecb1510c, type: 3}
 --- !u!108 &2077881917051013507
 Light:

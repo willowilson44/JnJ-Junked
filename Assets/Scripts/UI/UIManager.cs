@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI; // Required for UI
 using UnityEngine.SceneManagement;
-
+using UnityEngine.ProBuilder.MeshOperations;
 
 public class UIManager : MonoBehaviour
 {
@@ -11,6 +11,7 @@ public class UIManager : MonoBehaviour
     public Button StartButton;
     public Button QuitButton;
     public Button OptionsButton;
+    public Toggle skipIntro;
 
     public bool developerMode = false;
     private Button currentHighlightedButton;
@@ -57,6 +58,8 @@ public class UIManager : MonoBehaviour
         QuitButton.onClick.AddListener(() => OnQuitClicked());
         OptionsButton.onClick.AddListener(() => OnOptionsClicked());
 
+
+        skipIntro.isOn = PlayerPrefs.GetInt("skipIntro", 0) == 1;
 
         LockAll();
         UnlockNecessary();
@@ -172,11 +175,19 @@ public class UIManager : MonoBehaviour
 
     void OnStartClicked()
     {
+        PlayerPrefs.SetInt("skipIntro", skipIntro.isOn ? 1 : 0);
         string sceneName = "";
         switch (LevelState.currentLevel)
         {
             case 0:
-                sceneName = GameSettings.levelNames[0]; // replace with your scene name for level 0
+                if (skipIntro.isOn == true)
+                {
+                    sceneName = GameSettings.levelNames[0]; // replace with your scene name for level 0
+                }
+                else
+                {
+                    sceneName = "Intro";
+                }
                 break;
             case 1:
                 sceneName = GameSettings.levelNames[1]; // replace with your scene name for level 1
@@ -196,6 +207,8 @@ public class UIManager : MonoBehaviour
 
     void OnQuitClicked()
     {
+
+        PlayerPrefs.SetInt("skipIntro", skipIntro.isOn ? 1 : 0);
         GameSettings.SaveGameState();
         Debug.Log("Quitting");
 #if UNITY_EDITOR
@@ -206,6 +219,6 @@ public class UIManager : MonoBehaviour
     }
     void OnOptionsClicked()
     {
-
+        PlayerPrefs.SetInt("skipIntro", skipIntro.isOn ? 1 : 0);
     }
 }

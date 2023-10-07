@@ -58,6 +58,10 @@ public class Battery : MonoBehaviour
             audioSource.PlayOneShot(pickupSound);
         }
 
+        Notifications notificationSystem = FindObjectOfType<Notifications>();
+        notificationSystem.DisplayNotification("You've found a Battery Upgrade!\n\nYour maximum increased by 10 and you are feeling faster!!", 4.0f); // This message will last for 3 seconds
+
+
         // Perform the upgrade and other related tasks.
         GameSettings.BatteryCollected(batteryNumber);
         PlayerState.UpdateEnergyMax();

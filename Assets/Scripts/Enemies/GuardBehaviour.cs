@@ -16,9 +16,9 @@ public class GuardBehaviour : MonoBehaviour
     private float predictionTime = 1f;   // How far ahead of the player the enemy tries to predict movement
 
     // Detecting the Player
-    private bool isListening = false;        // if true enemy will raycast to try to "see" the player
+    //private bool isListening = false;        // if true enemy will raycast to try to "see" the player
     private bool isChasing = false;          // if true enemy will chase/attack the player
-    private bool isAttacking = false;        // if true enemy will chase/attack the player
+    //private bool isAttacking = false;        // if true enemy will chase/attack the player
     private bool canAlert = true;
     public int detectionRange = 60;         // Within this range the enemy will raycast to try to "see" the player
     private int detectBehindRange = 10;      // Within this range the enemy will immediately find the player even if behind it
@@ -35,8 +35,8 @@ public class GuardBehaviour : MonoBehaviour
     private float bulletSpeed = 22f; // Speed of the bullet
     private float lastFiredTime = 0f; // Time the player last fired
     private float fireRate = 0.3f; // Fire rate in seconds
-    private int shootRange = 50;             // Within this range the enemy will initiate an attack
-    private float shootCone = 30f;           // Degrees width of attack cone from forward (90 = directly to the side)
+    //private int shootRange = 50;             // Within this range the enemy will initiate an attack
+    private float shootCone = 40f;           // Degrees width of attack cone from forward (90 = directly to the side)
     private float shootPredictionTime = 1.5f;   // How far ahead of the player the enemy tries to predict movement
     public AudioClip shootSound;
 
@@ -54,7 +54,7 @@ public class GuardBehaviour : MonoBehaviour
         }
 
         agent = GetComponent<NavMeshAgent>();
-        agent.speed = speed + (LevelState.currentDifficulty * 2);       //scales AI speed to difficulty
+        agent.speed = speed + (LevelState.currentDifficulty);       //scales AI speed to difficulty
         agent.angularSpeed = turningSpeed;                              //scale these too??
         agent.acceleration = acceleration;                              //scale these too??
     }
@@ -81,7 +81,7 @@ public class GuardBehaviour : MonoBehaviour
             // Check if the player is within detection range
             if (distanceToPlayer <= detectionRange)
             {
-                isListening = true;
+                //isListening = true;
 
                 // Check if the player is VERY close behind
                 if (distanceToPlayer <= detectBehindRange && LevelState.devMode == false)
@@ -97,7 +97,7 @@ public class GuardBehaviour : MonoBehaviour
             }
             else
             {
-                isListening = false;
+                //isListening = false;
             }
         }
     }
@@ -110,7 +110,7 @@ public class GuardBehaviour : MonoBehaviour
         float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
 
         // Check if enough time has passed since the last shot
-        if (Time.time - lastFiredTime > fireRate && distanceToPlayer < shootRange)
+        if (Time.time - lastFiredTime > fireRate)      // previously (Time.time - lastFiredTime > fireRate && distanceToPlayer < shootRange)
         {
             TryShoot();
         }
@@ -204,7 +204,7 @@ public class GuardBehaviour : MonoBehaviour
     {
         audioSource.PlayOneShot(alertSounds[UnityEngine.Random.Range(0, alertSounds.Length)]);
         canAlert = false;
-        int waitInt = UnityEngine.Random.Range(7, 13);
+        int waitInt = UnityEngine.Random.Range(10, 20);
         yield return new WaitForSeconds(waitInt);
 
         canAlert = true;
