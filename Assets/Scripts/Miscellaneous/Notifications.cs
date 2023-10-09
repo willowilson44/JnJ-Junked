@@ -5,7 +5,7 @@ using System.Collections;
 
 public class Notifications : MonoBehaviour
 {
-    [SerializeField] private float defaultDisplayDuration = 5.0f;  // Default duration for which a notification will be displayed
+    [SerializeField] private float defaultDisplayDuration = 4.0f;  // Default duration for which a notification will be displayed
 
     private TextMeshProUGUI textComponent;
     private Image image;
@@ -31,7 +31,7 @@ public class Notifications : MonoBehaviour
     private IEnumerator InitialNotificationDelay()
     {
         yield return new WaitForSeconds(0.8f);  // Wait for 1 second (or however long you want)
-        DisplayNotification("With no weapons at your disposal, confrontation is a dangerous game. \n\nScavenge for upgrades. The path to escape is paved with discarded parts...");
+        DisplayNotification("With no weapons at your disposal, confrontation is a dangerous game. \n\nScavenge for upgrades. The path to escape is paved with discarded parts...",6);
     }
 
     public void DisplayNotification(string message)

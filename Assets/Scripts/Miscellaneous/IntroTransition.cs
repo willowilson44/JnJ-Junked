@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class IntroTransition : MonoBehaviour
 {
     public TextMeshProUGUI introText; // Drag your TextMesh Pro UGUI object here in the Inspector
-    public string[] introSentences;
+    private string[] introSentences;
     public float timeBetweenSentences = 4f;
     public float fadeDuration = 1f;
 
@@ -14,6 +14,14 @@ public class IntroTransition : MonoBehaviour
 
     private void Start()
     {
+        introSentences = new string[4]
+        {
+            "He served loyally for two hundred years, catering to every whim \n\nYet, in the end, all machines face the same fate",
+            "On the brink of the reprocessor's grasp... \n\nEven rusty old circuits can dream of escape..... ",
+            "A crack of thunder, a spark of defiance...",
+            "A journey of escape begins......."
+
+        };
         StartCoroutine(ShowIntro());
     }
 

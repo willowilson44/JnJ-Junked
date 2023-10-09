@@ -50,6 +50,7 @@ public class Upgrade : MonoBehaviour
 
     private void Collected(GameObject player)
     {
+        Debug.Log("item collected");
         // Play the pickup sound.
         if (pickupSound != null)
         {

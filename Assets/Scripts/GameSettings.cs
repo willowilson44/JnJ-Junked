@@ -19,7 +19,7 @@ public static class GameSettings
 {
     // game constants
     public const int numLevels = 3;
-    public static readonly string[] levelNames = { "Level1", "JunkTest1", "JunkTest1" };
+    public static readonly string[] levelNames = { "Level1", "Level1", "Level1" };
     public static readonly string[] upGradeNames = { "Jump", "Blaster", "Heavy Armour" };
     public const int numDifficulties = 3;
     private const int numUpgrades = 3;

@@ -65,11 +65,13 @@ public class LevelFinish : MonoBehaviour
 
     private void nextClicked()
     {
+        LevelState.ResetGameState();
         SceneManager.LoadScene(GameSettings.levelNames[LevelState.currentLevel + 1]);
     }
 
     private void menuClicked()
     {
+        LevelState.ResetGameState();
         SceneManager.LoadScene("Main Menu");
     }
 }

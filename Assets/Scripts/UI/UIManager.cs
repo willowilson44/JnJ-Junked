@@ -3,6 +3,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI; // Required for UI
 using UnityEngine.SceneManagement;
 using UnityEngine.ProBuilder.MeshOperations;
+using System.Collections;
 
 public class UIManager : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class UIManager : MonoBehaviour
     public Button QuitButton;
     public Button OptionsButton;
     public Toggle skipIntro;
+    public GameObject blackScreen;
+    public float fadeDuration = 2f;
 
     public bool developerMode = false;
     private Button currentHighlightedButton;
@@ -202,6 +205,25 @@ public class UIManager : MonoBehaviour
         }
 
         Debug.Log("Loading Level: " + LevelState.currentLevel + ", Scene Name is: " + sceneName);
+
+        StartCoroutine(FadeInAndLoadScene(sceneName));
+    }
+
+    IEnumerator FadeInAndLoadScene(string sceneName)
+    {
+        float t = 0;
+        CanvasGroup canvasGroup = blackScreen.GetComponent<CanvasGroup>();
+        blackScreen.gameObject.SetActive(true); // Ensure the black screen is active
+
+        while (t < fadeDuration)
+        {
+            t += Time.deltaTime;
+            float alpha = Mathf.Lerp(0, 1, t / fadeDuration);
+            canvasGroup.alpha = alpha; // Adjust the alpha of the CanvasGroup
+            yield return null; // Wait for the next frame
+        }
+
+        canvasGroup.alpha = 1; // Ensure the alpha is set to 1 at the end of the fade
         SceneManager.LoadScene(sceneName);
     }
 

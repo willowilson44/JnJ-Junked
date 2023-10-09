@@ -57,6 +57,9 @@ public class GuardBehaviour : MonoBehaviour
         agent.speed = speed + (LevelState.currentDifficulty);       //scales AI speed to difficulty
         agent.angularSpeed = turningSpeed;                              //scale these too??
         agent.acceleration = acceleration;                              //scale these too??
+
+        bulletSpeed = bulletSpeed - (2 * (2 - LevelState.currentDifficulty));   //Scale bullet speed by difficulty
+        fireRate = fireRate + (0.1f* (2 - LevelState.currentDifficulty));
     }
 
     // Update is called once per frame

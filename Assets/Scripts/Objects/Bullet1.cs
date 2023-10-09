@@ -40,6 +40,8 @@ public class Bullet1 : MonoBehaviour
 
         knockbackDirection = rb.velocity.normalized;
         initialVelocity = rb.velocity.magnitude;
+
+        damageAmount = damageAmount + (2 - LevelState.currentDifficulty);
     }
 
     private void Update()

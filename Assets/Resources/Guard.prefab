@@ -235,7 +235,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 882cf8ae9ca381c4f80a84edd8c2d8a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentEnergy: 25
+  currentEnergy: 24
   startled: 0
   orbReferenceName: EnergyOrbGuard
 --- !u!54 &8501900873080915446

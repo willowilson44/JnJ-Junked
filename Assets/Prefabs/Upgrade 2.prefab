@@ -212,8 +212,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_audioClip: {fileID: 8300000, guid: 0b51de22f92c2d44e9ff132a5ae76395, type: 3}
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -633,7 +633,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 15, y: 3, z: 3}
+  m_Size: {x: 24, y: 8, z: 8}
   m_Center: {x: -6, y: 0, z: -1}
 --- !u!54 &261723769720287260
 Rigidbody:
