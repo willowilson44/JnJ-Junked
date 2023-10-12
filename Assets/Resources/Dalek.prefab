@@ -51,6 +51,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf363ba31f8b3574b8da0f8cf59ab30c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  detail: 8
   BaseColor: {fileID: 2100000, guid: f0ecd1eff7f57274e86bb03f8d4a3718, type: 2}
   MiddleColor: {fileID: 2100000, guid: 44a05c4a67c36d847ae946f32053753e, type: 2}
   HeadTubeColor: {fileID: 2100000, guid: fe0c85590c4d6a4438eb55ad0a9d4035, type: 2}

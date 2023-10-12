@@ -5,7 +5,7 @@ using UnityEngine;
 public class DalekMaker : MonoBehaviour
 {
 
-    private int detail;
+    public int detail = 20;
 
     //Base
     private GameObject Base;
@@ -64,7 +64,6 @@ public class DalekMaker : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        detail = 20;
         //transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
 
         //---------Base-----------
@@ -543,7 +542,7 @@ public class DalekMaker : MonoBehaviour
         }
         meshRenderer.sharedMaterial = BaseColor;
         meshFilter = HeadRing1.AddComponent<MeshFilter>();
-        meshFilter.mesh = MeshUtilities.Sweep(ringProfile, MeshUtilities.MakeCirclePath(0.5f,detail), true);
+        meshFilter.mesh = MeshUtilities.Sweep(ringProfile, MeshUtilities.MakeCirclePath(0.5f,detail*2), true);
         HeadRing1.transform.parent = Head.transform;
         HeadRing1.transform.localPosition = new Vector3(-0, 0.205f, 0);
         HeadRing1.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 0));
@@ -558,7 +557,7 @@ public class DalekMaker : MonoBehaviour
         }
         meshRenderer.sharedMaterial = BaseColor;
         meshFilter = HeadRing2.AddComponent<MeshFilter>();
-        meshFilter.mesh = MeshUtilities.Sweep(ringProfile, MeshUtilities.MakeCirclePath(0.48f, detail), true);
+        meshFilter.mesh = MeshUtilities.Sweep(ringProfile, MeshUtilities.MakeCirclePath(0.48f, detail*2), true);
         HeadRing2.transform.parent = Head.transform;
         HeadRing2.transform.localPosition = new Vector3(-0, 0.04f, 0);
         HeadRing2.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 0));
@@ -573,7 +572,7 @@ public class DalekMaker : MonoBehaviour
         }
         meshRenderer.sharedMaterial = BaseColor;
         meshFilter = HeadRing3.AddComponent<MeshFilter>();
-        meshFilter.mesh = MeshUtilities.Sweep(ringProfile, MeshUtilities.MakeCirclePath(0.46f, detail), true);
+        meshFilter.mesh = MeshUtilities.Sweep(ringProfile, MeshUtilities.MakeCirclePath(0.46f, detail*2), true);
         HeadRing3.transform.parent = Head.transform;
         HeadRing3.transform.localPosition = new Vector3(-0, -0.12f, 0);
         HeadRing3.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 0));
@@ -622,7 +621,7 @@ public class DalekMaker : MonoBehaviour
         }
         meshRenderer.sharedMaterial = BaseColor;
         meshFilter = CapBottom.AddComponent<MeshFilter>();
-        meshFilter.mesh = MeshUtilities.Sweep(MeshUtilities.MakeCircleProfile(0.5f, detail), CapBottomPath, false);
+        meshFilter.mesh = MeshUtilities.Sweep(MeshUtilities.MakeCircleProfile(0.5f, detail*2), CapBottomPath, false);
         CapBottom.transform.parent = CapRotationJoint.transform;
         CapBottom.transform.localPosition = new Vector3(0, 0, 0);
         CapBottom.transform.localRotation = Quaternion.Euler(new Vector3(-90, 0, 0));
@@ -637,7 +636,7 @@ public class DalekMaker : MonoBehaviour
         }
         meshRenderer.sharedMaterial = BaseColor;
         meshFilter = CapTop.AddComponent<MeshFilter>();
-        meshFilter.mesh = MeshUtilities.Sweep(MeshUtilities.MakeCircleProfile(0.919f, detail), JoshUtilities.MakeSpherePath(detail, 1.21f, 0.7f), false);
+        meshFilter.mesh = MeshUtilities.Sweep(MeshUtilities.MakeCircleProfile(0.919f, detail*2), JoshUtilities.MakeSpherePath(detail*2, 1.21f, 0.7f), false);
         CapTop.transform.parent = CapRotationJoint.transform;
         CapTop.transform.localPosition = new Vector3(0, -0.236f, 0);
         CapTop.transform.localRotation = Quaternion.Euler(new Vector3(-90, 0, 0));
