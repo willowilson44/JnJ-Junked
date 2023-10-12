@@ -5,9 +5,9 @@ using UnityEngine;
 public class EnergyOrb : MonoBehaviour
 {
     private GameObject player;
-    public int detectionRange = 15;         // Within this range the orb will chase the player
-    public int healthAmount = 4;         // Within this range the orb will chase the player
-    public float moveSpeed = 2.0f;
+    public int detectionRange = 20;         // Within this range the orb will chase the player
+    public int healthAmount = 5;         // Within this range the orb will chase the player
+    public float moveSpeed = 4.0f;
     public AudioClip clip;
     private AudioSource audioSource;
 
@@ -32,14 +32,23 @@ public class EnergyOrb : MonoBehaviour
     {
         float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
 
+        int extraRange = 0;
+        int extraSpeed = 0;
+
+        if (PlayerState.gravitronArmor)
+        {
+            extraRange = 20;
+            extraSpeed = 4;
+        }
+
         // Check if the player is within detection range
-        if (distanceToPlayer <= detectionRange)
+        if (distanceToPlayer <= (detectionRange+extraRange))
         {
             // Calculate direction towards the player
             Vector3 directionToPlayer = (player.transform.position - transform.position).normalized;
 
             // Move the orb towards the player
-            transform.position += directionToPlayer * moveSpeed * Time.deltaTime;
+            transform.position += directionToPlayer * (moveSpeed + extraSpeed) * Time.deltaTime;
 
         }
     }

@@ -9,24 +9,27 @@ public class UpgradeSelector : MonoBehaviour
     private InputMaster controls;
 
     //Upgrade selection
-    private static int bodySelected;        // 0 = none, 1 = 1 battery, 2... etc
-    private static int legSelected;         // 0 = default wheel, 1 = jumping
-    private static int rightArmSelected;    // 0 = default arm, 1 = gun1
-    private static int leftArmSelected;   // 0 = default arm
+    private static int bodySelected;        
+    private static int legSelected;      
+    private static int rightArmSelected;   
+    private static int leftArmSelected; 
 
     private List<int> legPieces;
     public List<int> rightArmPieces;
     private List<int> bodyPieces;
     private List<int> leftArmPieces;
 
-    //private static int[] bodyPieces;
-    //private static int[] legPieces;
-    //private static int[] rightArmPieces;
-    //private static int[] leftArmPieces;
-
     //Model Pieces
-    private static GameObject basicArm;
-    private static GameObject cannonArm;
+    private static GameObject basicRightArm;
+    private static GameObject basicLeftArm;
+    private static GameObject basicBody;
+    private static GameObject blasterRightArm;
+    private static GameObject hyperBlasterRightArm;
+    private static GameObject heavyArmor;
+    private static GameObject gravitronArmor;
+    private static GameObject powerArmor;
+    private static GameObject torchLeftArm;
+    private static GameObject thrusterLeftArm;
 
     //UI Button Text updates
 
@@ -39,8 +42,9 @@ public class UpgradeSelector : MonoBehaviour
     {
         controls = new InputMaster();
         controls.Player.ToggleLegs.performed += _ => toggleLeg();
-        controls.Player.ToggleBody.performed += _ => toggleBody();
-        controls.Player.ToggleRightArm.performed += _ => toggleRightArm();
+        controls.Player.ToggleBody.performed += _ => toggleBody(true);
+        controls.Player.ToggleRightArm.performed += _ => toggleRightArm(0);
+        controls.Player.ToggleBackRightArm.performed += _ => toggleRightArm(1);
         controls.Player.ToggleLeftArm.performed += _ => toggleLeftArm();
     }
 
@@ -65,8 +69,16 @@ public class UpgradeSelector : MonoBehaviour
 
 
         // Cache references to the arm GameObjects
-        basicArm = transform.Find("Model/RobotBasicArmUnScuffedUnTexed").gameObject;
-        cannonArm = transform.Find("Model/BasicCannonArmUnTexed").gameObject;
+        basicRightArm = transform.Find("Model/RobotBasicArmUnScuffedUnTexed").gameObject;
+        blasterRightArm = transform.Find("Model/BasicCannonArmUnTexed").gameObject;
+        hyperBlasterRightArm = transform.Find("Model/HyperBlaster").gameObject;
+        basicLeftArm = transform.Find("Model/RobotBasicArmUnScuffedUnTexed (1)").gameObject;
+        torchLeftArm = transform.Find("Model/TorchArm").gameObject;
+        thrusterLeftArm = transform.Find("Model/ThrusterArm").gameObject;
+        basicBody = transform.Find("Model/BasicTorsoUnscuffedUnTexed").gameObject;
+        heavyArmor = transform.Find("Model/HeavyArmor").gameObject;
+        gravitronArmor = transform.Find("Model/GravitronArmor").gameObject;
+        powerArmor = transform.Find("Model/PowerArmor").gameObject;
 
         // Initialise arrays for available upgrade pieces
         //legPieces = new int[] { 0 };     // change later to only 0
@@ -96,12 +108,23 @@ public class UpgradeSelector : MonoBehaviour
 
     public void UpdateSlotLists()
     {
-    /* 
-     * current upgrade list:
-     * upgradesFound[difficulty][0] = Jump Upgrade (legs)
-     * upgradesFound[difficulty][1] = Gun Upgrade (right arm)
-     * upgradesFound[difficulty][2] = Double Jump Upgrade (legs)
-    */
+
+        /* 
+         * current upgrade list:
+         * upgradesFound[difficulty][0] = Jump Upgrade (legs)
+         * upgradesFound[difficulty][1] = Gun Upgrade (right arm)
+         * upgradesFound[difficulty][2] = Hyper Blaster Upgrade (right Arm)
+         * upgradesFound[difficulty][3] = Heavy Armor Upgrade (body)
+         * upgradesFound[difficulty][4] = Gravitron Armor Upgrade (body)
+         * upgradesFound[difficulty][5] = Power Armor Upgrade (body)
+         * upgradesFound[difficulty][6] = Double Jump Upgrade (legs)
+         * 
+         * 
+         *  bodySelected;      0 = none, 1 = heavy armor, 2 = gravitron armor, 3 = power armor
+         *  legSelected;       0 = default wheel, 1 = jumping
+         *  rightArmSelected;  0 = default arm, 1 = gun1, 2 = hyperblaster
+         *  leftArmSelected;   0 = default arm
+        */
 
         if (GameSettings.upgradesFound[LevelState.currentDifficulty][0] && !legPieces.Contains(1))
         {
@@ -114,13 +137,44 @@ public class UpgradeSelector : MonoBehaviour
         {
             // Add an element of value 1 to rightArmPieces array
             rightArmPieces.Add(1);
-            toggleRightArm();
+            rightArmSelected = rightArmPieces.IndexOf(1);
+            toggleRightArm(2);
         }
 
         //REMEMBER TO ADD THE "&& !contains" part!!!
-        if (GameSettings.upgradesFound[LevelState.currentDifficulty][2])    //REMEMBER TO ADD THE "&& !contains" part!!!
+        if (GameSettings.upgradesFound[LevelState.currentDifficulty][2] && !rightArmPieces.Contains(2))    //REMEMBER TO ADD THE "&& !contains" part!!!
         {
             // Nothing for now, implement in future, 
+            rightArmPieces.Add(2);
+            rightArmSelected = rightArmPieces.IndexOf(2);
+            toggleRightArm(2);
+        }
+
+        //REMEMBER TO ADD THE "&& !contains" part!!!
+        if (GameSettings.upgradesFound[LevelState.currentDifficulty][3] && !bodyPieces.Contains(1))    //REMEMBER TO ADD THE "&& !contains" part!!!
+        {
+            // Nothing for now, implement in future, 
+            bodyPieces.Add(1);
+            bodySelected = 1;
+            toggleBody(false);
+        }
+
+        //REMEMBER TO ADD THE "&& !contains" part!!!
+        if (GameSettings.upgradesFound[LevelState.currentDifficulty][4] && !bodyPieces.Contains(2))    //REMEMBER TO ADD THE "&& !contains" part!!!
+        {
+            // Nothing for now, implement in future, 
+            bodyPieces.Add(2);
+            bodySelected = 2;
+            toggleBody(false);
+        }
+
+        //REMEMBER TO ADD THE "&& !contains" part!!!
+        if (GameSettings.upgradesFound[LevelState.currentDifficulty][5] && !bodyPieces.Contains(3))    //REMEMBER TO ADD THE "&& !contains" part!!!
+        {
+            // Nothing for now, implement in future, 
+            bodyPieces.Add(3);
+            bodySelected = 3;
+            toggleBody(false);
         }
     }
 
@@ -148,52 +202,134 @@ public class UpgradeSelector : MonoBehaviour
         }
     }
 
-    public void toggleBody()
+    public void toggleBody(bool increment)
     {
         // Find the index of the currently selected body piece
         int currentIndex = bodyPieces.IndexOf(bodySelected);
 
-        // Select the next body piece in the list, wrapping to the start if at the end
-        int nextIndex = (currentIndex + 1) % bodyPieces.Count;
-        bodySelected = bodyPieces[nextIndex];
+        if (increment) 
+        {
+            // Select the next body piece in the list, wrapping to the start if at the end
+            int nextIndex = (currentIndex + 1) % bodyPieces.Count;
+            bodySelected = bodyPieces[nextIndex];
+        }
 
         Debug.Log("Body piece selected: " + bodySelected);
 
-        if (bodySelected == 0)
+        if (bodySelected == 1)
         {
-            PlayerState.canDoubleJump = false;
+            basicBody.SetActive(false);
+            powerArmor.SetActive(false);
+            heavyArmor.SetActive(true);
+            gravitronArmor.SetActive(false);
+
+            PlayerState.heavyArmor = true;
+            PlayerState.gravitronArmor = false;
+            PlayerState.powerArmor = false;
+            topText.text = "Heavy Armor";
+            PlayerState.UpdateSpeed();
+            PlayerState.UpdateEnergyMax();
+            PlayerState.UpdateEnergy();
+            PlayerState.UpdateGravity();
+
+        }
+        else if (bodySelected == 2)
+        {
+            basicBody.SetActive(true);
+            powerArmor.SetActive(false);
+            heavyArmor.SetActive(false);
+            gravitronArmor.SetActive(true);
+
+            PlayerState.heavyArmor = false;
+            PlayerState.gravitronArmor = true;
+            PlayerState.powerArmor = false;
+            topText.text = "Gravitron Armor";
+            PlayerState.UpdateSpeed();
+            PlayerState.UpdateEnergyMax();
+            PlayerState.UpdateEnergy();
+            PlayerState.UpdateGravity();
+        }
+        else if (bodySelected == 3)
+        {
+            basicBody.SetActive(true);
+            powerArmor.SetActive(true);
+            heavyArmor.SetActive(false);
+            gravitronArmor.SetActive(false);
+
+            PlayerState.heavyArmor = false;
+            PlayerState.gravitronArmor = false;
+            PlayerState.powerArmor = true;
+            topText.text = "Power Armor";
+            PlayerState.UpdateSpeed();
+            PlayerState.UpdateEnergyMax();
+            PlayerState.UpdateEnergy();
+            PlayerState.UpdateGravity();
+            StartCoroutine(DamagePlayerOverTime(1));
         }
         else
         {
-            PlayerState.canDoubleJump = true;
+            basicBody.SetActive(true);
+            powerArmor.SetActive(false);
+            heavyArmor.SetActive(false);
+            gravitronArmor.SetActive(false);
+
+            PlayerState.heavyArmor = false;
+            PlayerState.gravitronArmor = false;
+            PlayerState.powerArmor = false;
+            topText.text = "-";
+            PlayerState.UpdateSpeed();
+            PlayerState.UpdateEnergyMax();
+            PlayerState.UpdateEnergy();
+            PlayerState.UpdateGravity();
         }
     }
 
-    public void toggleRightArm()
+    public void toggleRightArm(int direction)
     {
         // Find the index of the currently selected right arm piece
         int currentIndex = rightArmPieces.IndexOf(rightArmSelected);
 
-        // Select the next right arm piece in the list, wrapping to the start if at the end
-        int nextIndex = (currentIndex + 1) % rightArmPieces.Count;
-        rightArmSelected = rightArmPieces[nextIndex];
+        if(direction == 0) { 
+            // Select the next right arm piece in the list, wrapping to the start if at the end
+            int nextIndex = (currentIndex + 1) % rightArmPieces.Count;
+            rightArmSelected = rightArmPieces[nextIndex];
+        } 
+        else if (direction == 1)
+        {
+            // Select the previous right arm piece in the list, wrapping to the end if at the start
+            int prevIndex = (currentIndex - 1 + rightArmPieces.Count) % rightArmPieces.Count;
+            rightArmSelected = rightArmPieces[prevIndex];
+        }
+
 
         Debug.Log("Right arm piece selected: " + rightArmSelected);
 
 
-        if (rightArmSelected == 0)
+        if (rightArmSelected == 1)
         {
-            basicArm.SetActive(true);
-            cannonArm.SetActive(false);
-            PlayerState.canShoot = false;
-            rightText.text = "-";
+            basicRightArm.SetActive(false);
+            blasterRightArm.SetActive(true);
+            hyperBlasterRightArm.SetActive(false);
+            PlayerState.canShoot = true;
+            PlayerState.gunNumber = 0;
+            rightText.text = "Blaster";
+        } 
+        else if (rightArmSelected == 2)
+        {
+            basicRightArm.SetActive(false);
+            blasterRightArm.SetActive(false);
+            hyperBlasterRightArm.SetActive(true);
+            PlayerState.canShoot = true;
+            PlayerState.gunNumber = 1;
+            rightText.text = "Hyper Blaster";
         }
         else
         {
-            basicArm.SetActive(false);
-            cannonArm.SetActive(true);
-            PlayerState.canShoot = true;
-            rightText.text = "Blaster";
+            basicRightArm.SetActive(true);
+            blasterRightArm.SetActive(false);
+            hyperBlasterRightArm.SetActive(false);
+            PlayerState.canShoot = false;
+            rightText.text = "-";
         }
     }
 
@@ -207,5 +343,20 @@ public class UpgradeSelector : MonoBehaviour
         leftArmSelected = leftArmPieces[nextIndex];
 
         Debug.Log("Left arm piece selected: " + leftArmSelected);
+    }
+
+
+
+    private IEnumerator DamagePlayerOverTime(int damageAmount)
+    {
+        while (PlayerState.powerArmor)
+        {
+            // Apply damage to the player
+            PlayerState.currentEnergy -= damageAmount;
+            PlayerState.UpdateEnergy();
+
+            // Wait for 1 second
+            yield return new WaitForSeconds(1f);
+        }
     }
 }

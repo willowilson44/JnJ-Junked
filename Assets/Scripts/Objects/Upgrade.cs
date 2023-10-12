@@ -11,12 +11,6 @@ using UnityEngine.ProBuilder.MeshOperations;
  *  
  */
 
-/* 
- * current upgrade list:
- * upgradesFound[difficulty][0] = Jump Upgrade
- * upgradesFound[difficulty][1] = Gun Upgrade
- * upgradesFound[difficulty][2] = Double Jump Upgrade
-*/
 
 public class Upgrade : MonoBehaviour
 {

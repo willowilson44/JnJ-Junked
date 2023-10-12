@@ -15,14 +15,25 @@ using System.IO;
  *  - When adding new upgrade must update numUpgrades, the upgrade list, and the UpdateUpgrades function in PlayerState
  */
 
+/* 
+ * current upgrade list:
+ * upgradesFound[difficulty][0] = Jump Upgrade (legs)
+ * upgradesFound[difficulty][1] = Gun Upgrade (right arm)
+ * upgradesFound[difficulty][2] = Hyper Blaster Upgrade (right Arm)
+ * upgradesFound[difficulty][3] = Heavy Armor Upgrade (body)
+ * upgradesFound[difficulty][4] = Gravitron Armor Upgrade (body)
+ * upgradesFound[difficulty][5] = Power Armor Upgrade (body)
+ * upgradesFound[difficulty][6] = Double Jump Upgrade (legs)
+*/
+
 public static class GameSettings
 {
     // game constants
     public const int numLevels = 3;
-    public static readonly string[] levelNames = { "Level1", "Level1", "Level1" };
-    public static readonly string[] upGradeNames = { "Jump", "Blaster", "Heavy Armour" };
+    public static readonly string[] levelNames = { "Level1", "Level2", "Level3" };
+    public static readonly string[] upGradeNames = { "Jump", "Blaster", "Hyper Blaster", "Heavy Armor", "Gravitron Armor", "Power Armor", "Double Jump" };
     public const int numDifficulties = 3;
-    private const int numUpgrades = 3;
+    private const int numUpgrades = 7;
     private const int numBatteries = 4;
     public const int batteryEnergy = 10;    // The energy gained from each battery
     public const int startingEnergy = 70;
@@ -33,12 +44,7 @@ public static class GameSettings
     public static bool[][] batteriesFound;       // indexed by: [difficulty] [numBatteries]
     public static bool[][] upgradesFound;       // indexed by: [difficulty] [numUpgrades]
 
-    /* 
-     * current upgrade list:
-     * upgradesFound[difficulty][0] = Jump Upgrade (legs)
-     * upgradesFound[difficulty][1] = Gun Upgrade (right arm)
-     * upgradesFound[difficulty][2] = Double Jump Upgrade (legs)
-    */
+
 
 
     // settings loader/constructor

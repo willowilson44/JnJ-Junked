@@ -22,14 +22,24 @@ public static class PlayerShooting
     public static float bulletSpeed = 80f; // Speed of the bullet
     private static float lastFiredTime = 0f; // Time the player last fired
     private static float fireRate = 0.7f; // Fire rate in seconds
+    private static float hyperRate = 0.2f; // Fire rate in seconds
 
 
-    public static void DoShoot(GameObject playerObject, Camera camera, PlayerActionUpdate playerScript)
+    public static void DoShoot(GameObject playerObject, Camera camera, PlayerActionUpdate playerScript, int gunNumber)
     {
-        // Check if enough time has passed since the last shot
-        if (Time.time - lastFiredTime < fireRate)
+        if(gunNumber == 0)
         {
-            return;
+            // Check if enough time has passed since the last shot
+            if (Time.time - lastFiredTime < fireRate)
+            {
+                return;
+            }
+        } else
+        {
+            if (Time.time - lastFiredTime < hyperRate)
+            {
+                return;
+            }
         }
 
         playerScript.PlayShootSound();

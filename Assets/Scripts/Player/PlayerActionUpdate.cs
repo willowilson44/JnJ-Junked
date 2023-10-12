@@ -141,7 +141,7 @@ public class PlayerActionUpdate : MonoBehaviour
 
         if (shooting)
         {
-            PlayerShooting.DoShoot(this.gameObject, mainCamera, this);
+            PlayerShooting.DoShoot(this.gameObject, mainCamera, this, PlayerState.gunNumber);
         }
 
         //overwrite all sync variables with DoMove() results

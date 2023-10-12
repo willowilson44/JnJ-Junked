@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -17,6 +18,7 @@ public static class PlayerState
 {
 
     //Player Movement State
+    private const int default_gravity = 1000;
     public static float pm_gravity = 1000;
     public static Vector3 currentPosition = Vector3.zero;
     public static Vector3 currentVelocity = Vector3.zero;
@@ -43,7 +45,11 @@ public static class PlayerState
     public static bool canJump = false;
     public static bool canShoot = false;
     public static bool canDoubleJump = false;
-    public static int selectedLegSpeedModifier = 0;     // +5 = noticeably slower, -5 = noticeably faster
+    public static bool heavyArmor = false;
+    public static bool gravitronArmor = false;
+    public static bool powerArmor = false;
+    public static int upgradeSpeedModifier = 0;     // +5 = noticeably slower, -5 = noticeably faster
+    public static int gunNumber = 0;
 
     //Spawn
     //public static Vector3 spawnOrigin = Vector3.zero;
@@ -58,6 +64,7 @@ public static class PlayerState
         //UpdatePower();
         currentEnergy = currentMax;
         UpdateSpeed();
+        UpdateGravity();
 
 
         maxEnergyImage = ReferenceManager.instance.maxEnergyImage;
@@ -67,10 +74,25 @@ public static class PlayerState
         currentEnergyImage.fillAmount = (float)currentEnergy / 120;
     }
 
+    public static void UpdateGravity()
+    {
+        if (gravitronArmor)
+        {
+            pm_gravity /= 2;
+        } else
+        {
+            pm_gravity = default_gravity;
+        }
+    }
 
     public static void UpdateEnergyMax()
     {
         currentMax = GameSettings.getBatteryPower();
+
+        if (heavyArmor)
+        {
+            currentMax += 30;
+        }
 
         maxEnergyImage = ReferenceManager.instance.maxEnergyImage;
         maxEnergyImage.fillAmount = (float)currentMax / 120;
@@ -78,7 +100,15 @@ public static class PlayerState
 
     public static void UpdateSpeed()
     {
-        currentSpeedModifier = defaultSpeedModifier + selectedLegSpeedModifier + (int)(damageSpeedModifier - (currentEnergy / (100/damageSpeedModifier)));
+        if (heavyArmor) 
+        {
+            upgradeSpeedModifier += 20;
+        } else
+        {
+            upgradeSpeedModifier = 0;
+        }
+
+        currentSpeedModifier = defaultSpeedModifier + upgradeSpeedModifier + (int)(damageSpeedModifier - (currentEnergy / (100/damageSpeedModifier)));
         //Debug.Log("current: " + currentSpeedModifier);
         PlayerMovement.pm_scaling_factor = currentSpeedModifier;
     }
@@ -116,6 +146,19 @@ public static class PlayerState
         }
     }
 
+    public static void UpdateEnergy()
+    {
+        if (currentEnergy > currentMax)
+        {
+            currentEnergy = currentMax;
+        }
+        energyText = GameObject.Find("GUI/Canvas/Energy Level").GetComponent<TMP_Text>();
+        energyText.text = "Energy: " + currentEnergy + " / " + currentMax;
+
+        currentEnergyImage = ReferenceManager.instance.currentEnergyImage;
+        currentEnergyImage.fillAmount = (float)currentEnergy / 120;
+    }
+
     public static void UpdateEnergy(int newEnergy)
     {
         currentEnergy = newEnergy;
@@ -129,7 +172,7 @@ public static class PlayerState
 
     public static void ResetState()
     {
-        pm_gravity = 1000;
+        UpdateGravity();
         currentPosition = Vector3.zero;
         currentVelocity = Vector3.zero;
         currentSpeed = 0;
@@ -138,4 +181,6 @@ public static class PlayerState
         currentEnergy = currentMax;
         PlayerMovement.pm_scaling_factor = defaultSpeedModifier;
     }
+
+
 }

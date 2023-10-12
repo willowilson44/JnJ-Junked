@@ -142,8 +142,17 @@ public class ScrapperBehaviour : MonoBehaviour
         {
             //Debug.Log("Hit Player");
             audioSource.PlayOneShot(hitSounds[UnityEngine.Random.Range(0, hitSounds.Length)]);
-            PlayerState.Damage(damage);
-            
+
+            if (PlayerState.powerArmor)
+            {
+                PlayerState.Damage(damage/2);
+                enemyHealthComponent.Damage(damage);
+            }
+            else
+            {
+                PlayerState.Damage(damage);
+            }
+
             PlayerActionUpdate playerActionUpdate = player.GetComponent<PlayerActionUpdate>();
 
             //// Apply a knockback force to the player
