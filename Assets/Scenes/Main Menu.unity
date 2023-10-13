@@ -5075,8 +5075,8 @@ RectTransform:
   - {fileID: 1249641295}
   - {fileID: 691551766}
   - {fileID: 1297066396}
-  - {fileID: 157611501}
   - {fileID: 1412239718}
+  - {fileID: 157611501}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -7288,7 +7288,7 @@ GameObject:
   - component: {fileID: 1412239720}
   - component: {fileID: 1412239719}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Heading
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9064,7 +9064,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 880817554607241682, guid: c0e2c57974e89e8459e47b31df69890f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -68
+      value: -51
       objectReference: {fileID: 0}
     - target: {fileID: 880817554607241682, guid: c0e2c57974e89e8459e47b31df69890f, type: 3}
       propertyPath: m_LocalPosition.z

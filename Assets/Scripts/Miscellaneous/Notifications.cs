@@ -6,9 +6,16 @@ using System.Collections;
 public class Notifications : MonoBehaviour
 {
     [SerializeField] private float defaultDisplayDuration = 4.0f;  // Default duration for which a notification will be displayed
+    [SerializeField] private float startMessageDuration = 6.0f;  // Default duration for which a notification will be displayed
 
     private TextMeshProUGUI textComponent;
     private Image image;
+    private string[] levelMessage = 
+        { 
+        "With no weapons at your disposal, confrontation is a dangerous game. \n\nScavenge for upgrades. The path to escape is paved with discarded parts..." , 
+        "Am I under a lake?...\n\nThis place seems like trouble, but it seems to be the only way out...." ,
+        "Now I'm really in the thick of it....\n\nThere's no turning back now!"
+    };
 
     private void Awake()
     {
@@ -31,7 +38,7 @@ public class Notifications : MonoBehaviour
     private IEnumerator InitialNotificationDelay()
     {
         yield return new WaitForSeconds(0.8f);  // Wait for 1 second (or however long you want)
-        DisplayNotification("With no weapons at your disposal, confrontation is a dangerous game. \n\nScavenge for upgrades. The path to escape is paved with discarded parts...",6);
+        DisplayNotification(levelMessage[LevelState.currentLevel],startMessageDuration);
     }
 
     public void DisplayNotification(string message)

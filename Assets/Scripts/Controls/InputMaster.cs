@@ -136,13 +136,13 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""ToggleBackRightArm"",
-                    ""type"": ""Button"",
+                    ""name"": ""ScrollRightArm"",
+                    ""type"": ""Value"",
                     ""id"": ""6b6ab023-5e92-45d8-b78a-12cb465cbfba"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -379,17 +379,6 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""90b35a4d-5df5-4264-bae3-84e0cb6450ba"",
-                    ""path"": ""<Mouse>/forwardButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""ToggleRightArm"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""18ce514a-7863-4339-bb93-6a7b190bb98b"",
                     ""path"": ""<Gamepad>/buttonSouth"",
                     ""interactions"": """",
@@ -523,11 +512,11 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""d94d66ca-ffe5-48b4-b292-79e702ada748"",
-                    ""path"": ""<Mouse>/backButton"",
+                    ""path"": ""<Mouse>/scroll"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""ToggleBackRightArm"",
+                    ""action"": ""ScrollRightArm"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -550,7 +539,7 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
         m_Player_InstantiateEnemy = m_Player.FindAction("InstantiateEnemy", throwIfNotFound: true);
         m_Player_ToggleEnemy = m_Player.FindAction("ToggleEnemy", throwIfNotFound: true);
         m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
-        m_Player_ToggleBackRightArm = m_Player.FindAction("ToggleBackRightArm", throwIfNotFound: true);
+        m_Player_ScrollRightArm = m_Player.FindAction("ScrollRightArm", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -624,7 +613,7 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_InstantiateEnemy;
     private readonly InputAction m_Player_ToggleEnemy;
     private readonly InputAction m_Player_Pause;
-    private readonly InputAction m_Player_ToggleBackRightArm;
+    private readonly InputAction m_Player_ScrollRightArm;
     public struct PlayerActions
     {
         private @InputMaster m_Wrapper;
@@ -641,7 +630,7 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
         public InputAction @InstantiateEnemy => m_Wrapper.m_Player_InstantiateEnemy;
         public InputAction @ToggleEnemy => m_Wrapper.m_Player_ToggleEnemy;
         public InputAction @Pause => m_Wrapper.m_Player_Pause;
-        public InputAction @ToggleBackRightArm => m_Wrapper.m_Player_ToggleBackRightArm;
+        public InputAction @ScrollRightArm => m_Wrapper.m_Player_ScrollRightArm;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -687,9 +676,9 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
             @Pause.started += instance.OnPause;
             @Pause.performed += instance.OnPause;
             @Pause.canceled += instance.OnPause;
-            @ToggleBackRightArm.started += instance.OnToggleBackRightArm;
-            @ToggleBackRightArm.performed += instance.OnToggleBackRightArm;
-            @ToggleBackRightArm.canceled += instance.OnToggleBackRightArm;
+            @ScrollRightArm.started += instance.OnScrollRightArm;
+            @ScrollRightArm.performed += instance.OnScrollRightArm;
+            @ScrollRightArm.canceled += instance.OnScrollRightArm;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -730,9 +719,9 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
             @Pause.started -= instance.OnPause;
             @Pause.performed -= instance.OnPause;
             @Pause.canceled -= instance.OnPause;
-            @ToggleBackRightArm.started -= instance.OnToggleBackRightArm;
-            @ToggleBackRightArm.performed -= instance.OnToggleBackRightArm;
-            @ToggleBackRightArm.canceled -= instance.OnToggleBackRightArm;
+            @ScrollRightArm.started -= instance.OnScrollRightArm;
+            @ScrollRightArm.performed -= instance.OnScrollRightArm;
+            @ScrollRightArm.canceled -= instance.OnScrollRightArm;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -764,6 +753,6 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
         void OnInstantiateEnemy(InputAction.CallbackContext context);
         void OnToggleEnemy(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
-        void OnToggleBackRightArm(InputAction.CallbackContext context);
+        void OnScrollRightArm(InputAction.CallbackContext context);
     }
 }

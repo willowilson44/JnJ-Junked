@@ -1,6 +1,7 @@
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Experimental.GlobalIllumination;
 using UnityEngine.SceneManagement;
 
 /*
@@ -31,10 +32,15 @@ public class PlayerActionUpdate : MonoBehaviour
     [SerializeField] private Camera mainCamera;
     private CameraFollow Camera;
     private float y;
+    private GameObject torch;
 
     private AudioSource audioSource;
     public AudioClip[] shootSound = new AudioClip[2];
     public AudioClip jumpSound;
+    public AudioClip[] movingSounds;  // Drag your walking sound here in the inspector
+    private bool movingSoundPlaying = false;
+    public float typicalSqueakDuration = 1.0f; // Average time duration of a squeak sound
+    private bool isPlayingOrWaiting = false;
     public BoxCollider playerCollider;
     private Light light;
 
@@ -96,9 +102,12 @@ public class PlayerActionUpdate : MonoBehaviour
             // If not, add an AudioSource component to the GameObject
             audioSource = gameObject.AddComponent<AudioSource>();
         }
+        audioSource.volume = 0.6f;
         Camera = mainCamera.GetComponent<CameraFollow>();
         light = GetComponent<Light>();
         light.enabled = false;
+        torch = transform.Find("Torch").gameObject;
+
         QualitySettings.vSyncCount = 0;
 
         // Set the target frame rate to 60 fps
@@ -205,7 +214,44 @@ public class PlayerActionUpdate : MonoBehaviour
             jumped = false;
         }
 
+        if (PlayerState.torchOn)
+        {
+            float torchPitch = mainCamera.transform.eulerAngles.x - 13;  // get x rotation in Euler angles from main camera
+            Quaternion torchRotation = Quaternion.Euler(torchPitch, 3, 0);
+            torch.transform.localRotation = torchRotation;  // Set the torch's local rotation
+
+        }
+
+        // Play walking sound
+        if (PlayerState.currentSpeed > 0.1f && !isPlayingOrWaiting && onGround)
+        {
+            PlayRandomSqueakOrWait();
+        }
         // Fetch debug variables
+    }
+
+    void PlayRandomSqueakOrWait()
+    {
+        int randomChoice = Random.Range(0, movingSounds.Length + 2);
+
+        if (randomChoice < movingSounds.Length)
+        {
+            // Play the sound and set delay for its length
+            audioSource.PlayOneShot(movingSounds[randomChoice],0.2f);
+            StartCoroutine(WaitForNextSound(movingSounds[randomChoice].length));
+        }
+        else
+        {
+            // Don't play the sound, but still wait for the typical delay
+            StartCoroutine(WaitForNextSound(typicalSqueakDuration));
+        }
+    }
+
+    IEnumerator WaitForNextSound(float delay)
+    {
+        isPlayingOrWaiting = true;
+        yield return new WaitForSeconds(delay);
+        isPlayingOrWaiting = false;
     }
 
     public void Death()

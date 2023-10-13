@@ -114,13 +114,13 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "ToggleBackRightArm",
-                    "type": "Button",
+                    "name": "ScrollRightArm",
+                    "type": "Value",
                     "id": "6b6ab023-5e92-45d8-b78a-12cb465cbfba",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -357,17 +357,6 @@
                 },
                 {
                     "name": "",
-                    "id": "90b35a4d-5df5-4264-bae3-84e0cb6450ba",
-                    "path": "<Mouse>/forwardButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "ToggleRightArm",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "18ce514a-7863-4339-bb93-6a7b190bb98b",
                     "path": "<Gamepad>/buttonSouth",
                     "interactions": "",
@@ -501,11 +490,11 @@
                 {
                     "name": "",
                     "id": "d94d66ca-ffe5-48b4-b292-79e702ada748",
-                    "path": "<Mouse>/backButton",
+                    "path": "<Mouse>/scroll",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "ToggleBackRightArm",
+                    "action": "ScrollRightArm",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

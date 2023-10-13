@@ -59,16 +59,15 @@ public class ScrapperBehaviour : MonoBehaviour
             // If not, add an AudioSource component to the GameObject
             audioSource = gameObject.AddComponent<AudioSource>();
         }
+        audioSource.volume = 0.6f;
 
         agent = GetComponent<NavMeshAgent>();
         agent.speed = speed + (LevelState.currentDifficulty * 2);       //scales AI speed to difficulty
-        Debug.Log("Scrapper speed set to " + agent.speed);
         agent.angularSpeed = turningSpeed;                              //scale these too??
         agent.acceleration = acceleration;                              //scale these too??
 
 
         damage = damage * (LevelState.currentDifficulty + 1);
-        Debug.Log("Scrapper damage set to " + damage);
     }
 
     // Update is called once per frame

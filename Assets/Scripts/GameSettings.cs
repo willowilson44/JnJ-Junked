@@ -11,8 +11,9 @@ using System.IO;
  *  - This script stores player progress for each level and difficulty, and upgrades collected in each difficulty level.
  *  - Progress is saved so that the player can resume the next time they play without losing upgrades/level progress.
  *  
- *  - Usage:
- *  - When adding new upgrade must update numUpgrades, the upgrade list, and the UpdateUpgrades function in PlayerState
+ *  - Instructions for adding upgrades:
+ *  -       Update numUpgrades, the upgrade list below, and then go to the UpgradeSelector script and add the 
+ *  -       upgrade in the UpdateSlotLists() and TogglePiece() functions
  */
 
 /* 
@@ -23,7 +24,8 @@ using System.IO;
  * upgradesFound[difficulty][3] = Heavy Armor Upgrade (body)
  * upgradesFound[difficulty][4] = Gravitron Armor Upgrade (body)
  * upgradesFound[difficulty][5] = Power Armor Upgrade (body)
- * upgradesFound[difficulty][6] = Double Jump Upgrade (legs)
+ * upgradesFound[difficulty][6] = Torch (left Arm)
+ * upgradesFound[difficulty][7] = Double Jump Upgrade (legs)
 */
 
 public static class GameSettings
@@ -31,9 +33,9 @@ public static class GameSettings
     // game constants
     public const int numLevels = 3;
     public static readonly string[] levelNames = { "Level1", "Level2", "Level3" };
-    public static readonly string[] upGradeNames = { "Jump", "Blaster", "Hyper Blaster", "Heavy Armor", "Gravitron Armor", "Power Armor", "Double Jump" };
+    public static readonly string[] upGradeNames = { "Jump", "Blaster", "Hyper Blaster", "Heavy Armor", "Gravitron Armor", "Power Armor", "Torch", "Double Jump" };
     public const int numDifficulties = 3;
-    private const int numUpgrades = 7;
+    private const int numUpgrades = 8;
     private const int numBatteries = 4;
     public const int batteryEnergy = 10;    // The energy gained from each battery
     public const int startingEnergy = 70;

@@ -123,12 +123,21 @@ public class DalekBullet : MonoBehaviour
         } 
         else if (collision.gameObject.CompareTag("Player")) 
         {
-            PlayerState.Damage(damageAmount);
+            if (PlayerState.powerArmor)
+            {
+                PlayerState.Damage(damageAmount / 2);
+                audioSource.PlayOneShot(collisionSound);
+                return;
+            }
+            else
+            {
+                PlayerState.Damage(damageAmount);
 
-            bulletLight.intensity *= 5;
-            audioSource.PlayOneShot(collisionSound);
-            StartCoroutine(DelayedDestroy());  // Destroy bullet upon hitting an enemy
-            return;
+                bulletLight.intensity *= 5;
+                audioSource.PlayOneShot(collisionSound);
+                StartCoroutine(DelayedDestroy());  // Destroy bullet upon hitting an enemy
+                return;
+            }
         }
         else
         {

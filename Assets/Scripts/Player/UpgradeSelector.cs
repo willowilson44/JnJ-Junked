@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using static UnityEditor.Timeline.TimelinePlaybackControls;
 
 public class UpgradeSelector : MonoBehaviour
 {
@@ -30,6 +32,7 @@ public class UpgradeSelector : MonoBehaviour
     private static GameObject powerArmor;
     private static GameObject torchLeftArm;
     private static GameObject thrusterLeftArm;
+    private static GameObject torch;
 
     //UI Button Text updates
 
@@ -41,11 +44,11 @@ public class UpgradeSelector : MonoBehaviour
     private void Awake()
     {
         controls = new InputMaster();
-        controls.Player.ToggleLegs.performed += _ => toggleLeg();
+        controls.Player.ToggleLegs.performed += _ => toggleLeg(true);
         controls.Player.ToggleBody.performed += _ => toggleBody(true);
         controls.Player.ToggleRightArm.performed += _ => toggleRightArm(0);
-        controls.Player.ToggleBackRightArm.performed += _ => toggleRightArm(1);
-        controls.Player.ToggleLeftArm.performed += _ => toggleLeftArm();
+        controls.Player.ScrollRightArm.performed += ctx => OnScroll(ctx);
+        controls.Player.ToggleLeftArm.performed += _ => toggleLeftArm(true);
     }
 
     private void OnEnable()
@@ -57,6 +60,21 @@ public class UpgradeSelector : MonoBehaviour
     {
         controls.Disable();
     }
+
+    public void OnScroll(InputAction.CallbackContext context)
+    {
+        Vector2 scrollValue = context.ReadValue<Vector2>();
+
+        if (scrollValue.y > 0)
+        {
+            toggleRightArm(0);
+        }
+        else if (scrollValue.y < 0)
+        {
+            toggleRightArm(1);
+        }
+    }
+
 
     // Start is called before the first frame update
     void Start()
@@ -74,6 +92,7 @@ public class UpgradeSelector : MonoBehaviour
         hyperBlasterRightArm = transform.Find("Model/HyperBlaster").gameObject;
         basicLeftArm = transform.Find("Model/RobotBasicArmUnScuffedUnTexed (1)").gameObject;
         torchLeftArm = transform.Find("Model/TorchArm").gameObject;
+        torch = transform.Find("Torch").gameObject;
         thrusterLeftArm = transform.Find("Model/ThrusterArm").gameObject;
         basicBody = transform.Find("Model/BasicTorsoUnscuffedUnTexed").gameObject;
         heavyArmor = transform.Find("Model/HeavyArmor").gameObject;
@@ -98,12 +117,11 @@ public class UpgradeSelector : MonoBehaviour
         leftArmSelected = 0;
 
         UpdateSlotLists();
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        toggleBody(false);
+        toggleLeftArm(false);
+        toggleLeg(false);
+        toggleRightArm(2);
     }
 
     public void UpdateSlotLists()
@@ -117,20 +135,22 @@ public class UpgradeSelector : MonoBehaviour
          * upgradesFound[difficulty][3] = Heavy Armor Upgrade (body)
          * upgradesFound[difficulty][4] = Gravitron Armor Upgrade (body)
          * upgradesFound[difficulty][5] = Power Armor Upgrade (body)
-         * upgradesFound[difficulty][6] = Double Jump Upgrade (legs)
+         * upgradesFound[difficulty][6] = Torch (left Arm)
+         * upgradesFound[difficulty][7] = Double Jump Upgrade (legs)    (NOT YET IMPLEMENTED)
          * 
          * 
          *  bodySelected;      0 = none, 1 = heavy armor, 2 = gravitron armor, 3 = power armor
          *  legSelected;       0 = default wheel, 1 = jumping
          *  rightArmSelected;  0 = default arm, 1 = gun1, 2 = hyperblaster
-         *  leftArmSelected;   0 = default arm
+         *  leftArmSelected;   0 = default arm, 1 = torch
         */
 
         if (GameSettings.upgradesFound[LevelState.currentDifficulty][0] && !legPieces.Contains(1))
         {
             // Add an element of value 1 to legPieces array
             legPieces.Add(1);
-            toggleLeg();
+            legSelected = 1;
+            toggleLeg(false);
         }
 
         if (GameSettings.upgradesFound[LevelState.currentDifficulty][1] && !rightArmPieces.Contains(1))
@@ -175,18 +195,28 @@ public class UpgradeSelector : MonoBehaviour
             bodyPieces.Add(3);
             bodySelected = 3;
             toggleBody(false);
+        } //REMEMBER TO ADD THE "&& !contains" part!!!
+        if (GameSettings.upgradesFound[LevelState.currentDifficulty][6] && !leftArmPieces.Contains(1))    //REMEMBER TO ADD THE "&& !contains" part!!!
+        {
+            // Nothing for now, implement in future, 
+            leftArmPieces.Add(1);
+            leftArmSelected = 1;
+            toggleLeftArm(false);
         }
     }
 
 
-    public void toggleLeg()
+    public void toggleLeg(bool increment)
     {
         // Find the index of the currently selected leg piece
         int currentIndex = legPieces.IndexOf(legSelected);
 
-        // Select the next leg piece in the array, wrapping to the start if at the end
-        int nextIndex = (currentIndex + 1) % legPieces.Count;
+        if (increment)
+        {
+            // Select the next leg piece in the array, wrapping to the start if at the end
+            int nextIndex = (currentIndex + 1) % legPieces.Count;
         legSelected = legPieces[nextIndex];
+        }
 
         Debug.Log("Leg piece selected: " + legSelected);
 
@@ -333,16 +363,41 @@ public class UpgradeSelector : MonoBehaviour
         }
     }
 
-    public void toggleLeftArm()
+    public void toggleLeftArm(bool increment)
     {
         // Find the index of the currently selected left arm piece
         int currentIndex = leftArmPieces.IndexOf(leftArmSelected);
 
-        // Select the next left arm piece in the list, wrapping to the start if at the end
-        int nextIndex = (currentIndex + 1) % leftArmPieces.Count;
-        leftArmSelected = leftArmPieces[nextIndex];
+        if (increment)
+        {
+            // Select the next left arm piece in the list, wrapping to the start if at the end
+            int nextIndex = (currentIndex + 1) % leftArmPieces.Count;
+            leftArmSelected = leftArmPieces[nextIndex];
+        }
 
         Debug.Log("Left arm piece selected: " + leftArmSelected);
+
+
+        
+
+        if (leftArmSelected == 1)
+        {
+            basicLeftArm.SetActive(false);
+            torchLeftArm.SetActive(true);
+            torch.SetActive(true);
+
+            PlayerState.torchOn = true;
+            leftText.text = "Torch";
+
+        } else
+        {
+            basicLeftArm.SetActive(true);
+            torchLeftArm.SetActive(false);
+            torch.SetActive(false);
+
+            PlayerState.torchOn = false;
+            leftText.text = "-";
+        }
     }
 
 

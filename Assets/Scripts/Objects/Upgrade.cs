@@ -24,7 +24,9 @@ public class Upgrade : MonoBehaviour
         if (GameSettings.upgradesFound[LevelState.currentDifficulty][upgradeNumber] == true)
         {
             gameObject.SetActive(false);
-        } 
+        }
+
+        audioSource.volume = 0.3f;
     }
 
     void Update()
@@ -52,7 +54,7 @@ public class Upgrade : MonoBehaviour
         }
 
         Notifications notificationSystem = FindObjectOfType<Notifications>();
-        notificationSystem.DisplayNotification("You've found the " + GameSettings.upGradeNames[upgradeNumber] + " Upgrade!! Equipping now...", 4.0f); // This message will last for 3 seconds
+        notificationSystem.DisplayNotification("You've found the " + GameSettings.upGradeNames[upgradeNumber] + " Upgrade!! Equipping now..."); // This message will last for 3 seconds
 
         // Perform the upgrade and other related tasks.
         GameSettings.UpgradeCollected(upgradeNumber);

@@ -69,6 +69,7 @@ public class DalekBehaviour : MonoBehaviour
             // If not, add an AudioSource component to the GameObject
             audioSource = gameObject.AddComponent<AudioSource>();
         }
+        audioSource.volume = 0.6f;
 
         agent = GetComponent<NavMeshAgent>();
         agent.speed = speed + (LevelState.currentDifficulty);       //scales AI speed to difficulty

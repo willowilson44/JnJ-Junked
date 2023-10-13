@@ -48,6 +48,7 @@ public static class PlayerState
     public static bool heavyArmor = false;
     public static bool gravitronArmor = false;
     public static bool powerArmor = false;
+    public static bool torchOn = false;
     public static int upgradeSpeedModifier = 0;     // +5 = noticeably slower, -5 = noticeably faster
     public static int gunNumber = 0;
 
