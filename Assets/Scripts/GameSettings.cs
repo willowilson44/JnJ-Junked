@@ -31,12 +31,12 @@ using System.IO;
 public static class GameSettings
 {
     // game constants
-    public const int numLevels = 3;
-    public static readonly string[] levelNames = { "Level1", "Level2", "Level4" };
+    public const int numLevels = 4;
+    public static readonly string[] levelNames = { "Level1", "Level3", "Level2", "Level4" };
     public static readonly string[] upGradeNames = { "Jump", "Blaster", "Hyper Blaster", "Heavy Armor", "Gravitron Armor", "Energon Armor", "Torch", "Double Jump" };
     public const int numDifficulties = 3;
     private const int numUpgrades = 8;
-    private const int numBatteries = 4;
+    private const int numBatteries = 5;
     public const int batteryEnergy = 10;    // The energy gained from each battery
     public const int startingEnergy = 70;
 

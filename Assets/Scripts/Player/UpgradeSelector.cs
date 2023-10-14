@@ -35,11 +35,14 @@ public class UpgradeSelector : MonoBehaviour
     private static GameObject torch;
 
     //UI Button Text updates
-
     TMP_Text topText;
     TMP_Text leftText;
     TMP_Text rightText;
     TMP_Text bottomText;
+
+    //coroutines
+    private Coroutine healCoroutine = null;
+    private Coroutine damageCoroutine = null;
 
     private void Awake()
     {
@@ -249,6 +252,7 @@ public class UpgradeSelector : MonoBehaviour
 
         if (bodySelected == 1)
         {
+            OnSwitchAwayFromPowerArmor();
             basicBody.SetActive(false);
             powerArmor.SetActive(false);
             heavyArmor.SetActive(true);
@@ -259,16 +263,18 @@ public class UpgradeSelector : MonoBehaviour
             PlayerState.powerArmor = false;
             topText.text = "Heavy Armor";
             PlayerState.UpdateEnergyMax();
-            PlayerState.AddPower(30);
+            PlayerState.upgradeSpeedModifier = 25;
             PlayerState.UpdateSpeed();
             PlayerState.UpdateGravity();
-
+            OnSwitchToHeavyArmor();
         }
         else if (bodySelected == 2)
         {
+            OnSwitchAwayFromPowerArmor();
             if (PlayerState.heavyArmor == true)
             {
-                PlayerState.Damage(30);
+                OnSwitchAwayFromHeavyArmor();
+                PlayerState.upgradeSpeedModifier = 0;
             }
             basicBody.SetActive(true);
             powerArmor.SetActive(false);
@@ -288,7 +294,8 @@ public class UpgradeSelector : MonoBehaviour
         {
             if (PlayerState.heavyArmor == true)
             {
-                PlayerState.Damage(30);
+                OnSwitchAwayFromHeavyArmor();
+                PlayerState.upgradeSpeedModifier = 0;
             }
             basicBody.SetActive(true);
             powerArmor.SetActive(true);
@@ -303,13 +310,15 @@ public class UpgradeSelector : MonoBehaviour
             PlayerState.UpdateEnergy();
             PlayerState.UpdateSpeed();
             PlayerState.UpdateGravity();
-            StartCoroutine(DamagePlayerOverTime(1));
+            OnSwitchToPowerArmor();
         }
         else
         {
+            OnSwitchAwayFromPowerArmor();
             if (PlayerState.heavyArmor == true)
             {
-                PlayerState.Damage(30);
+                OnSwitchAwayFromHeavyArmor();
+                PlayerState.upgradeSpeedModifier = 0;
             }
             basicBody.SetActive(true);
             powerArmor.SetActive(false);
@@ -413,7 +422,23 @@ public class UpgradeSelector : MonoBehaviour
         }
     }
 
+    public void OnSwitchToPowerArmor()
+    {
+        if (damageCoroutine == null)
+        {
+            damageCoroutine = StartCoroutine(DamagePlayerOverTime(1));
+        }
+    }
 
+    // Call this when switching away from power armor
+    public void OnSwitchAwayFromPowerArmor()
+    {
+        if (damageCoroutine != null)
+        {
+            StopCoroutine(damageCoroutine);
+            damageCoroutine = null;
+        }
+    }
 
     private IEnumerator DamagePlayerOverTime(int damageAmount)
     {
@@ -426,5 +451,40 @@ public class UpgradeSelector : MonoBehaviour
             // Wait for 1(?) second
             yield return new WaitForSeconds(1.3f);
         }
+
+        damageCoroutine = null;
     }
+
+    private IEnumerator HealPlayerOverTime(int healAmount)
+    {
+        while (PlayerState.heavyArmor)
+        {
+            Debug.Log("heavy armor add 1 health");
+            // Apply healing to the player
+            PlayerState.AddPower(healAmount);
+
+            // Wait for 1(?) second
+            yield return new WaitForSeconds(2f);
+        }
+        healCoroutine = null;
+    }
+    public void OnSwitchToHeavyArmor()
+    {
+        if (healCoroutine == null)
+        {
+            healCoroutine = StartCoroutine(HealPlayerOverTime(1));
+        }
+    }
+
+    // Call this when switching away from heavy armor
+    public void OnSwitchAwayFromHeavyArmor()
+    {
+        if (healCoroutine != null)
+        {
+            StopCoroutine(healCoroutine);
+            healCoroutine = null;
+        }
+    }
+
+
 }

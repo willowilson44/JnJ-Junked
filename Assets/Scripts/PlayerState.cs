@@ -73,6 +73,12 @@ public static class PlayerState
 
         currentEnergyImage = ReferenceManager.instance.currentEnergyImage;
         currentEnergyImage.fillAmount = (float)currentEnergy / 120;
+        energyText = ReferenceManager.instance.playerEnergy;
+    }
+
+    public static void UpdateEnergyText()
+    {
+        energyText = ReferenceManager.instance.playerEnergy;
     }
 
     public static void UpdateGravity()
@@ -92,23 +98,16 @@ public static class PlayerState
 
         if (heavyArmor)
         {
-            currentMax += 30;
+            currentMax += 40;
         }
 
         maxEnergyImage = ReferenceManager.instance.maxEnergyImage;
         maxEnergyImage.fillAmount = (float)currentMax / 120;
+        energyText.text = "Energy: " + currentEnergy + " / " + currentMax;
     }
 
     public static void UpdateSpeed()
     {
-        if (heavyArmor) 
-        {
-            upgradeSpeedModifier += 20;
-        } else
-        {
-            upgradeSpeedModifier = 0;
-        }
-
         currentSpeedModifier = defaultSpeedModifier + upgradeSpeedModifier + (int)(damageSpeedModifier - (currentEnergy / (100/damageSpeedModifier)));
         //Debug.Log("current: " + currentSpeedModifier);
         PlayerMovement.pm_scaling_factor = currentSpeedModifier;
@@ -153,7 +152,6 @@ public static class PlayerState
         {
             currentEnergy = currentMax;
         }
-        energyText = GameObject.Find("GUI/Canvas/Energy Level").GetComponent<TMP_Text>();
         energyText.text = "Energy: " + currentEnergy + " / " + currentMax;
 
         currentEnergyImage = ReferenceManager.instance.currentEnergyImage;
@@ -163,7 +161,6 @@ public static class PlayerState
     public static void UpdateEnergy(int newEnergy)
     {
         currentEnergy = newEnergy;
-        energyText = GameObject.Find("GUI/Canvas/Energy Level").GetComponent<TMP_Text>();
         energyText.text = "Energy: "+ currentEnergy + " / " + currentMax;
 
         currentEnergyImage = ReferenceManager.instance.currentEnergyImage;

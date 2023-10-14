@@ -34,6 +34,7 @@ public class DebugWrapper : MonoBehaviour
     public bool isAlive;
 
     public float currentSpeedModifier;
+    public float upgradeSpeedModifier;
 
     //Upgrade related
     public bool canJump;
@@ -51,12 +52,13 @@ public class DebugWrapper : MonoBehaviour
     {
         // Fetch the variables from your PlayerState static class
         currentSpeed = PlayerState.currentSpeed;
+        currentSpeedModifier = PlayerState.currentSpeedModifier;
+        upgradeSpeedModifier = PlayerState.upgradeSpeedModifier;
         currentPosition = PlayerState.currentPosition;
         pm_gravity = PlayerState.pm_gravity;
         currentMax = PlayerState.currentMax;
         currentEnergy = PlayerState.currentEnergy;
         isAlive = PlayerState.isAlive;
-        currentSpeedModifier = PlayerState.currentSpeedModifier;
         canJump = PlayerState.canJump;
         canShoot = PlayerState.canShoot;
         canDoubleJump = PlayerState.canDoubleJump;

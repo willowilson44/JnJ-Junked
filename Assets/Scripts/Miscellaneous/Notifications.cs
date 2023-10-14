@@ -12,7 +12,8 @@ public class Notifications : MonoBehaviour
     private Image image;
     private string[] levelMessage = 
         { 
-        "With no weapons at your disposal, confrontation is a dangerous game. \n\nScavenge for upgrades. The path to escape is paved with discarded parts..." , 
+        "With no weapons at your disposal, confrontation is a dangerous game. \n\nScavenge for upgrades. The path to escape is paved with discarded parts..." ,
+        "This seems like somewhere I'm not supposed to be...\n\nLet's see where it leads...." ,
         "Am I under a lake?...\n\nThis place seems like trouble, but it seems to be the only way out...." ,
         "Now I'm really in the thick of it....\n\nThere's no turning back now!"
     };

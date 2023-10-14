@@ -118,6 +118,7 @@ public class PlayerActionUpdate : MonoBehaviour
         position = transform.position;
         PlayerState.UpdateEnergyMax();
         PlayerState.UpdateEnergy(PlayerState.currentMax);
+        PlayerState.UpdateEnergyText();
     }
 
     void OnEnable()

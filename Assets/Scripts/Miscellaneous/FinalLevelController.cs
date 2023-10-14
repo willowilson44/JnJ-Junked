@@ -8,7 +8,8 @@ public class FinalLevelController : MonoBehaviour
 
     private GameObject[][] spawnerGroups;
     private GameObject[][][] spawners;
-    private int waitTime = 30;
+    public int extraTime = 10;
+    private float timeBetweenSpawns = 1.8f;
 
     void Start()
     {
@@ -32,6 +33,7 @@ public class FinalLevelController : MonoBehaviour
             }
         }
 
+        extraTime = extraTime - (LevelState.currentDifficulty * 5);
         StartCoroutine(StartWave(0)); // Start with the first wave
     }
 
@@ -42,11 +44,15 @@ public class FinalLevelController : MonoBehaviour
         waves[waveIndex].SetActive(true); // Enable the current wave
 
         // Sub-wave 1
-        for (int i = 0; i < 11; i += 2)
+        for (int i = 0; i < 11; i++)
         {
-            spawners[waveIndex][i][0].SetActive(true); // Every second Scrapper Spawner
+            if (i % 2 == 0) // Every second Guard Spawner
+            {
+                spawners[waveIndex][i][0].SetActive(true); // Every second Scrapper Spawner
+            }
+            yield return new WaitForSeconds(timeBetweenSpawns);
         }
-        yield return new WaitForSeconds(waitTime);
+        yield return new WaitForSeconds(extraTime);
 
 
         // Sub-wave 2
@@ -56,29 +62,32 @@ public class FinalLevelController : MonoBehaviour
             {
                 spawners[waveIndex][i][1].SetActive(true);
             }
+            yield return new WaitForSeconds(timeBetweenSpawns);
         }
-        yield return new WaitForSeconds(waitTime);
+        yield return new WaitForSeconds(extraTime);
 
 
-        // Sub-wave 4
+        // Sub-wave 3
         for (int i = 0; i < 11; i++)
         {
             if (i % 2 == 0) // First half of the Dalek Spawners
             {
                 spawners[waveIndex][i][2].SetActive(true);
             }
+            yield return new WaitForSeconds(timeBetweenSpawns);
         }
-        yield return new WaitForSeconds(waitTime);
+        yield return new WaitForSeconds(extraTime);
 
-        // Sub-wave 3
+        // Sub-wave 4
         for (int i = 0; i < 11; i++)
         {
             if (!spawners[waveIndex][i][0].activeSelf) // Rest of the Scrapper Spawners
             {
                 spawners[waveIndex][i][0].SetActive(true);
             }
+            yield return new WaitForSeconds(timeBetweenSpawns/2);
         }
-        yield return new WaitForSeconds(waitTime);
+        yield return new WaitForSeconds(extraTime);
 
         // Sub-wave 5
         for (int i = 0; i < 11; i++)
@@ -87,8 +96,9 @@ public class FinalLevelController : MonoBehaviour
             {
                 spawners[waveIndex][i][1].SetActive(true);
             }
+            yield return new WaitForSeconds(timeBetweenSpawns/2);
         }
-        yield return new WaitForSeconds(waitTime);
+        yield return new WaitForSeconds(extraTime);
 
 
         // Sub-wave 6
@@ -98,20 +108,21 @@ public class FinalLevelController : MonoBehaviour
             {
                 spawners[waveIndex][i][2].SetActive(true);
             }
+            yield return new WaitForSeconds(timeBetweenSpawns/2);
         }
         yield return new WaitForSeconds(45);
 
-        if (LevelState.currentDifficulty > waveIndex)
-        {
-            waitTime -= 5;
-            // Recursively start the next wave after current wave is finished.
-            StartCoroutine(StartWave(waveIndex + 1));
-        } else
-        {
+        //if (LevelState.currentDifficulty > waveIndex)
+        //{
+        //    extraTime -= 5;
+        //    // Recursively start the next wave after current wave is finished.
+        //    StartCoroutine(StartWave(waveIndex + 1));
+        //} else
+        //{
             yield return new WaitForSeconds(5);
             EndGame();
             yield break; // No more waves to process
-        }
+        //}
     }
 
     private void EndGame()

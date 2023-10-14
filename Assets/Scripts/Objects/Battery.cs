@@ -65,6 +65,7 @@ public class Battery : MonoBehaviour
         // Perform the upgrade and other related tasks.
         GameSettings.BatteryCollected(batteryNumber);
         PlayerState.UpdateEnergyMax();
+        PlayerState.UpdateSpeed();
 
         // After performing the upgrade tasks, deactivate or destroy the upgrade GameObject.
         gameObject.SetActive(false);

@@ -198,6 +198,9 @@ public class UIManager : MonoBehaviour
             case 2:
                 sceneName = GameSettings.levelNames[2]; // replace with your scene name for level 2
                 break;
+            case 3:
+                sceneName = GameSettings.levelNames[3]; // replace with your scene name for level 2
+                break;
             // Add more cases as needed for additional levels.
             default:
                 Debug.LogError("Invalid level selected!");

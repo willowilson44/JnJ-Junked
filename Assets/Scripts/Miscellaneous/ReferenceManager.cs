@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,6 +15,7 @@ public class ReferenceManager : MonoBehaviour
     public Image currentEnergyImage;
     public Image maxEnergyImage;
     public LevelFinish levelFinish;
+    public TMP_Text playerEnergy;
 
     public string[] enemies =
     {
