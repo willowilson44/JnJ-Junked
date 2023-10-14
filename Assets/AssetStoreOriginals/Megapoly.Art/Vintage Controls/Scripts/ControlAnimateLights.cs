@@ -24,8 +24,11 @@ public class ControlAnimateLights : MonoBehaviour
     {
         foreach (ButtonLamp item in controls)
         {
-            result = Random.Range(0, 2);
-            item.on = intToBool(result);
+            if (item)
+            {
+                result = Random.Range(0, 2);
+                item.on = intToBool(result);
+            }
 
         }
     }

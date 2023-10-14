@@ -289,7 +289,7 @@ public class UpgradeSelector : MonoBehaviour
             PlayerState.heavyArmor = false;
             PlayerState.gravitronArmor = false;
             PlayerState.powerArmor = true;
-            topText.text = "Power Armor";
+            topText.text = "Energon Armor";
             PlayerState.UpdateSpeed();
             PlayerState.UpdateEnergyMax();
             PlayerState.UpdateEnergy();

@@ -33,7 +33,7 @@ public static class GameSettings
     // game constants
     public const int numLevels = 3;
     public static readonly string[] levelNames = { "Level1", "Level2", "Level3" };
-    public static readonly string[] upGradeNames = { "Jump", "Blaster", "Hyper Blaster", "Heavy Armor", "Gravitron Armor", "Power Armor", "Torch", "Double Jump" };
+    public static readonly string[] upGradeNames = { "Jump", "Blaster", "Hyper Blaster", "Heavy Armor", "Gravitron Armor", "Energon Armor", "Torch", "Double Jump" };
     public const int numDifficulties = 3;
     private const int numUpgrades = 8;
     private const int numBatteries = 4;
