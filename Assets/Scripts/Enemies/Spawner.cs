@@ -18,7 +18,8 @@ public class Spawner : MonoBehaviour
     private float positionOffsetX = 1.2f;
     private float positionOffsetZ = -1.7f;
     private float raiseTime = 2f;
-    private bool isActive = true;
+    private bool isActive = false;
+    public bool instantAttack;
     public int spawnsAtOnce = 2;
     public int spawnWait = 12;
     public int spawnTotal = 3;
@@ -200,5 +201,28 @@ public class Spawner : MonoBehaviour
         // Re-enable the components
         if (navMeshAgent != null) navMeshAgent.enabled = true;
         if (rigidbody != null) rigidbody.isKinematic = false; // Allow the Rigidbody to be affected by physics again
+
+
+        // Give Player reference if instantattack is true
+        if (instantAttack)
+        {
+            activationRange = 300;
+            if(enemyType == EnemyType.Scrapper)
+            {
+                ScrapperBehaviour enemyB = newEnemy.GetComponent<ScrapperBehaviour>();
+                enemyB.isChasing = true;
+                enemyB.detectionRange = 300;
+            } else if (enemyType == EnemyType.Guard)
+            {
+                DalekBehaviour enemyB = newEnemy.GetComponent<DalekBehaviour>();
+                enemyB.isChasing = true;
+                enemyB.detectionRange = 300;
+            } else if (enemyType == EnemyType.Dalek)
+            {
+                GuardBehaviour enemyB = newEnemy.GetComponent<GuardBehaviour>();
+                enemyB.isChasing = true;
+                enemyB.detectionRange = 300;
+            }
+        }
     }
 }

@@ -118,7 +118,8 @@ public static class PlayerMovement
     /// </summary>
     private static bool PM_GoodPosition(Vector3 pos, BoxCollider playerCollider)
     {
-        int layerMask = 1 << LayerMask.NameToLayer("LevelStructure");
+        int layerMask = (1 << LayerMask.NameToLayer("LevelStructure")) | (1 << LayerMask.NameToLayer("PlayerOnlyWall"));
+
 
         // Use Unity's Physics.CheckBox() to check if the position is valid.
         bool isValid = !Physics.CheckBox(pos, playerCollider.bounds.extents/1.1f, Quaternion.identity, layerMask);
@@ -397,7 +398,8 @@ public static class PlayerMovement
         RaycastHit hitInfo; // Using RaycastHit instead of TraceT
         float down_dist, up_dist;
         Vector3 up, down;
-        int layerMask = 1 << LayerMask.NameToLayer("LevelStructure");
+        int layerMask = (1 << LayerMask.NameToLayer("LevelStructure")) | (1 << LayerMask.NameToLayer("PlayerOnlyWall"));
+
 
         //Debug.Log("StepSlide initial position:" + position);
         start_o = position;
@@ -473,7 +475,8 @@ public static class PlayerMovement
         RaycastHit hitInfo; // Replaces TraceT trace
         Vector3 end;
         float time_left;
-        int layerMask = 1 << LayerMask.NameToLayer("LevelStructure");
+        int layerMask = (1 << LayerMask.NameToLayer("LevelStructure")) | (1 << LayerMask.NameToLayer("PlayerOnlyWall"));
+
 
         numbumps = 4;
         primal_velocity = velocity;

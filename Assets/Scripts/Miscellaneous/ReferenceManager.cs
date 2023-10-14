@@ -13,6 +13,7 @@ public class ReferenceManager : MonoBehaviour
     public GameObject spawnPoint;
     public Image currentEnergyImage;
     public Image maxEnergyImage;
+    public LevelFinish levelFinish;
 
     public string[] enemies =
     {

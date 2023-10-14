@@ -74,4 +74,39 @@ public class LevelFinish : MonoBehaviour
         LevelState.ResetGameState();
         SceneManager.LoadScene("Main Menu");
     }
+
+    public void EndLevel()
+    {
+        GameObject player = ReferenceManager.instance.player;
+        Cursor.lockState = CursorLockMode.None; // Frees the cursor
+        Cursor.visible = true; // Shows the cursor
+
+        Debug.Log("End Level panel activated");
+        endLevelPanel.SetActive(true);
+
+
+        if (LevelState.currentLevel + 1 >= GameSettings.numLevels)
+        {
+            next.interactable = false;
+        }
+
+        if (endLevelPanel != null)
+        {
+            killsText = endLevelPanel.transform.Find("Kills").GetComponent<TextMeshProUGUI>();
+            deathsText = endLevelPanel.transform.Find("Deaths").GetComponent<TextMeshProUGUI>();
+            upgradesText = endLevelPanel.transform.Find("Upgrades").GetComponent<TextMeshProUGUI>();
+
+            killsText.text = "Kills: " + LevelState.kills;
+            deathsText.text = "Deaths: " + LevelState.deaths;
+            upgradesText.text = "Upgrades: " + LevelState.newUpgrades;
+        }
+        else
+        {
+            Debug.LogError("Panel not found");
+        }
+
+        player.gameObject.SetActive(false);
+        GameSettings.levelsCompleted[LevelState.currentLevel][LevelState.currentDifficulty] = true;
+        GameSettings.SaveGameState();
+    }
 }

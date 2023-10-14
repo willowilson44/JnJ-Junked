@@ -171,13 +171,13 @@ public class UpgradeSelector : MonoBehaviour
         }
 
         //REMEMBER TO ADD THE "&& !contains" part!!!
-        if (GameSettings.upgradesFound[LevelState.currentDifficulty][3] && !bodyPieces.Contains(1))    //REMEMBER TO ADD THE "&& !contains" part!!!
+        if (GameSettings.upgradesFound[LevelState.currentDifficulty][5] && !bodyPieces.Contains(3))    //REMEMBER TO ADD THE "&& !contains" part!!!
         {
             // Nothing for now, implement in future, 
-            bodyPieces.Add(1);
-            bodySelected = 1;
+            bodyPieces.Add(3);
+            bodySelected = 3;
             toggleBody(false);
-        }
+        } //REMEMBER TO ADD THE "&& !contains" part!!!
 
         //REMEMBER TO ADD THE "&& !contains" part!!!
         if (GameSettings.upgradesFound[LevelState.currentDifficulty][4] && !bodyPieces.Contains(2))    //REMEMBER TO ADD THE "&& !contains" part!!!
@@ -189,13 +189,14 @@ public class UpgradeSelector : MonoBehaviour
         }
 
         //REMEMBER TO ADD THE "&& !contains" part!!!
-        if (GameSettings.upgradesFound[LevelState.currentDifficulty][5] && !bodyPieces.Contains(3))    //REMEMBER TO ADD THE "&& !contains" part!!!
+        if (GameSettings.upgradesFound[LevelState.currentDifficulty][3] && !bodyPieces.Contains(1))    //REMEMBER TO ADD THE "&& !contains" part!!!
         {
             // Nothing for now, implement in future, 
-            bodyPieces.Add(3);
-            bodySelected = 3;
+            bodyPieces.Add(1);
+            bodySelected = 1;
             toggleBody(false);
-        } //REMEMBER TO ADD THE "&& !contains" part!!!
+        }
+
         if (GameSettings.upgradesFound[LevelState.currentDifficulty][6] && !leftArmPieces.Contains(1))    //REMEMBER TO ADD THE "&& !contains" part!!!
         {
             // Nothing for now, implement in future, 
@@ -257,14 +258,18 @@ public class UpgradeSelector : MonoBehaviour
             PlayerState.gravitronArmor = false;
             PlayerState.powerArmor = false;
             topText.text = "Heavy Armor";
-            PlayerState.UpdateSpeed();
             PlayerState.UpdateEnergyMax();
-            PlayerState.UpdateEnergy();
+            PlayerState.AddPower(30);
+            PlayerState.UpdateSpeed();
             PlayerState.UpdateGravity();
 
         }
         else if (bodySelected == 2)
         {
+            if (PlayerState.heavyArmor == true)
+            {
+                PlayerState.Damage(30);
+            }
             basicBody.SetActive(true);
             powerArmor.SetActive(false);
             heavyArmor.SetActive(false);
@@ -274,13 +279,17 @@ public class UpgradeSelector : MonoBehaviour
             PlayerState.gravitronArmor = true;
             PlayerState.powerArmor = false;
             topText.text = "Gravitron Armor";
-            PlayerState.UpdateSpeed();
             PlayerState.UpdateEnergyMax();
             PlayerState.UpdateEnergy();
+            PlayerState.UpdateSpeed();
             PlayerState.UpdateGravity();
         }
         else if (bodySelected == 3)
         {
+            if (PlayerState.heavyArmor == true)
+            {
+                PlayerState.Damage(30);
+            }
             basicBody.SetActive(true);
             powerArmor.SetActive(true);
             heavyArmor.SetActive(false);
@@ -290,14 +299,18 @@ public class UpgradeSelector : MonoBehaviour
             PlayerState.gravitronArmor = false;
             PlayerState.powerArmor = true;
             topText.text = "Energon Armor";
-            PlayerState.UpdateSpeed();
             PlayerState.UpdateEnergyMax();
             PlayerState.UpdateEnergy();
+            PlayerState.UpdateSpeed();
             PlayerState.UpdateGravity();
             StartCoroutine(DamagePlayerOverTime(1));
         }
         else
         {
+            if (PlayerState.heavyArmor == true)
+            {
+                PlayerState.Damage(30);
+            }
             basicBody.SetActive(true);
             powerArmor.SetActive(false);
             heavyArmor.SetActive(false);
@@ -307,9 +320,9 @@ public class UpgradeSelector : MonoBehaviour
             PlayerState.gravitronArmor = false;
             PlayerState.powerArmor = false;
             topText.text = "-";
-            PlayerState.UpdateSpeed();
             PlayerState.UpdateEnergyMax();
             PlayerState.UpdateEnergy();
+            PlayerState.UpdateSpeed();
             PlayerState.UpdateGravity();
         }
     }
@@ -406,12 +419,12 @@ public class UpgradeSelector : MonoBehaviour
     {
         while (PlayerState.powerArmor)
         {
+            Debug.Log("energon drain 1 health");
             // Apply damage to the player
-            PlayerState.currentEnergy -= damageAmount;
-            PlayerState.UpdateEnergy();
+            PlayerState.Damage(damageAmount);
 
-            // Wait for 1 second
-            yield return new WaitForSeconds(1f);
+            // Wait for 1(?) second
+            yield return new WaitForSeconds(1.3f);
         }
     }
 }

@@ -16,8 +16,8 @@ TagManager:
   - PlayerBullet
   - Enemy
   - EnemyBullet
-  - 
-  - 
+  - PlayerOnlyWall
+  - NonCollider
   - 
   - 
   - 

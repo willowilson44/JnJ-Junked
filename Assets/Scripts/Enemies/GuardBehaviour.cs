@@ -17,7 +17,7 @@ public class GuardBehaviour : MonoBehaviour
 
     // Detecting the Player
     //private bool isListening = false;        // if true enemy will raycast to try to "see" the player
-    private bool isChasing = false;          // if true enemy will chase/attack the player
+    public bool isChasing = false;          // if true enemy will chase/attack the player
     //private bool isAttacking = false;        // if true enemy will chase/attack the player
     private bool canAlert = true;
     public int detectionRange = 60;         // Within this range the enemy will raycast to try to "see" the player

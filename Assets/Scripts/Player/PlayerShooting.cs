@@ -78,8 +78,10 @@ public static class PlayerShooting
         Ray ray = camera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
 
         RaycastHit hit;
-        // Assume everything but the player is on the default layer
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity, ~LayerMask.GetMask("Player")))
+        // Create a mask that ignores both Player and PlayerBullet layers
+        int mask = ~(LayerMask.GetMask("Player") | LayerMask.GetMask("PlayerBullet"));
+
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, mask))
         {
             target = hit.point;
         }

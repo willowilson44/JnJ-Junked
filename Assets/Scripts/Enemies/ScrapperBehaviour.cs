@@ -36,7 +36,7 @@ public class ScrapperBehaviour : MonoBehaviour
 
     // Detecting the Player
     //private bool isListening = false;        // if true enemy will raycast to try to "see" the player
-    private bool isChasing = false;          // if true enemy will chase/attack the player
+    public bool isChasing = false;          // if true enemy will chase/attack the player
     //private bool isAttacking = false;        // if true enemy will chase/attack the player
     public int detectionRange = 45;         // Within this range the enemy will raycast to try to "see" the player
     private int detectBehindRange = 10;      // Within this range the enemy will immediately find the player even if behind it
