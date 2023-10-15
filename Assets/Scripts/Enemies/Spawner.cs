@@ -76,8 +76,8 @@ public class Spawner : MonoBehaviour
         initialColor = trapdoorMaterial.color;
         transparentColor = new Color(initialColor.r, initialColor.g, initialColor.b, 0f);        // Prepare the transparent color (keeping the same RGB but with 0 alpha)
 
-        spawnWait = spawnWait*(1-(LevelState.currentDifficulty/5));
-        spawnTotal = spawnTotal+(LevelState.currentDifficulty*2);
+        spawnWait = spawnWait - LevelState.currentDifficulty;
+        //spawnTotal = spawnTotal+(LevelState.currentDifficulty);
 
     }
 

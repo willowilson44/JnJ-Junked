@@ -84,6 +84,8 @@ public class UIManager : MonoBehaviour
     {
         // Unlock appropriate levels
         LevelButtons[0, 0].interactable = true;
+        LevelButtons[0, 1].interactable = true;
+        LevelButtons[0, 2].interactable = true;
 
         for (int level = 0; level < LevelButtons.GetLength(0); level++)
         {

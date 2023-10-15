@@ -1,6 +1,8 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class FinalLevelController : MonoBehaviour
 {
@@ -9,10 +11,23 @@ public class FinalLevelController : MonoBehaviour
     private GameObject[][] spawnerGroups;
     private GameObject[][][] spawners;
     public int extraTime = 10;
-    private float timeBetweenSpawns = 2.8f;
+    private float timeBetweenSpawns = 2.4f; 
+    public GameObject endLevelPanel;
+    public Button next;
+    public Button menu;
+    private TextMeshProUGUI killsText;
+    private TextMeshProUGUI deathsText;
+    private TextMeshProUGUI upgradesText;
 
     void Start()
     {
+
+        endLevelPanel = GameObject.Find("GUI/Canvas/Level Finish");
+        endLevelPanel.SetActive(false);
+
+        next.onClick.AddListener(() => nextClicked());
+        menu.onClick.AddListener(() => menuClicked());
+
         // Initialize spawnerGroups and spawners arrays
         spawnerGroups = new GameObject[waves.Length][];
         spawners = new GameObject[waves.Length][][];
@@ -34,6 +49,7 @@ public class FinalLevelController : MonoBehaviour
         }
 
         extraTime = extraTime - (LevelState.currentDifficulty * 5);
+        timeBetweenSpawns = timeBetweenSpawns - (LevelState.currentDifficulty * 0.3f);
         StartCoroutine(StartWave(0)); // Start with the first wave
     }
 
@@ -46,7 +62,7 @@ public class FinalLevelController : MonoBehaviour
         // Sub-wave 1
         for (int i = 0; i < 11; i++)
         {
-            if (i % 2 == 0) // Every second Guard Spawner
+            if (i % 2 == 0) 
             {
                 spawners[waveIndex][i][0].SetActive(true); // Every second Scrapper Spawner
             }
@@ -112,7 +128,7 @@ public class FinalLevelController : MonoBehaviour
         }
 
         yield return new WaitForSeconds(60);
-        DestroyAllEnemies();
+        //DestroyAllEnemies();
 
         //if (LevelState.currentDifficulty > waveIndex)
         //{
@@ -123,7 +139,7 @@ public class FinalLevelController : MonoBehaviour
         //} else
         //{
         yield return new WaitForSeconds(5);
-        EndGame();
+        EndLevel();
         yield break; // No more waves to process
         //}
     }
@@ -152,11 +168,47 @@ public class FinalLevelController : MonoBehaviour
         }
     }
 
-    private void EndGame()
+    private void nextClicked()
     {
-        Debug.Log("EndGame");
-        LevelFinish levelFinish = ReferenceManager.instance.levelFinish;
-        levelFinish.EndLevel();
+        SceneManager.LoadScene("Ending");
+    }
+
+    private void menuClicked()
+    {
+        LevelState.ResetGameState();
+        SceneManager.LoadScene("Main Menu");
+    }
+
+    public void EndLevel()
+    {
+        GameObject player = ReferenceManager.instance.player;
+        Cursor.lockState = CursorLockMode.None; // Frees the cursor
+        Cursor.visible = true; // Shows the cursor
+
+        Debug.Log("End Level panel activated");
+        endLevelPanel.SetActive(true);
+
+        TextMeshProUGUI textComponent = next.GetComponentInChildren<TextMeshProUGUI>();
+        textComponent.text = "Play Ending";
+
+        if (endLevelPanel != null)
+        {
+            killsText = endLevelPanel.transform.Find("Kills").GetComponent<TextMeshProUGUI>();
+            deathsText = endLevelPanel.transform.Find("Deaths").GetComponent<TextMeshProUGUI>();
+            upgradesText = endLevelPanel.transform.Find("Upgrades").GetComponent<TextMeshProUGUI>();
+
+            killsText.text = "Kills: " + LevelState.kills;
+            deathsText.text = "Deaths: " + LevelState.deaths;
+            upgradesText.text = "Upgrades: " + LevelState.newUpgrades;
+        }
+        else
+        {
+            Debug.LogError("Panel not found");
+        }
+
+        player.gameObject.SetActive(false);
+        GameSettings.levelsCompleted[LevelState.currentLevel][LevelState.currentDifficulty] = true;
+        GameSettings.SaveGameState();
     }
 }
 
