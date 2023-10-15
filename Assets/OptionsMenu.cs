@@ -17,6 +17,7 @@ public class OptionsMenu : MonoBehaviour
     public Toggle mouseInvertY;
     public Slider gamepadSensitivity;
     public Toggle gamepadInvertY;
+    public Button ResetPrefsButton;
     //private bool inOptions = false;
 
     [Header("Settings")]
@@ -37,6 +38,8 @@ public class OptionsMenu : MonoBehaviour
 
         volume.onValueChanged.AddListener(ChangeVolume);
 
+        ResetPrefsButton.onClick.AddListener(ResetPlayerPrefs);
+
         LoadSettings();
     }
 
@@ -47,6 +50,11 @@ public class OptionsMenu : MonoBehaviour
     }
 
 
+    public void ResetPlayerPrefs()
+    {
+        PlayerPrefs.DeleteAll();
+        Debug.Log("PlayerPrefs cleared!");
+    }
 
     public void Options()
     {
