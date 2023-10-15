@@ -18,7 +18,7 @@ public class Spawner : MonoBehaviour
     private float positionOffsetX = 1.2f;
     private float positionOffsetZ = -1.7f;
     private float raiseTime = 2f;
-    private bool isActive = false;
+    private bool isActive = true;
     public bool instantAttack;
     public int spawnsAtOnce = 2;
     public int spawnWait = 12;
@@ -84,6 +84,10 @@ public class Spawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(isActive == false)
+        {
+            return;
+        }
 
         float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
 
@@ -137,7 +141,7 @@ public class Spawner : MonoBehaviour
         }
 
 
-        this.enabled = false;
+        isActive = false;
     }
 
     private GameObject SpawnEnemy()
@@ -224,5 +228,17 @@ public class Spawner : MonoBehaviour
                 enemyB.detectionRange = 300;
             }
         }
+    }
+
+    public void DestroySpawnedEnemies()
+    {
+        foreach (GameObject enemy in spawnedEnemies)
+        {
+            if (enemy != null) // Check if the enemy still exists
+            {
+                Destroy(enemy);
+            }
+        }
+        DeactivateSpawner();
     }
 }

@@ -10,6 +10,8 @@ public class EnergyOrb : MonoBehaviour
     public float moveSpeed = 4.0f;
     public AudioClip clip;
     private AudioSource audioSource;
+    private int destroyAfter = 30;
+    public bool permanent = false;
 
 
     // Start is called before the first frame update
@@ -23,8 +25,11 @@ public class EnergyOrb : MonoBehaviour
             audioSource = gameObject.AddComponent<AudioSource>();
         }
 
-        //Rigidbody rb = gameObject.GetComponent<Rigidbody>();
-        //rb.isKinematic = true;
+        // Schedule the object to be destroyed after the specified delay
+        if (!permanent)
+        {
+            Destroy(gameObject, destroyAfter);
+        }
     }
 
     // Update is called once per frame

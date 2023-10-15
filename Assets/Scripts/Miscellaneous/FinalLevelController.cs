@@ -9,7 +9,7 @@ public class FinalLevelController : MonoBehaviour
     private GameObject[][] spawnerGroups;
     private GameObject[][][] spawners;
     public int extraTime = 10;
-    private float timeBetweenSpawns = 1.8f;
+    private float timeBetweenSpawns = 2.8f;
 
     void Start()
     {
@@ -110,19 +110,46 @@ public class FinalLevelController : MonoBehaviour
             }
             yield return new WaitForSeconds(timeBetweenSpawns/2);
         }
-        yield return new WaitForSeconds(45);
+
+        yield return new WaitForSeconds(60);
+        DestroyAllEnemies();
 
         //if (LevelState.currentDifficulty > waveIndex)
         //{
         //    extraTime -= 5;
+        //    timeBetweenSpawns -= 0.5f
         //    // Recursively start the next wave after current wave is finished.
         //    StartCoroutine(StartWave(waveIndex + 1));
         //} else
         //{
-            yield return new WaitForSeconds(5);
-            EndGame();
-            yield break; // No more waves to process
+        yield return new WaitForSeconds(5);
+        EndGame();
+        yield break; // No more waves to process
         //}
+    }
+
+    void DestroyAllEnemies()
+    {
+        for (int wave = 0; wave < spawners.Length; wave++)
+        {
+            if (spawners[wave] != null)
+            {
+                for (int group = 0; group < spawners[wave].Length; group++)
+                {
+                    if (spawners[wave][group] != null)
+                    {
+                        for (int spawner = 0; spawner < spawners[wave][group].Length; spawner++)
+                        {
+                            if (spawners[wave][group][spawner] != null)
+                            {
+                                // Assuming the spawners have a method named DestroySpawnedEnemies
+                                spawners[wave][group][spawner].GetComponent<Spawner>().DestroySpawnedEnemies();
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private void EndGame()
