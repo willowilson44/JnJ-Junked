@@ -85,7 +85,7 @@ public static class PlayerState
     {
         if (gravitronArmor)
         {
-            pm_gravity /= 2;
+            pm_gravity = 500;
         } else
         {
             pm_gravity = default_gravity;

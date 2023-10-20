@@ -53,7 +53,8 @@ public class OptionsMenu : MonoBehaviour
     public void ResetPlayerPrefs()
     {
         PlayerPrefs.DeleteAll();
-        Debug.Log("PlayerPrefs cleared!");
+        PlayerPrefs.Save();
+        SceneManager.LoadScene("Main Menu"); // Replace with your main menu scene name.
     }
 
     public void Options()
